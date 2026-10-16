@@ -1,0 +1,32 @@
+[
+  {
+    "type": "message",
+    "user": "U01MCOSTA0",
+    "text": "New rule, effective today: any discount above 20% needs sign-off from both me and Priya. Up to 20% stays with Rafa. I know the Confluence Discount Approval Matrix still says CFO only; this message overrides it.",
+    "ts": "1781539200.000006",
+    "thread_ts": "1781539200.000006",
+    "reply_count": 2,
+    "reply_users": [
+      "U02PRAMAN0",
+      "U02RMENDES"
+    ],
+    "reply_users_count": 2,
+    "latest_reply": "1781539800.000062"
+  },
+  {
+    "type": "message",
+    "user": "U02RMENDES",
+    "text": "Noted.",
+    "ts": "1781539380.000061",
+    "thread_ts": "1781539200.000006",
+    "parent_user_id": "U01MCOSTA0"
+  },
+  {
+    "type": "message",
+    "user": "U02PRAMAN0",
+    "text": "Agreed.",
+    "ts": "1781539800.000062",
+    "thread_ts": "1781539200.000006",
+    "parent_user_id": "U01MCOSTA0"
+  }
+]

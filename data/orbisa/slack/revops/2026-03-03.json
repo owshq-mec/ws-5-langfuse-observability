@@ -1,0 +1,32 @@
+[
+  {
+    "type": "message",
+    "user": "U02PRAMAN0",
+    "text": "Heads up: starting today, refund approvals move from Finance to RevOps. Tomás Herrera approves every refund request. Finance only processes the payout after Tomás approves. POL-007 v2 (Refund and Credits Policy) is live since March 1.",
+    "ts": "1772530200.000003",
+    "thread_ts": "1772530200.000003",
+    "reply_count": 2,
+    "reply_users": [
+      "U03KWATANA",
+      "U03THERRER"
+    ],
+    "reply_users_count": 2,
+    "latest_reply": "1772530860.000032"
+  },
+  {
+    "type": "message",
+    "user": "U03THERRER",
+    "text": "Confirmed. Please tag me on any refund ticket. Support: escalate refund tickets to me, not to Priya.",
+    "ts": "1772530440.000031",
+    "thread_ts": "1772530200.000003",
+    "parent_user_id": "U02PRAMAN0"
+  },
+  {
+    "type": "message",
+    "user": "U03KWATANA",
+    "text": "Got it, updating the Zendesk refund macro today.",
+    "ts": "1772530860.000032",
+    "thread_ts": "1772530200.000003",
+    "parent_user_id": "U02PRAMAN0"
+  }
+]

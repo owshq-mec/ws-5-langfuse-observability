@@ -1,0 +1,11 @@
+.git
+.venv
+.env
+.helix
+.pytest_cache
+**/__pycache__
+docs
+prompts
+tests
+infra
+scripts

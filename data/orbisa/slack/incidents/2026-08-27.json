@@ -1,0 +1,32 @@
+[
+  {
+    "type": "message",
+    "user": "U05IHOLM00",
+    "text": "SEV-1: INC-2304. Carrier webhooks failing with TLS errors, Track API returning errors.",
+    "ts": "1787813100.000009",
+    "thread_ts": "1787813100.000009",
+    "reply_count": 2,
+    "reply_users": [
+      "U01DOKAFOR",
+      "U05IHOLM00"
+    ],
+    "reply_users_count": 2,
+    "latest_reply": "1787820060.000092"
+  },
+  {
+    "type": "message",
+    "user": "U05IHOLM00",
+    "text": "Resolved 08:27 UTC. Expired certificate on the carrier-webhook gateway. Impact 1h47m.",
+    "ts": "1787819400.000091",
+    "thread_ts": "1787813100.000009",
+    "parent_user_id": "U05IHOLM00"
+  },
+  {
+    "type": "message",
+    "user": "U01DOKAFOR",
+    "text": "That is two SEV-1s in August. Aisha, Enterprise customers will ask about credits.",
+    "ts": "1787820060.000092",
+    "thread_ts": "1787813100.000009",
+    "parent_user_id": "U05IHOLM00"
+  }
+]

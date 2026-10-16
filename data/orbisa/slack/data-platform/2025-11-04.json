@@ -1,0 +1,23 @@
+[
+  {
+    "type": "message",
+    "user": "U03NSILVA0",
+    "text": "Decision: from 2026-01-01 we keep shipment tracking events for 24 months for every customer, including Brisklane customers (they were on Brisklane's 12 months). I will update the Data Retention Policy in Confluence. The Brisklane Notion handbook is read-only and will not be updated.",
+    "ts": "1762251120.000002",
+    "thread_ts": "1762251120.000002",
+    "reply_count": 1,
+    "reply_users": [
+      "U06LFERRET"
+    ],
+    "reply_users_count": 1,
+    "latest_reply": "1762251600.000021"
+  },
+  {
+    "type": "message",
+    "user": "U06LFERRET",
+    "text": "Works for us. Brisklane contracts never promised 12 months, so no customer notice is needed.",
+    "ts": "1762251600.000021",
+    "thread_ts": "1762251120.000002",
+    "parent_user_id": "U03NSILVA0"
+  }
+]

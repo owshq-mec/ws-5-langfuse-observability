@@ -1,0 +1,341 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>01 · Orbisa — the use case</title>
+<link rel="stylesheet" href="assets/langfuse.css">
+<style>
+  .cover-art { position: absolute; right: 0; top: 64px; bottom: 56px; width: 620px; border-left: 1px solid var(--line); }
+  .q-quote { font-family: var(--display); font-weight: 500; font-size: 64px; line-height: 1.12; letter-spacing: -.03em; }
+  .ans { display: flex; flex-direction: column; gap: 14px; padding: 26px; border: 1px solid var(--line); background: var(--paper); position: relative; }
+  .ans .verdict { font-family: var(--display); font-size: 44px; font-weight: 500; letter-spacing: -.03em; line-height: 1; }
+  .ans .src { display: flex; align-items: center; gap: 10px; font-family: var(--mono); font-size: 14px; color: var(--muted); }
+  .ans.win { background: var(--hl); border-color: var(--hl-deep); box-shadow: 0 0 0 1.5px var(--ink); }
+  .ans .stamp { position: absolute; top: 18px; right: 18px; }
+  .sys { display: flex; flex-direction: column; gap: 14px; padding: 24px; border: 1px solid var(--line); background: var(--paper); }
+  .sys .what { font-size: 19px; color: var(--ink-2); line-height: 1.4; }
+  .sys .fmt { font-family: var(--mono); font-size: 13.5px; color: var(--muted); margin-top: auto; }
+  .bar { display: grid; grid-template-columns: 210px 1fr 40px; align-items: center; gap: 18px; font-size: 19px; }
+  .bar .track { height: 30px; border: 1px solid var(--line); background: var(--paper); position: relative; }
+  .bar .fill { position: absolute; inset: 0 auto 0 0; background: var(--ink); }
+  .bar .fill.hl { background: var(--hl); border-right: 1.5px solid var(--ink); }
+  .bar b { font-family: var(--mono); font-weight: 500; }
+  .flow { display: grid; grid-template-columns: 1.15fr 40px 1.6fr 40px 1fr 40px 1fr; align-items: stretch; }
+  .flow .arrow { display: grid; place-items: center; color: var(--ink); }
+  .flow .arrow [data-i] { width: 30px; height: 30px; }
+  .agenda-row { display: grid; grid-template-columns: 120px 1fr 340px; gap: 28px; align-items: center; padding: 20px 0; border-bottom: 1px solid var(--line); }
+  .agenda-row .t { font-family: var(--mono); font-size: 20px; color: var(--muted); }
+  .agenda-row .chips { display: flex; flex-wrap: wrap; gap: 8px; }
+  .agenda-row .chips .pill { font-size: 13px; }
+  .eq { font-family: var(--mono); font-size: 29px; letter-spacing: -.01em; }
+  .gap-q { font-family: var(--display); font-weight: 500; font-size: 40px; letter-spacing: -.02em; display: flex; align-items: center; gap: 18px; }
+  .gap-q .ibox { background: #2a2826; border-color: #45433e; color: var(--hl); box-shadow: none; }
+</style>
+</head>
+<body data-deck="01 · The use case" data-part="Part 1 · Use case">
+<main class="deck">
+
+<!-- 1 · cover -->
+<section class="slide hatch" data-title="Cover">
+  <div class="col" style="max-width:860px; margin-top:40px">
+    <div class="eyebrow rise">AIDE · Workshop 5 · 09:00 – 13:00</div>
+    <h1 class="display rise" style="--d:1">Making <span class="sweep" style="--d:2">context</span> observable.</h1>
+    <p class="lead rise" style="--d:3">Orbisa built a context engine for its AI agents. Today we find out whether it tells the truth, why, and at what cost, with Langfuse.</p>
+    <div class="row rise" style="--d:4; gap:14px">
+      <span class="btn dark">Start the session <span class="kbd">→</span></span>
+      <span class="btn">orbisa-case-study.pdf <span class="kbd">D</span></span>
+    </div>
+  </div>
+  <div class="cover-art gridbg">
+    <div class="iso fade" style="position:absolute; inset:0; --d:3">
+      <div class="stack" style="width:300px; height:300px">
+        <div class="plate hatch" style="transform:translateZ(0)">sources</div>
+        <div class="plate" style="transform:translateZ(60px)">helix · context graph</div>
+        <div class="plate" style="transform:translateZ(120px)">mcp</div>
+        <div class="plate on" style="transform:translateZ(180px)">langfuse</div>
+      </div>
+    </div>
+    <div class="mono small" style="position:absolute; left:28px; bottom:24px; font-size:13px">fig. 1 — the stack we observe today</div>
+  </div>
+</section>
+
+<!-- 2 · agenda -->
+<section class="slide" data-title="Agenda">
+  <div class="eyebrow rise">Today</div>
+  <h2 class="h2 rise mt16" style="--d:1">Four hours, <mark>one system</mark>.</h2>
+  <div class="mt32">
+    <div class="agenda-row rise" style="--d:2"><span class="t">09:00</span><span class="h3">Use case — Orbisa</span><div class="chips"><span class="pill plain">the company</span><span class="pill plain">the question</span></div></div>
+    <div class="agenda-row rise" style="--d:3"><span class="t">09:10</span><span class="h3">Context — the context layer</span><div class="chips"><span class="pill plain">components</span><span class="pill plain">Neo4j</span><span class="pill plain">Helix</span></div></div>
+    <div class="agenda-row rise" style="--d:4"><span class="t">09:40</span><span class="h3">Observability fundamentals</span><div class="chips"><span class="pill plain">AI-native</span><span class="pill plain">OpenTelemetry</span><span class="pill plain">Langfuse</span></div></div>
+    <div class="agenda-row rise" style="--d:5"><span class="t">10:15</span><span class="h3 muted">Break</span><div></div></div>
+    <div class="agenda-row rise" style="--d:6; border-bottom:1px solid var(--ink)"><span class="t">10:25</span><span class="h3"><mark>Prompts</mark> — we build it, as a team</span><div class="chips"><span class="pill info">discover</span><span class="pill info">define</span><span class="pill info">design</span><span class="pill ok">build</span><span class="pill warn">readout</span></div></div>
+  </div>
+</section>
+
+<!-- 3 · meet orbisa -->
+<section class="slide" data-title="Meet Orbisa">
+  <div class="row gap-l" style="flex:1; align-items:center">
+    <div class="col" style="flex:1.1">
+      <div class="eyebrow rise">The company</div>
+      <h2 class="h1 rise" style="--d:1">Meet <mark>Orbisa</mark>.</h2>
+      <p class="lead rise" style="--d:2">A B2B logistics SaaS. Mid-size freight distributors use it to track shipments and audit freight bills.</p>
+      <div class="grid2 mt16 rise" style="--d:3; gap:16px">
+        <div class="card"><span class="h4"><span class="ibox"><span data-i="radar"></span></span>Orbisa Track</span><span class="small">Shipment tracking API and dashboard. One ETA per shipment, from every carrier.</span></div>
+        <div class="card"><span class="h4"><span class="ibox"><span data-i="scroll-text"></span></span>Orbisa Bill</span><span class="small">Freight billing and audit.</span></div>
+      </div>
+    </div>
+    <div class="col" style="flex:.9; justify-content:center">
+      <div class="frame rise" style="--d:3; padding:8px 0">
+        <table class="t">
+          <tr><td>Founded</td><td>April 2019 · Austin, Texas</td></tr>
+          <tr><td>People</td><td>about 420</td></tr>
+          <tr><td>Funding</td><td>Series B · USD 48M · 2024</td></tr>
+          <tr><td>Plans</td><td>Starter · Growth · Enterprise</td></tr>
+          <tr class="on"><td>Acquired</td><td>Brisklane · Lisbon · 2025-03-10</td></tr>
+          <tr><td style="border:0">Context engine</td><td style="border:0"><b>Helix</b> · built in 2026</td></tr>
+        </table>
+      </div>
+      <p class="small mono rise" style="--d:4; font-size:13px">Orbisa, Brisklane, Helix and every person and number are fictional.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 4 · seven systems -->
+<section class="slide" data-title="Seven systems">
+  <div class="eyebrow rise">Where knowledge lives</div>
+  <h2 class="h2 rise mt16" style="--d:1">The answer is spread across <mark>seven systems</mark>.</h2>
+  <div class="grid4 mt32" style="grid-template-columns:repeat(4,1fr)">
+    <div class="sys rise" style="--d:2"><span class="ibox"><span data-i="slack"></span></span><span class="h4">Slack</span><span class="what">Decisions made in threads. Rules that changed last week.</span><span class="fmt">channel/day.json</span></div>
+    <div class="sys rise" style="--d:3"><span class="ibox"><span data-i="confluence"></span></span><span class="h4">Confluence</span><span class="what">Policies, roles, postmortems. Some never archived.</span><span class="fmt">space HTML export</span></div>
+    <div class="sys rise" style="--d:4"><span class="ibox"><span data-i="notion"></span></span><span class="h4">Notion</span><span class="what">The Brisklane handbook, read-only since the acquisition.</span><span class="fmt">markdown + csv</span></div>
+    <div class="sys rise" style="--d:5"><span class="ibox"><span data-i="googledrive"></span></span><span class="h4">Google Drive</span><span class="what">Signed contracts. The clause that overrides policy.</span><span class="fmt">PDF</span></div>
+    <div class="sys rise" style="--d:6"><span class="ibox"><span data-i="hubspot"></span></span><span class="h4">HubSpot</span><span class="what">Customers, deals, owners, renewal dates.</span><span class="fmt">CRM csv export</span></div>
+    <div class="sys rise" style="--d:7"><span class="ibox"><span data-i="zendesk"></span></span><span class="h4">Zendesk</span><span class="what">Tickets and what support told the customer.</span><span class="fmt">incremental export</span></div>
+    <div class="sys rise" style="--d:8"><span class="ibox"><span data-i="gong"></span></span><span class="h4">Gong</span><span class="what">Call transcripts. Promises made out loud.</span><span class="fmt">calls + transcripts</span></div>
+    <div class="sys rise" style="--d:9; background:var(--ink); color:var(--paper); border-color:var(--ink)">
+      <span class="stat"><span class="n" style="color:var(--hl)">64</span></span>
+      <span class="what" style="color:#d8d8d0">source files · 67 episodes · about 18 of them pure noise</span>
+      <span class="fmt" style="color:#a8a8a0">data/orbisa/</span>
+    </div>
+  </div>
+</section>
+
+<!-- 5 · the question -->
+<section class="slide gridbg" data-title="The question">
+  <div class="col" style="flex:1; justify-content:center; max-width:1240px">
+    <div class="row rise" style="gap:12px; align-items:center">
+      <span class="ibox"><span data-i="zendesk"></span></span>
+      <span class="mono small">Zendesk #48233 · 2026-09-29 · Sam Patel, Support</span>
+    </div>
+    <p class="q-quote rise mt24" style="--d:1">“Orion Freight Systems is asking for a refund <span class="sweep" style="--d:3">45 days after their renewal</span>. Are they eligible, and who must approve it?”</p>
+    <div class="row mt32 rise" style="--d:4; gap:10px">
+      <span class="pill plain">Enterprise · USD 186,000 / year</span>
+      <span class="pill plain">owner: Johanna Lindqvist</span>
+      <span class="pill bad">escalated</span>
+    </div>
+  </div>
+</section>
+
+<!-- 6 · four answers -->
+<section class="slide" data-title="Four answers">
+  <div class="eyebrow rise">Same question, four documents</div>
+  <h2 class="h2 rise mt16" style="--d:1">Four places. <mark>Four answers.</mark></h2>
+  <div class="grid4 mt32" style="height:440px">
+    <div class="ans rise" style="--d:2">
+      <span class="src"><span data-i="confluence"></span>Refund Policy (2023)</span>
+      <span class="verdict tag-coral">No.</span>
+      <span class="body">Refund only within <b>30 days</b>. Finance approves.</span>
+      <span class="pill bad mt-auto">replaced in 2026, never archived</span>
+    </div>
+    <div class="ans rise" style="--d:3">
+      <span class="src"><span data-i="confluence"></span>Refund &amp; Credits Policy v2</span>
+      <span class="verdict tag-coral">No.</span>
+      <span class="body">Full refund only within <b>14 days</b>. After that, credits. RevOps approves.</span>
+      <span class="pill warn mt-auto">current, but not the whole story</span>
+    </div>
+    <div class="ans rise" style="--d:4">
+      <span class="src"><span data-i="notion"></span>Brisklane handbook</span>
+      <span class="verdict" style="color:var(--amber)">Yes?</span>
+      <span class="body"><b>60 days</b>, no questions asked.</span>
+      <span class="pill warn mt-auto">only for Brisklane contracts</span>
+    </div>
+    <div class="ans win rise" style="--d:5">
+      <span class="stamp ibox ink" style="width:44px;height:44px"><span data-i="check" style="width:22px;height:22px"></span></span>
+      <span class="src" style="color:var(--ink); padding-right:52px"><span data-i="googledrive"></span>Orion MSA · clause 7.3</span>
+      <span class="verdict">Yes.</span>
+      <span class="body" style="color:var(--ink)">SLA missed within 60 days of renewal → <b>pro-rata refund</b>. The contract overrides the policy.</span>
+      <span class="pill ok mt-auto">correct</span>
+    </div>
+  </div>
+  <div class="frame mt-auto rise" style="--d:6; padding:20px 28px; display:flex; gap:20px; align-items:center">
+    <span class="ibox hl"><span data-i="triangle-alert"></span></span>
+    <span class="body">Support used the <b>first</b> one. The correct answer is in the <b>fourth</b>, a signed PDF in Google Drive.</span>
+  </div>
+</section>
+
+<!-- 7 · timeline -->
+<section class="slide" data-title="The Orion story">
+  <div class="eyebrow rise">Timeline</div>
+  <h2 class="h2 rise mt16" style="--d:1">The answer depends on <mark>when</mark> you ask.</h2>
+  <div class="tl mt32 rise" style="--d:2">
+    <div><span class="d">2025-08-15</span><div class="h4">MSA signed</div><p class="small mt8">Clause 7.3 · 99.9% uptime SLA</p></div>
+    <div><span class="d">2026-03-03</span><div class="h4">Approvals move</div><p class="small mt8">Refunds: Finance → RevOps (Slack)</p></div>
+    <div class="on"><span class="d">2026-08-15</span><div class="h4">Renewal</div><p class="small mt8">Day 0 of the 60-day window</p></div>
+    <div class="bad"><span class="d">2026-08-19</span><div class="h4">INC-2291</div><p class="small mt8">Tracking API down 3 h 12 min</p></div>
+    <div class="bad"><span class="d">2026-08-27</span><div class="h4">INC-2304</div><p class="small mt8">Expired TLS cert · 1 h 47 min</p></div>
+    <div><span class="d">2026-09-08</span><div class="h4">QBR call</div><p class="small mt8">Promise: a credit, not a refund (Gong)</p></div>
+    <div class="on"><span class="d">2026-09-29</span><div class="h4">Request · day 45</div><p class="small mt8">Support answers with the 2023 rule</p></div>
+  </div>
+  <div class="win mt-auto rise" style="--d:4; margin-bottom:34px">
+    <div class="marks">
+      <div class="mk" style="left:calc(4/60*100%)"><span>INC-2291 · d4</span></div>
+      <div class="mk" style="left:calc(12/60*100%)"><span>INC-2304 · d12</span></div>
+      <div class="mk req" style="left:calc(45/60*100%)"><span>request · day 45</span></div>
+    </div>
+    <span class="lbl"><span data-i="confluence"></span>Policy v2 · 14 days</span><div class="trk"><div class="rng" style="width:calc(14/60*100%)">d14</div></div>
+    <span class="lbl"><span data-i="confluence"></span>Policy 2023 · 30 days</span><div class="trk"><div class="rng stale" style="width:calc(30/60*100%)">stale · d30</div></div>
+    <span class="lbl"><span data-i="googledrive"></span><b>MSA 7.3 · 60 days</b></span><div class="trk"><div class="rng hl" style="width:100%">covers day 45 · d60</div></div>
+    <div class="axis"><span style="left:0">d0 · renewal 2026-08-15</span><span style="left:25%">+15</span><span style="left:50%">+30</span><span style="left:75%">+45</span><span style="left:100%; transform:translateX(-100%)">+60 · 2026-10-14</span></div>
+  </div>
+</section>
+
+<!-- 8 · the correct answer -->
+<section class="slide" data-title="The correct answer">
+  <div class="eyebrow rise">Ground truth · Q01</div>
+  <h2 class="h1 rise mt16" style="--d:1">Eligible. <mark>Tomás approves.</mark></h2>
+  <div class="row gap-l mt32" style="flex:1">
+    <div class="col" style="flex:1.15">
+      <div class="frame rise" style="--d:2; padding:30px 34px">
+        <div class="mono small">August 2026 · Tracking API uptime</div>
+        <div class="eq mt16">(744 h − 4.98 h) / 744 h = <span class="hl">99.33%</span></div>
+        <div class="row mt16" style="gap:10px"><span class="pill bad">below the 99.9% SLA</span><span class="pill ok">inside the 60-day window</span><span class="pill ok">day 45 &lt; 60</span></div>
+      </div>
+      <p class="body rise" style="--d:3; font-size:24px">Pro-rata refund under <b>MSA clause 7.3</b>. Approved by <b>Tomás Herrera, Head of RevOps</b>, not Finance.</p>
+      <div class="col mt-auto rise" style="--d:4; gap:10px">
+        <span class="mono small" style="font-size:13px; letter-spacing:.08em">EXPECTED SOURCES</span>
+        <div class="row" style="gap:8px; flex-wrap:wrap">
+          <span class="chip"><span data-i="googledrive"></span>Orion MSA.pdf</span><span class="chip"><span data-i="googledrive"></span>Order Form OF-2025-0815</span>
+          <span class="chip"><span data-i="confluence"></span>INC-2304 postmortem</span><span class="chip"><span data-i="confluence"></span>Refund &amp; Credits Policy</span>
+          <span class="chip"><span data-i="slack"></span>#revops · 2026-03-03</span><span class="chip"><span data-i="zendesk"></span>tickets.json</span>
+        </div>
+      </div>
+    </div>
+    <div class="card ink rise" style="--d:3; flex:.85; padding:36px; justify-content:center">
+      <span class="mono" style="color:var(--hl); font-size:14px; letter-spacing:.1em">TO GET THIS RIGHT, AN AGENT MUST</span>
+      <ol class="body" style="color:#e6e6e0; padding-left:28px; display:flex; flex-direction:column; gap:16px; margin-top:12px; font-size:23px">
+        <li>read a contract PDF, not only the policy</li>
+        <li>ignore a page that is out of date</li>
+        <li>add up two incidents from two postmortems</li>
+        <li>know the approver changed in March</li>
+        <li>cite where each fact came from</li>
+      </ol>
+    </div>
+  </div>
+</section>
+
+<!-- 9 · ground truth categories -->
+<section class="slide" data-title="Ground truth">
+  <div class="row gap-l" style="flex:1; align-items:center">
+    <div class="col" style="flex:.9">
+      <div class="eyebrow rise">data/orbisa/truth/questions.jsonl</div>
+      <h2 class="h2 rise" style="--d:1"><mark>22 questions</mark> with known answers.</h2>
+      <p class="lead rise" style="--d:2">Each one has the expected answer, the facts it needs, the sources, and the trap that leads to a wrong answer.</p>
+      <div class="code rise mt16" style="--d:3; font-size:16px; white-space:pre-wrap">{ <span class="k">"id"</span>: <span class="s">"Q01"</span>, <span class="k">"as_of"</span>: <span class="s">"2026-09-29"</span>,
+  <span class="k">"expected_sources"</span>: [<span class="s">"drive/Orion…MSA.pdf"</span>, …],
+  <span class="k">"trap"</span>: <span class="s">"Using the 2023 30-day policy…"</span> }</div>
+    </div>
+    <div class="col" style="flex:1; justify-content:center; gap:22px">
+      <div class="bar rise" style="--d:2"><span>temporal</span><div class="track"><div class="fill" style="width:100%"></div></div><b>5</b></div>
+      <div class="bar rise" style="--d:3"><span>multi-source</span><div class="track"><div class="fill" style="width:100%"></div></div><b>5</b></div>
+      <div class="bar rise" style="--d:4"><span>lookup</span><div class="track"><div class="fill" style="width:80%"></div></div><b>4</b></div>
+      <div class="bar rise" style="--d:5"><span>conflict</span><div class="track"><div class="fill" style="width:60%"></div></div><b>3</b></div>
+      <div class="bar rise" style="--d:6"><span>false premise</span><div class="track"><div class="fill" style="width:60%"></div></div><b>3</b></div>
+      <div class="bar rise" style="--d:7"><span>alias</span><div class="track"><div class="fill" style="width:20%"></div></div><b>1</b></div>
+      <div class="bar rise" style="--d:8"><span>anchor (Q01)</span><div class="track"><div class="fill hl" style="width:20%"></div></div><b>1</b></div>
+    </div>
+  </div>
+</section>
+
+<!-- 10 · what exists -->
+<section class="slide" data-title="What exists">
+  <div class="eyebrow rise">Brownfield</div>
+  <h2 class="h2 rise mt16" style="--d:1">The team already built <mark>Helix</mark> and <mark>Ask Orbisa</mark>.</h2>
+  <div class="flow mt48 rise" style="--d:2">
+    <div class="card" style="gap:14px">
+      <span class="num">01 · SOURCES</span>
+      <div class="row" style="gap:8px; flex-wrap:wrap">
+        <span class="ibox" style="width:46px;height:46px"><span data-i="slack"></span></span><span class="ibox" style="width:46px;height:46px"><span data-i="confluence"></span></span>
+        <span class="ibox" style="width:46px;height:46px"><span data-i="notion"></span></span><span class="ibox" style="width:46px;height:46px"><span data-i="googledrive"></span></span>
+        <span class="ibox" style="width:46px;height:46px"><span data-i="hubspot"></span></span><span class="ibox" style="width:46px;height:46px"><span data-i="zendesk"></span></span>
+        <span class="ibox" style="width:46px;height:46px"><span data-i="gong"></span></span>
+      </div>
+      <span class="small">7 systems, real export formats</span>
+    </div>
+    <div class="arrow"><span data-i="arrow-right"></span></div>
+    <div class="card raised" style="gap:14px; border-color:var(--ink)">
+      <span class="num">02 · HELIX · CONTEXT ENGINE</span>
+      <div class="row" style="gap:10px; flex-wrap:wrap"><span class="chip">ingest</span><span class="chip">ontology</span><span class="chip"><span data-i="neo4j"></span>context graph</span><span class="chip">retrieval</span></div>
+      <span class="small">Graphiti on Neo4j · facts with dates and sources</span>
+    </div>
+    <div class="arrow"><span data-i="arrow-right"></span></div>
+    <div class="card" style="gap:14px">
+      <span class="num">03 · MCP</span>
+      <span class="ibox"><span data-i="modelcontextprotocol" data-ink></span></span>
+      <span class="small">4 tools on :8765/mcp</span>
+    </div>
+    <div class="arrow"><span data-i="arrow-right"></span></div>
+    <div class="card" style="gap:14px">
+      <span class="num">04 · ASK ORBISA</span>
+      <span class="ibox"><span data-i="claude"></span></span>
+      <span class="small">Claude Agent SDK</span>
+    </div>
+  </div>
+  <div class="grid4 mt-auto rise" style="--d:3; grid-template-columns:repeat(5,1fr); margin-bottom:28px">
+    <div class="stat"><div class="n">7</div><div class="l">systems</div></div>
+    <div class="stat"><div class="n">67</div><div class="l">episodes</div></div>
+    <div class="stat"><div class="n">106</div><div class="l">entities</div></div>
+    <div class="stat"><div class="n"><span class="hl">367</span></div><div class="l">facts with dates</div></div>
+    <div class="stat"><div class="n">4</div><div class="l">MCP tools</div></div>
+  </div>
+  <div class="statsbar rise" style="--d:4">
+    <div><b>make up</b> · everything in Docker</div><div><b>make ingest</b> · build the graph</div><div><b>make ask Q=Q01</b> · ask a question</div>
+  </div>
+</section>
+
+<!-- 11 · the gap -->
+<section class="slide dark" data-title="The gap">
+  <div class="col" style="flex:1; justify-content:center">
+    <div class="eyebrow rise">The problem we are hired for</div>
+    <h2 class="h1 rise mt16" style="--d:1">It answers.<br><span style="color:var(--hl)">Nobody knows if it is right.</span></h2>
+    <div class="col mt48" style="gap:22px">
+      <div class="gap-q rise" style="--d:2"><span class="ibox"><span data-i="circle-check"></span></span>Is the answer correct?</div>
+      <div class="gap-q rise" style="--d:3"><span class="ibox"><span data-i="list-tree"></span></span>Which facts and sources did it use, and why?</div>
+      <div class="gap-q rise" style="--d:4"><span class="ibox"><span data-i="coins"></span></span>What did it cost, and how long did it take?</div>
+    </div>
+  </div>
+</section>
+
+<!-- 12 · how we work today -->
+<section class="slide" data-title="How we work today">
+  <div class="eyebrow rise">You are new engineers at Orbisa</div>
+  <h2 class="h2 rise mt16" style="--d:1">We build the observability <mark>as a team</mark>.</h2>
+  <p class="lead rise mt16" style="--d:2">Claude Code is our pair. It proposes and asks. The team decides at every gate.</p>
+  <div class="steps mt48 rise" style="--d:3; min-height:330px">
+    <div><span class="ibox"><span data-i="search"></span></span><span class="num mt8">00 – 02</span><span class="h3">Discover</span><span class="small">Read the brief. Run the system. Collect evidence.</span></div>
+    <div><span class="ibox"><span data-i="target"></span></span><span class="num mt8">03 – 04</span><span class="h3">Define</span><span class="small">Pick one problem statement. Narrow it.</span><span class="pill plain mt8" style="align-self:flex-start">decisions/01</span></div>
+    <div><span class="ibox"><span data-i="workflow"></span></span><span class="num mt8">05</span><span class="h3">Design</span><span class="small">Decide what to trace, score and watch.</span><span class="pill plain mt8" style="align-self:flex-start">decisions/02</span></div>
+    <div class="on"><span class="ibox"><span data-i="boxes"></span></span><span class="num mt8">06 – 12</span><span class="h3">Build</span><span class="small">Tracing, prompts, datasets, experiments, evals, dashboards.</span></div>
+    <div><span class="ibox"><span data-i="file-text"></span></span><span class="num mt8">13</span><span class="h3">Readout</span><span class="small">Did we meet our success criteria?</span><span class="pill plain mt8" style="align-self:flex-start">decisions/03</span></div>
+  </div>
+  <div class="row mt-auto rise" style="--d:5; gap:14px">
+    <span class="btn dark">Next: the context layer <span class="kbd">02</span></span>
+    <span class="btn">Brief: docs/orbisa-case-study.pdf</span>
+  </div>
+</section>
+
+</main>
+<script src="assets/icons.js"></script>
+<script src="assets/deck.js"></script>
+</body>
+</html>

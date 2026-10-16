@@ -1,0 +1,23 @@
+[
+  {
+    "type": "message",
+    "user": "U03THERRER",
+    "text": "Approved the Cedar & Pine Wholesale refund (Zendesk #48102). They are on a Brisklane legacy contract, asked 32 days after their 2026-02-01 renewal, and Brisklane terms give 60 days. Full refund.",
+    "ts": "1772810400.000005",
+    "thread_ts": "1772810400.000005",
+    "reply_count": 1,
+    "reply_users": [
+      "U02PRAMAN0"
+    ],
+    "reply_users_count": 1,
+    "latest_reply": "1772810760.000051"
+  },
+  {
+    "type": "message",
+    "user": "U02PRAMAN0",
+    "text": "Payout scheduled for Friday.",
+    "ts": "1772810760.000051",
+    "thread_ts": "1772810400.000005",
+    "parent_user_id": "U03THERRER"
+  }
+]

@@ -1,0 +1,32 @@
+[
+  {
+    "type": "message",
+    "user": "U04OBRANDT",
+    "text": "Closed Mesa Ridge Foods on Growth, 12 months starting September 15. First new logo for the food distribution vertical!",
+    "ts": "1789237200.000018",
+    "thread_ts": "1789237200.000018",
+    "reply_count": 2,
+    "reply_users": [
+      "U01MCOSTA0",
+      "U02RMENDES"
+    ],
+    "reply_users_count": 2,
+    "latest_reply": "1789237860.000182"
+  },
+  {
+    "type": "message",
+    "user": "U02RMENDES",
+    "text": "Great work Owen.",
+    "ts": "1789237500.000181",
+    "thread_ts": "1789237200.000018",
+    "parent_user_id": "U04OBRANDT"
+  },
+  {
+    "type": "message",
+    "user": "U01MCOSTA0",
+    "text": "Congrats!",
+    "ts": "1789237860.000182",
+    "thread_ts": "1789237200.000018",
+    "parent_user_id": "U04OBRANDT"
+  }
+]

@@ -1,0 +1,23 @@
+[
+  {
+    "type": "message",
+    "user": "U05IHOLM00",
+    "text": "SEV-1 declared: INC-2291. Orbisa Track API returning 503 for all customers. Investigating tracking-ingest.",
+    "ts": "1787148420.000007",
+    "thread_ts": "1787148420.000007",
+    "reply_count": 1,
+    "reply_users": [
+      "U05IHOLM00"
+    ],
+    "reply_users_count": 1,
+    "latest_reply": "1787160000.000071"
+  },
+  {
+    "type": "message",
+    "user": "U05IHOLM00",
+    "text": "Resolved at 17:17 UTC by rolling back tracking-ingest to v4.11. Total impact 3h12m. Postmortem to follow.",
+    "ts": "1787160000.000071",
+    "thread_ts": "1787148420.000007",
+    "parent_user_id": "U05IHOLM00"
+  }
+]

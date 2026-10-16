@@ -1,0 +1,10 @@
+{
+  "comments": [
+    {"id": 3301, "type": "Comment", "author_id": 7001, "public": true, "created_at": "2026-08-19T14:20:00Z",
+     "body": "Since about 14:05 UTC every call to the Track API returns 503. Our dispatch board has no ETAs."},
+    {"id": 3302, "type": "Comment", "author_id": 900101, "public": true, "created_at": "2026-08-19T14:31:00Z",
+     "body": "Hi Dana, we are aware. This is SEV-1 incident INC-2291 and engineering is rolling back a release."},
+    {"id": 3303, "type": "Comment", "author_id": 900101, "public": true, "created_at": "2026-08-19T17:40:00Z",
+     "body": "Service was restored at 17:17 UTC. Total impact was 3 hours 12 minutes. A postmortem will follow."}
+  ]
+}

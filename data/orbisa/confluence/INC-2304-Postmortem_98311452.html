@@ -1,0 +1,24 @@
+<html>
+<head><title>Orbisa Wiki : INC-2304 Postmortem — Carrier webhook TLS expiry</title><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"></head>
+<body>
+<div id="page"><div id="main">
+<div id="main-header"><h1 id="title-heading" class="pagetitle"><span id="title-text"> Orbisa Wiki : INC-2304 Postmortem — Carrier webhook TLS expiry </span></h1></div>
+<div id="content" class="view">
+<div class="page-metadata">Created by Ingrid Holm, last modified by Ingrid Holm on Aug 29, 2026</div>
+<div id="main-content" class="wiki-content group">
+<table class="confluenceTable">
+<tr><th>Incident</th><td>INC-2304</td></tr>
+<tr><th>Severity</th><td>SEV-1</td></tr>
+<tr><th>Date</th><td>August 27, 2026, 06:40–08:27 UTC</td></tr>
+<tr><th>Duration</th><td>1 hour 47 minutes</td></tr>
+<tr><th>Impact</th><td>Orbisa Track API stopped receiving carrier status updates. Tracking requests returned errors for all customers.</td></tr>
+</table>
+<h2>Root cause</h2>
+<p>The TLS certificate on the carrier-webhook gateway expired. Automatic renewal had been disabled during a migration in July and was never turned back on.</p>
+<h2>Fix</h2>
+<p>Issued a new certificate and re-enabled automatic renewal.</p>
+<h2>SLA impact</h2>
+<p>Together with INC-2291, unplanned Tracking API downtime in August 2026 was 4 hours 59 minutes. August uptime was <strong>99.33%</strong>, below the 99.9% Enterprise commitment in POL-012.</p>
+</div></div></div></div>
+</body>
+</html>

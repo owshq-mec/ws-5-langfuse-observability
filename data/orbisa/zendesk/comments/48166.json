@@ -1,0 +1,20 @@
+{
+  "comments": [
+    {
+      "id": 481661,
+      "type": "Comment",
+      "author_id": 7030,
+      "public": true,
+      "created_at": "2026-06-22T15:45:00Z",
+      "body": "We get HTTP 429 when we poll 5,000 shipments at once."
+    },
+    {
+      "id": 481662,
+      "type": "Comment",
+      "author_id": 900102,
+      "public": true,
+      "created_at": "2026-06-22T16:30:00Z",
+      "body": "Hi Hal, the Enterprise rate limit is 600 requests per minute. Please use the bulk endpoint with up to 500 shipment ids per call, or subscribe to webhooks instead of polling."
+    }
+  ]
+}

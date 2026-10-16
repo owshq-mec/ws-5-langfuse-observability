@@ -1,0 +1,23 @@
+[
+  {
+    "type": "message",
+    "user": "U03ABELLO0",
+    "text": "Orion was hit hard by yesterday's outage. Jo, can you reach out to Dana?",
+    "ts": "1787215500.000008",
+    "thread_ts": "1787215500.000008",
+    "reply_count": 1,
+    "reply_users": [
+      "U04JLINDQV"
+    ],
+    "reply_users_count": 1,
+    "latest_reply": "1787215920.000081"
+  },
+  {
+    "type": "message",
+    "user": "U04JLINDQV",
+    "text": "Already did. Dana is not happy: they had trucks waiting on ETAs for three hours.",
+    "ts": "1787215920.000081",
+    "thread_ts": "1787215500.000008",
+    "parent_user_id": "U03ABELLO0"
+  }
+]

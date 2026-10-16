@@ -1,0 +1,488 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>02 · The context layer</title>
+<link rel="stylesheet" href="assets/langfuse.css">
+<style>
+  .knows { display: grid; grid-template-columns: 1.3fr 1fr 1fr; border: 1px solid var(--line); background: var(--paper); }
+  .knows > div { padding: 18px 24px; border-bottom: 1px solid var(--line); font-size: 20px; display: flex; align-items: center; gap: 12px; }
+  .knows > div:nth-last-child(-n+3) { border-bottom: 0; }
+  .knows .hd { font-family: var(--mono); font-size: 13.5px; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); background: var(--bg); }
+  .knows .no { color: var(--coral); font-family: var(--mono); font-size: 16px; }
+  .names { display: grid; grid-template-columns: 1fr; border-top: 1px solid var(--ink); }
+  .names > div { display: grid; grid-template-columns: 380px 1fr 260px; gap: 30px; align-items: center; padding: 20px 4px; border-bottom: 1px solid var(--line); }
+  .names .term { font-family: var(--display); font-size: 34px; font-weight: 500; letter-spacing: -.02em; }
+  .pipe { display: grid; grid-template-columns: repeat(6, 1fr); position: relative; }
+  .pipe::before { content: ""; position: absolute; left: 4%; right: 4%; top: 58px; height: 2px; background: var(--ink); }
+  .pipe > div { position: relative; display: flex; flex-direction: column; align-items: center; text-align: center; gap: 14px; padding: 0 10px; }
+  .pipe .ibox { width: 116px; height: 116px; background: var(--paper); }
+  .pipe .ibox [data-i] { width: 46px; height: 46px; }
+  .pipe .on .ibox { background: var(--hl); border-color: var(--ink); }
+  .comp-head { display: flex; align-items: center; gap: 18px; }
+  .comp-head .idx { font-family: var(--mono); font-size: 15px; color: var(--muted); border: 1px solid var(--line); padding: 6px 10px; background: var(--paper); }
+  .mini-pipe { display: flex; gap: 6px; }
+  .mini-pipe span { font-family: var(--mono); font-size: 12px; padding: 5px 9px; border: 1px solid var(--line); color: var(--faint); background: var(--paper); }
+  .mini-pipe span.on { background: var(--ink); color: var(--hl); border-color: var(--ink); }
+  .slackmsg { display: grid; grid-template-columns: 56px 1fr; gap: 16px; padding: 24px; border: 1px solid var(--line); background: var(--card); }
+  .slackmsg .av { width: 56px; height: 56px; background: var(--coral); color: white; display: grid; place-items: center; font-weight: 600; font-size: 22px; border-radius: var(--r); }
+  .slackmsg .who { font-weight: 600; font-size: 20px; } .slackmsg .who span { font-weight: 400; color: var(--muted); font-size: 16px; margin-left: 8px; font-family: var(--mono); }
+  .slackmsg p { font-size: 22px; line-height: 1.45; margin-top: 6px; color: var(--ink-2); }
+  .flowv { display: grid; grid-template-columns: 1fr 34px 1fr 34px 1fr 34px 1fr; align-items: stretch; }
+  .flowv .a { display: grid; place-items: center; } .flowv .a [data-i] { width: 26px; height: 26px; }
+  .graph { position: relative; width: 1360px; height: 470px; }
+  .graph svg.edges { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; }
+  .node { position: absolute; width: 290px; height: 88px; border: 1.5px solid var(--ink); background: var(--paper); padding: 12px 16px;
+    display: flex; flex-direction: column; justify-content: center; gap: 4px; box-shadow: 6px 6px 0 rgba(34,34,32,.08); }
+  .node .ty { font-family: var(--mono); font-size: 12.5px; color: var(--muted); letter-spacing: .08em; text-transform: uppercase; display: flex; align-items: center; gap: 8px; }
+  .node .nm { font-size: 22px; font-weight: 500; }
+  .node.hl { background: var(--hl); }
+  .elabel { position: absolute; font-family: var(--mono); font-size: 13.5px; background: var(--bg); padding: 3px 8px; border: 1px solid var(--line); white-space: nowrap; color: var(--ink-2); }
+  .elabel.old { color: var(--faint); text-decoration: line-through; text-decoration-color: var(--coral); }
+  .elabel b { font-weight: 500; color: var(--ink); }
+  .tbar { display: grid; grid-template-columns: 420px 1fr; row-gap: 18px; position: relative; }
+  .tbar .lbl { font-size: 19px; display: flex; align-items: center; gap: 10px; line-height: 1.3; }
+  .tbar .trk { position: relative; height: 56px; border-bottom: 1px dashed var(--line); }
+  .tbar .rng { position: absolute; top: 6px; bottom: 6px; background: var(--ink); color: var(--paper); font-family: var(--mono); font-size: 13px; display: flex; align-items: center; padding: 0 10px; white-space: nowrap; }
+  .tbar .rng.closed { background: repeating-linear-gradient(135deg, #d9d9d2 0 6px, var(--paper) 6px 12px); color: var(--ink-2); border: 1px solid var(--muted); }
+  .tbar .rng.open { background: var(--hl); color: var(--ink); border: 1.5px solid var(--ink); border-right: 0; }
+  .tbar .marks { position: absolute; left: 420px; right: 0; top: -72px; bottom: -10px; pointer-events: none; }
+  .tbar .mk span.up { top: 0; } .tbar .mk span.lo { top: 34px; }
+  .tbar .axis span { white-space: nowrap; }
+  .tbar .mk { position: absolute; top: 0; bottom: 0; border-left: 2px solid var(--ink); }
+  .tbar .mk span { position: absolute; top: 0; left: 8px; font-family: var(--mono); font-size: 13.5px; background: var(--ink); color: var(--hl); padding: 2px 8px; white-space: nowrap; }
+  .tbar .axis { grid-column: 2; position: relative; height: 22px; font-family: var(--mono); font-size: 13px; color: var(--muted); }
+  .tbar .axis span { position: absolute; transform: translateX(-50%); }
+  .ret { display: grid; grid-template-columns: 260px 40px 300px 40px 250px 40px 1fr; align-items: center; }
+  .ret .a { display: grid; place-items: center; } .ret .a [data-i] { width: 26px; height: 26px; }
+  .stackcol { display: flex; flex-direction: column; gap: 10px; }
+  .gvt { display: grid; grid-template-columns: 1fr 120px 1fr; gap: 0; align-items: stretch; }
+  .tbl { border: 1px solid var(--ink); background: var(--paper); font-family: var(--mono); font-size: 15px; }
+  .tbl .th { background: var(--ink); color: var(--paper); padding: 8px 12px; }
+  .tbl .tr { display: grid; grid-template-columns: repeat(3, 1fr); border-top: 1px solid var(--line); }
+  .tbl .tr span { padding: 8px 12px; } .tbl .tr span + span { border-left: 1px solid var(--line); }
+  .stackmap td [data-i] { width: 26px; height: 26px; }
+  .stackmap td .tools { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+  .arch { display: grid; grid-template-columns: 1fr 1fr 1fr 1fr; gap: 0; border: 1.5px dashed var(--muted); padding: 40px 30px 30px; position: relative; }
+  .arch .lbl-top { position: absolute; top: -14px; left: 24px; background: var(--bg); padding: 0 10px; font-family: var(--mono); font-size: 14px; display: flex; gap: 8px; align-items: center; }
+  .svc { border: 1.5px solid var(--ink); background: var(--paper); padding: 18px; display: flex; flex-direction: column; gap: 10px; margin: 0 14px; position: relative; }
+  .svc .port { font-family: var(--mono); font-size: 13px; color: var(--muted); }
+  .svc.job { border-style: dashed; }
+  .svc.ghost { border: 1.5px dashed var(--coral); background: transparent; }
+</style>
+</head>
+<body data-deck="02 · The context layer" data-part="Part 2 · Context">
+<main class="deck">
+
+<!-- 1 · cover -->
+<section class="slide hatch" data-title="Cover">
+  <div class="row" style="flex:1; align-items:center">
+    <div class="col" style="flex:1.1">
+      <div class="eyebrow rise">Part 2 · 09:10 – 09:40</div>
+      <h1 class="display rise" style="--d:1">The <span class="sweep" style="--d:2">context</span><br>layer.</h1>
+      <p class="lead rise" style="--d:3">Models are smart. They do not know your company. The context layer is how they learn it, one fact at a time, with a date and a source.</p>
+    </div>
+    <div class="iso fade" style="flex:.9; height:640px; --d:3">
+      <div class="stack" style="width:330px; height:250px; margin-top:120px">
+        <div class="plate hatch" style="transform:translateZ(0)">01 · sources</div>
+        <div class="plate" style="transform:translateZ(46px)">02 · ingestion</div>
+        <div class="plate" style="transform:translateZ(92px)">03 · ontology</div>
+        <div class="plate on" style="transform:translateZ(138px)">04 · context graph</div>
+        <div class="plate" style="transform:translateZ(184px)">05 · retrieval</div>
+        <div class="plate" style="transform:translateZ(230px); background:var(--ink); color:var(--hl)">06 · mcp</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 2 · the problem -->
+<section class="slide" data-title="The problem">
+  <div class="eyebrow rise">Why it exists</div>
+  <h2 class="h2 rise mt16" style="--d:1">A model knows the internet.<br>It does not know <mark>Orbisa</mark>.</h2>
+  <div class="knows mt48 rise" style="--d:2">
+    <div class="hd">Question an employee asks</div><div class="hd">Where the answer is</div><div class="hd">Why a model alone fails</div>
+    <div>Who approves refunds?</div><div><span data-i="slack"></span>a Slack thread, March 2026</div><div class="no">changed after training</div>
+    <div>What does Orion's contract allow?</div><div><span data-i="googledrive"></span>a signed PDF</div><div class="no">private document</div>
+    <div>Which refund policy is current?</div><div><span data-i="confluence"></span>two pages that disagree</div><div class="no">no notion of time</div>
+    <div>Who is "Jo L."?</div><div><span data-i="slack"></span>a Slack nickname</div><div class="no">same person, many names</div>
+    <div>Did we promise Orion a refund?</div><div><span data-i="gong"></span>a call transcript</div><div class="no">spoken, never written</div>
+  </div>
+</section>
+
+<!-- 3 · definition -->
+<section class="slide" data-title="Definition">
+  <div class="col" style="flex:1; justify-content:center">
+    <div class="eyebrow rise">Definition</div>
+    <h2 class="h1 rise mt16" style="--d:1; max-width:1300px">A context layer turns company systems into <mark>facts an agent can trust</mark>.</h2>
+    <div class="grid4 mt48" style="grid-template-columns:repeat(5,1fr)">
+      <div class="card rise" style="--d:2"><span class="ibox"><span data-i="network"></span></span><span class="h4">Connected</span><span class="small">Every system, one place.</span></div>
+      <div class="card rise" style="--d:3"><span class="ibox"><span data-i="boxes"></span></span><span class="h4">Structured</span><span class="small">A shared vocabulary: customer, contract, policy.</span></div>
+      <div class="card hl rise" style="--d:4"><span class="ibox"><span data-i="history"></span></span><span class="h4">Temporal</span><span class="small" style="color:var(--ink-2)">Knows when each fact was true.</span></div>
+      <div class="card rise" style="--d:5"><span class="ibox"><span data-i="link"></span></span><span class="h4">Traceable</span><span class="small">Every fact points to its source.</span></div>
+      <div class="card rise" style="--d:6"><span class="ibox"><span data-i="plug"></span></span><span class="h4">Served</span><span class="small">One interface for every agent.</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- 4 · names -->
+<section class="slide" data-title="What people call it">
+  <div class="eyebrow rise">Vocabulary</div>
+  <h2 class="h2 rise mt16" style="--d:1">One idea, <mark>five names</mark>.</h2>
+  <div class="names mt32">
+    <div class="rise" style="--d:2"><span class="term"><span class="hl">Context layer</span></span><span class="body">The thing you build. The most common name.</span><span class="pill info">the product</span></div>
+    <div class="rise" style="--d:3"><span class="term">AI context platform</span><span class="body">How analysts name the market category.</span><span class="pill plain">the category</span></div>
+    <div class="rise" style="--d:4"><span class="term">Context graph</span><span class="body">The data inside: entities and dated facts with sources.</span><span class="pill plain">the data structure</span></div>
+    <div class="rise" style="--d:5"><span class="term">Context engineering</span><span class="body">The practice of giving an agent the right context.</span><span class="pill plain">the discipline</span></div>
+    <div class="rise" style="--d:6"><span class="term">MCP</span><span class="body">Model Context Protocol. How agents call the layer.</span><span class="pill plain">the protocol</span></div>
+  </div>
+  <p class="small mono mt24 rise" style="--d:7; font-size:14px">At Orbisa the context layer is called <b style="color:var(--ink)">Helix</b>.</p>
+</section>
+
+<!-- 5 · why companies want it -->
+<section class="slide" data-title="Why companies build one">
+  <div class="eyebrow rise">Why now</div>
+  <h2 class="h2 rise mt16" style="--d:1">Every agent needs the same context.<br><mark>Build it once.</mark></h2>
+  <div class="grid4 mt48" style="flex:1; align-content:start">
+    <div class="card raised rise" style="--d:2"><span class="num">01</span><span class="h3">One answer</span><span class="body">Slack, the wiki and the contract stop competing. The layer reconciles them.</span></div>
+    <div class="card raised rise" style="--d:3"><span class="num">02</span><span class="h3">The right date</span><span class="body">"Who approved refunds in December?" has a different answer than today.</span></div>
+    <div class="card raised rise" style="--d:4"><span class="num">03</span><span class="h3">Proof</span><span class="body">An answer with a source can be checked. An answer without one cannot.</span></div>
+    <div class="card raised rise" style="--d:5"><span class="num">04</span><span class="h3">Reuse</span><span class="body">Support bot, sales assistant, coding agent: same layer, same MCP server.</span></div>
+  </div>
+</section>
+
+<!-- 6 · six components -->
+<section class="slide gridbg" data-title="Six components">
+  <div class="eyebrow rise">Anatomy</div>
+  <h2 class="h2 rise mt16" style="--d:1">Six components, <mark>one direction</mark>.</h2>
+  <div class="pipe mt48" style="margin-top:72px">
+    <div class="rise" style="--d:2"><span class="ibox"><span data-i="database"></span></span><span class="num">01</span><span class="h4">Sources</span><span class="small">Exports from the systems</span></div>
+    <div class="rise" style="--d:3"><span class="ibox"><span data-i="split"></span></span><span class="num">02</span><span class="h4">Ingestion</span><span class="small">Parse, date, extract</span></div>
+    <div class="rise" style="--d:4"><span class="ibox"><span data-i="tag"></span></span><span class="num">03</span><span class="h4">Ontology</span><span class="small">The types we allow</span></div>
+    <div class="on rise" style="--d:5"><span class="ibox"><span data-i="waypoints"></span></span><span class="num">04</span><span class="h4">Context graph</span><span class="small">Entities + dated facts</span></div>
+    <div class="rise" style="--d:6"><span class="ibox"><span data-i="search"></span></span><span class="num">05</span><span class="h4">Retrieval</span><span class="small">Find facts true on a date</span></div>
+    <div class="rise" style="--d:7"><span class="ibox"><span data-i="plug"></span></span><span class="num">06</span><span class="h4">MCP</span><span class="small">Tools any agent can call</span></div>
+  </div>
+  <div class="statsbar mt-auto rise" style="--d:8">
+    <div>write path · <b>01 → 04</b> · runs once per document</div><div>read path · <b>05 → 06</b> · runs on every question</div>
+  </div>
+</section>
+
+<!-- 7 · sources -->
+<section class="slide" data-title="01 · Sources">
+  <div class="comp-head rise"><span class="idx">01 / 06</span><div class="mini-pipe"><span class="on">sources</span><span>ingestion</span><span>ontology</span><span>graph</span><span>retrieval</span><span>mcp</span></div></div>
+  <h2 class="h2 rise mt24" style="--d:1">Start from <mark>real exports</mark>, not clean text.</h2>
+  <div class="row gap-l mt32" style="flex:1">
+    <div class="col" style="flex:1.1">
+      <div class="code-head rise" style="--d:2"><span>data/orbisa/slack/revops/2026-03-03.json</span><span>Slack export</span></div>
+      <div class="slackmsg rise" style="--d:2; margin-top:-24px">
+        <div class="av">PR</div>
+        <div><div class="who">Priya Raman <span>#revops · 2026-03-03</span></div>
+        <p>Heads up: starting today, <span class="hl">refund approvals move from Finance to RevOps</span>. Tomás Herrera approves every refund request. Finance only processes the payout after Tomás approves.</p></div>
+      </div>
+      <p class="body rise" style="--d:3">The rule that changes the Orion answer is not in a policy page. It is a Slack message.</p>
+    </div>
+    <div class="col" style="flex:.9">
+      <table class="t rise" style="--d:3">
+        <tr><th>System</th><th>Format</th><th>Files</th></tr>
+        <tr><td class="cellicon"><span data-i="slack"></span>Slack</td><td>channel / day JSON</td><td class="mono">20</td></tr>
+        <tr><td class="cellicon"><span data-i="confluence"></span>Confluence</td><td>HTML export</td><td class="mono">15</td></tr>
+        <tr><td class="cellicon"><span data-i="notion"></span>Notion</td><td>Markdown + CSV</td><td class="mono">7</td></tr>
+        <tr><td class="cellicon"><span data-i="googledrive"></span>Drive</td><td>PDF</td><td class="mono">6</td></tr>
+        <tr><td class="cellicon"><span data-i="hubspot"></span>HubSpot</td><td>CRM CSV</td><td class="mono">3</td></tr>
+        <tr><td class="cellicon"><span data-i="zendesk"></span>Zendesk</td><td>ticket export</td><td class="mono">11</td></tr>
+        <tr><td class="cellicon"><span data-i="gong"></span>Gong</td><td>calls + transcripts</td><td class="mono">2</td></tr>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- 8 · ingestion -->
+<section class="slide" data-title="02 · Ingestion">
+  <div class="comp-head rise"><span class="idx">02 / 06</span><div class="mini-pipe"><span>sources</span><span class="on">ingestion</span><span>ontology</span><span>graph</span><span>retrieval</span><span>mcp</span></div></div>
+  <h2 class="h2 rise mt24" style="--d:1">Every document becomes a <mark>dated episode</mark>.</h2>
+  <div class="flowv mt48 rise" style="--d:2">
+    <div class="card"><span class="num">FILE</span><span class="h4">zendesk/comments/48233.json</span><span class="small">A ticket thread over several days</span></div>
+    <div class="a"><span data-i="arrow-right"></span></div>
+    <div class="card"><span class="num">PARSER</span><span class="h4">one per system</span><span class="small">Python · pypdf · BeautifulSoup</span></div>
+    <div class="a"><span data-i="arrow-right"></span></div>
+    <div class="card hl"><span class="num" style="color:var(--ink-2)">EPISODE</span><span class="h4">one per ticket per day</span><span class="small" style="color:var(--ink-2)">name, text, date, source</span></div>
+    <div class="a"><span data-i="arrow-right"></span></div>
+    <div class="card ink"><span class="num" style="color:var(--hl)">LLM EXTRACTION</span><span class="h4">Claude Haiku 5.5</span><span class="small">entities + facts, by Graphiti</span></div>
+  </div>
+  <div class="row gap-l mt32" style="flex:1">
+    <div class="code rise" style="--d:3; flex:1.2; font-size:19px; align-self:flex-start">Episode(
+  name=<span class="s">"zendesk/tickets.json#48233@2026-09-29"</span>,
+  reference_time=<span class="hl">2026-09-29</span>,
+  source_description=<span class="s">"Zendesk ticket #48233"</span>,
+  body=<span class="s">"Orion asks for a refund … 30 days …"</span>,
+)</div>
+    <div class="col rise" style="--d:4; flex:.8; justify-content:center">
+      <p class="body">Why one episode per day? An episode dated 29 September must not contain what was written on 30 September.</p>
+      <p class="small mono">67 episodes · sorted by date · ingested in order</p>
+    </div>
+  </div>
+</section>
+
+<!-- 9 · ontology -->
+<section class="slide" data-title="03 · Ontology">
+  <div class="comp-head rise"><span class="idx">03 / 06</span><div class="mini-pipe"><span>sources</span><span>ingestion</span><span class="on">ontology</span><span>graph</span><span>retrieval</span><span>mcp</span></div></div>
+  <h2 class="h2 rise mt24" style="--d:1">The ontology is the <mark>business vocabulary</mark>.</h2>
+  <div class="row gap-l mt32" style="flex:1">
+    <div class="col" style="flex:1">
+      <p class="lead rise" style="--d:2; font-size:24px">Eight entity types tell the extractor what to look for and which fields to fill.</p>
+      <div class="grid2 rise" style="--d:3; gap:12px">
+        <span class="chip"><span data-i="building-2"></span>Customer</span><span class="chip"><span data-i="user"></span>Person</span>
+        <span class="chip"><span data-i="users"></span>Team</span><span class="chip on"><span data-i="scroll-text"></span>Policy</span>
+        <span class="chip on"><span data-i="file-signature"></span>Contract</span><span class="chip"><span data-i="tag"></span>Plan</span>
+        <span class="chip"><span data-i="triangle-alert"></span>Incident</span><span class="chip"><span data-i="package"></span>Product</span>
+      </div>
+      <p class="small mono rise mt8" style="--d:4">src/context/ontology/__init__.py · Pydantic models</p>
+    </div>
+    <div class="col" style="flex:1.1">
+      <div class="code-head rise" style="--d:3"><span>class Contract</span><span>pydantic</span></div>
+      <div class="code rise" style="--d:3; margin-top:-24px; font-size:17px"><span class="k">class</span> Contract(BaseModel):
+    <span class="s">"""A signed agreement between Orbisa and a
+    customer: MSA, order form or addendum."""</span>
+
+    contract_number: str | None = Field(
+        None, description=<span class="s">"Order form or agreement number"</span>)
+    annual_fee: str | None = Field(
+        None, description=<span class="s">"Annual subscription fee"</span>)
+    renewal_date: str | None = Field(
+        None, description=<span class="s">"Next renewal date, YYYY-MM-DD"</span>)</div>
+    </div>
+  </div>
+</section>
+
+<!-- 10 · context graph -->
+<section class="slide gridbg" data-title="04 · Context graph">
+  <div class="comp-head rise"><span class="idx">04 / 06</span><div class="mini-pipe"><span>sources</span><span>ingestion</span><span>ontology</span><span class="on">graph</span><span>retrieval</span><span>mcp</span></div></div>
+  <h2 class="h2 rise mt24" style="--d:1">Entities are nodes. <mark>Facts are edges</mark>, with dates.</h2>
+  <div class="graph mt32 fade" style="--d:2">
+    <svg class="edges" viewBox="0 0 1360 470">
+      <defs><marker id="ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="9" markerHeight="9" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#222220"/></marker>
+            <marker id="ahg" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="9" markerHeight="9" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#9a9a93"/></marker></defs>
+      <g stroke="#222220" stroke-width="1.8" fill="none">
+        <path class="draw" d="M330 84 H 534" stroke-dasharray="1200" marker-end="url(#ah)"/>
+        <path class="draw" d="M824 84 H 1028" stroke-dasharray="1200" marker-end="url(#ah)"/>
+        <path class="draw" d="M185 330 V 132" stroke-dasharray="1200" marker-end="url(#ah)"/>
+        <path class="draw" d="M1175 330 V 132" stroke-dasharray="1200" marker-end="url(#ah)" stroke-width="2.6"/>
+        <path class="draw" d="M824 374 H 1028" stroke-dasharray="1200" marker-end="url(#ah)"/>
+      </g>
+      <path d="M760 330 L 1040 128" stroke="#9a9a93" stroke-width="1.8" stroke-dasharray="7 6" fill="none" marker-end="url(#ahg)"/>
+    </svg>
+    <div class="node" style="left:40px; top:40px"><span class="ty"><span data-i="building-2" style="width:16px;height:16px"></span>Customer</span><span class="nm">Orion Freight Systems</span></div>
+    <div class="node" style="left:534px; top:40px"><span class="ty"><span data-i="file-signature" style="width:16px;height:16px"></span>Contract</span><span class="nm">Orion MSA · clause 7.3</span></div>
+    <div class="node" style="left:1030px; top:40px"><span class="ty"><span data-i="scroll-text" style="width:16px;height:16px"></span>Policy</span><span class="nm">POL-007 v2</span></div>
+    <div class="node" style="left:40px; top:330px"><span class="ty"><span data-i="user" style="width:16px;height:16px"></span>Person</span><span class="nm">Johanna Lindqvist</span></div>
+    <div class="node" style="left:534px; top:330px"><span class="ty"><span data-i="users" style="width:16px;height:16px"></span>Team</span><span class="nm">Finance</span></div>
+    <div class="node hl" style="left:1030px; top:330px"><span class="ty"><span data-i="user" style="width:16px;height:16px"></span>Person</span><span class="nm">Tomás Herrera</span></div>
+    <span class="elabel" style="left:350px; top:8px">HAS_CONTRACT · <b>2025-08-15</b></span>
+    <span class="elabel" style="left:846px; top:8px">OVERRIDES · clause 7.3</span>
+    <span class="elabel" style="left:200px; top:220px">OWNS_ACCOUNT</span>
+    <span class="elabel" style="left:1190px; top:200px; background:var(--hl); border-color:var(--ink)">APPROVES_REFUNDS_UNDER<br>from <b>2026-03-01</b> · open</span>
+    <span class="elabel old" style="left:760px; top:236px">approves refunds · until 2026-03-03</span>
+    <span class="elabel" style="left:836px; top:410px">PAYS_OUT_AFTER_APPROVAL_BY · <b>2026-03-03</b></span>
+  </div>
+  <div class="row mt-auto rise" style="--d:5; gap:10px"><span class="pill plain">106 entities</span><span class="pill plain">367 facts</span><span class="pill plain">each fact → the episodes it came from</span><span class="pill plain">Graphiti on Neo4j</span><span class="pill plain" style="margin-left:auto">simplified view</span></div>
+</section>
+
+<!-- 11 · two clocks -->
+<section class="slide" data-title="Bi-temporal facts">
+  <div class="eyebrow rise">The key idea</div>
+  <h2 class="h2 rise mt16" style="--d:1">A fact is not deleted. It is <mark>closed</mark>.</h2>
+  <div class="tbar rise" style="--d:2; margin-top:120px">
+    <div class="marks">
+      <div class="mk" style="left:72.9%"><span class="up" style="left:auto; right:8px">as_of 2025-12-01 → Finance</span></div>
+      <div class="mk" style="left:93.6%"><span class="lo" style="left:auto; right:8px">as_of 2026-09-29 → Tomás</span></div>
+    </div>
+    <span class="lbl"><span data-i="confluence"></span>"The Refund Policy is owned by Finance."</span>
+    <div class="trk"><div class="rng closed" style="left:2.1%; width:77.3%">2023-02-01 → 2026-03-03</div></div>
+    <span class="lbl"><span data-i="confluence"></span>"Finance, led by Priya Raman (CFO), approves refund requests"</span>
+    <div class="trk"><div class="rng closed" style="left:70.8%; width:8.6%"></div></div>
+    <span class="lbl"><span data-i="slack"></span><b>"Tomás Herrera approves every refund request"</b></span>
+    <div class="trk"><div class="rng open" style="left:79.4%; width:20.6%">2026-03-03 →</div></div>
+    <div class="axis"><span style="left:0; transform:none">2023</span><span style="left:25%">2024</span><span style="left:50%">2025</span><span style="left:75%">2026</span><span style="left:100%; transform:translateX(-100%)">2026-12</span></div>
+  </div>
+  <div class="grid2 mt-auto rise" style="--d:4">
+    <div class="card"><span class="h4"><span data-i="calendar"></span>Valid time</span><span class="small">When the fact was true in the world. <span class="mono">valid_at · invalid_at</span></span></div>
+    <div class="card"><span class="h4"><span data-i="clock"></span>Transaction time</span><span class="small">When Helix learned it or retired it. <span class="mono">created_at · expired_at</span></span></div>
+  </div>
+</section>
+
+<!-- 12 · retrieval -->
+<section class="slide" data-title="05 · Retrieval">
+  <div class="comp-head rise"><span class="idx">05 / 06</span><div class="mini-pipe"><span>sources</span><span>ingestion</span><span>ontology</span><span>graph</span><span class="on">retrieval</span><span>mcp</span></div></div>
+  <h2 class="h2 rise mt24" style="--d:1">Search by meaning, then <mark>filter by date</mark>.</h2>
+  <div class="ret mt32 rise" style="--d:2">
+    <div class="card"><span class="num">QUERY</span><span class="h4">"who approves refunds"</span><span class="pill plain" style="align-self:flex-start">as_of 2026-09-29</span></div>
+    <div class="a"><span data-i="arrow-right"></span></div>
+    <div class="stackcol">
+      <div class="chip" style="height:52px"><span data-i="file-search"></span>keyword · BM25</div>
+      <div class="chip" style="height:52px"><span data-i="qdrant"></span>vector · fastembed</div>
+    </div>
+    <div class="a"><span data-i="arrow-right"></span></div>
+    <div class="card"><span class="num">MERGE</span><span class="h4">Reciprocal Rank Fusion</span></div>
+    <div class="a"><span data-i="arrow-right"></span></div>
+    <div class="card hl"><span class="num" style="color:var(--ink-2)">TIME FILTER</span><span class="h4">status per fact</span><span class="small" style="color:var(--ink-2)">hide facts from the future</span></div>
+  </div>
+  <div class="row gap-l mt32" style="flex:1">
+    <div class="code rise" style="--d:3; flex:1.25; font-size:15.5px; line-height:1.55; align-self:flex-start"><span class="c">// search_context("who approves refunds", as_of="2026-09-29") · real output, trimmed</span>
+{ <span class="k">"fact"</span>: <span class="s">"Finance, led by Priya Raman (CFO), approves refund requests"</span>,
+  <span class="k">"status"</span>: <span class="hl">"no longer true on as_of"</span>,
+  <span class="k">"valid_from"</span>: <span class="s">"2025-11-02"</span>, <span class="k">"valid_until"</span>: <span class="s">"2026-03-03"</span>,
+  <span class="k">"sources"</span>: [{ <span class="k">"path"</span>: <span class="s">"confluence/Revenue-Team-Roles…html"</span> }] },
+{ <span class="k">"fact"</span>: <span class="s">"Tomás Herrera approves every refund request as part of RevOps"</span>,
+  <span class="k">"status"</span>: <span class="hl">"true on as_of"</span>,
+  <span class="k">"valid_from"</span>: <span class="s">"2026-03-03"</span>, <span class="k">"valid_until"</span>: <span class="n">null</span>,
+  <span class="k">"sources"</span>: [{ <span class="k">"path"</span>: <span class="s">"slack/revops/2026-03-03.json"</span> }] }</div>
+    <div class="col rise" style="--d:4; flex:.75; gap:12px; justify-content:center">
+      <span class="pill ok">current</span><span class="pill warn">superseded</span><span class="pill ok">true on as_of</span><span class="pill bad">no longer true on as_of</span>
+      <p class="small mt8">Embeddings run locally: <span class="mono">bge-small-en-v1.5</span>, 384 dimensions. No embedding API key.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 13 · MCP -->
+<section class="slide" data-title="06 · MCP">
+  <div class="comp-head rise"><span class="idx">06 / 06</span><div class="mini-pipe"><span>sources</span><span>ingestion</span><span>ontology</span><span>graph</span><span>retrieval</span><span class="on">mcp</span></div></div>
+  <h2 class="h2 rise mt24" style="--d:1">Four tools. <mark>Any agent.</mark></h2>
+  <div class="row gap-l mt32" style="flex:1">
+    <div class="col" style="flex:1.2">
+      <table class="t rise" style="--d:2">
+        <tr><th>Tool</th><th>What it returns</th></tr>
+        <tr class="on"><td class="mono">search_context(query, as_of)</td><td>facts with status, dates, sources</td></tr>
+        <tr><td class="mono">find_entities(query)</td><td>customers, people, policies + summaries</td></tr>
+        <tr><td class="mono">read_source(path)</td><td>the original document text</td></tr>
+        <tr><td class="mono">list_sources()</td><td>every document, by system and date</td></tr>
+      </table>
+      <div class="statsbar rise mt-auto" style="--d:4"><div><b>streamable HTTP</b></div><div><b>:8765/mcp</b></div><div><b>MCP Python SDK</b></div></div>
+    </div>
+    <div class="col" style="flex:.8">
+      <div class="code-head rise" style="--d:3"><span>src/clients/agent/runner.py</span><span>Claude Agent SDK</span></div>
+      <div class="code rise" style="--d:3; margin-top:-24px; font-size:16.5px">ClaudeAgentOptions(
+  model=s.agent_model,  <span class="c"># claude-opus-5-5</span>
+  mcp_servers={<span class="s">"helix"</span>: {
+    <span class="s">"type"</span>: <span class="s">"http"</span>, <span class="s">"url"</span>: s.mcp_url}},
+  strict_mcp_config=<span class="k">True</span>,
+  tools=[],
+  allowed_tools=[<span class="hl">"mcp__helix__*"</span>],
+  permission_mode=<span class="s">"dontAsk"</span>,
+)</div>
+      <p class="small rise" style="--d:5">The agent has no other tools. Everything it knows comes through Helix.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 14 · graph databases -->
+<section class="slide" data-title="Graph databases">
+  <div class="eyebrow rise">Why a graph</div>
+  <h2 class="h2 rise mt16" style="--d:1">Tables store rows.<br>Graphs store <mark>relationships</mark>.</h2>
+  <div class="gvt mt48 rise" style="--d:2; flex:1">
+    <div class="col" style="gap:14px">
+      <span class="num">RELATIONAL · join to connect</span>
+      <div class="tbl"><div class="th">people</div><div class="tr"><span>id</span><span>name</span><span>team_id</span></div><div class="tr"><span>7</span><span>Tomás</span><span>3</span></div></div>
+      <div class="tbl"><div class="th">approvals</div><div class="tr"><span>team_id</span><span>policy_id</span><span>valid_to</span></div><div class="tr"><span>3</span><span>POL-007</span><span>null</span></div></div>
+      <p class="small">"Who approves refunds for Orion, and since when?" needs joins across several tables, and a date column on every link table.</p>
+    </div>
+    <div style="display:grid; place-items:center"><span data-i="arrow-right" style="width:40px;height:40px"></span></div>
+    <div class="col" style="gap:14px">
+      <span class="num">GRAPH · follow the edges</span>
+      <svg viewBox="0 0 560 280" style="width:100%; height:290px">
+        <g font-family="Geist Mono, monospace" font-size="14">
+          <line x1="150" y1="60" x2="410" y2="60" stroke="#222220" stroke-width="2"/>
+          <line x1="75" y1="84" x2="75" y2="196" stroke="#222220" stroke-width="2"/>
+          <line x1="485" y1="84" x2="485" y2="196" stroke="#222220" stroke-width="2"/>
+          <text x="280" y="46" text-anchor="middle" fill="#222220">APPROVES_REFUNDS_UNDER</text>
+          <text x="280" y="82" text-anchor="middle" fill="#6b6b66" font-size="12.5">valid_at: 2026-03-01</text>
+          <text x="88" y="145" fill="#3d3d38">WORKS_IN</text>
+          <text x="472" y="145" text-anchor="end" fill="#3d3d38">GOVERNS</text>
+          <rect x="0" y="36" width="150" height="48" fill="#fbff7a" stroke="#222220" stroke-width="1.5"/><text x="75" y="65" text-anchor="middle" fill="#222220">Tomás</text>
+          <rect x="410" y="36" width="150" height="48" fill="#f6f6f3" stroke="#222220" stroke-width="1.5"/><text x="485" y="65" text-anchor="middle" fill="#222220">POL-007</text>
+          <rect x="0" y="196" width="150" height="48" fill="#f6f6f3" stroke="#222220" stroke-width="1.5"/><text x="75" y="225" text-anchor="middle" fill="#222220">RevOps</text>
+          <rect x="410" y="196" width="150" height="48" fill="#f6f6f3" stroke="#222220" stroke-width="1.5"/><text x="485" y="225" text-anchor="middle" fill="#222220">Refunds</text>
+        </g>
+      </svg>
+      <p class="small">Nodes have labels and properties. Relationships have a type, a direction and properties, such as <span class="mono">valid_at</span>.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 15 · neo4j -->
+<section class="slide" data-title="Neo4j">
+  <div class="row gap-l" style="flex:1">
+    <div class="col" style="flex:.8">
+      <div class="eyebrow rise">Neo4j 5.26 · Community · Docker</div>
+      <h2 class="h2 rise" style="--d:1">Ask the graph in <mark>Cypher</mark>.</h2>
+      <p class="lead rise" style="--d:2; font-size:24px">Patterns look like the drawing: <span class="mono" style="font-size:20px; color:var(--ink)">(a)-[r]->(b)</span>. Graphiti stores every fact as a <span class="mono" style="font-size:20px; color:var(--ink)">RELATES_TO</span> edge with its dates.</p>
+      <div class="row rise mt-auto" style="--d:4; gap:12px; align-items:center"><span class="ibox"><span data-i="neo4j"></span></span><span class="btn">Neo4j Browser <span class="kbd">:7474</span></span></div>
+    </div>
+    <div class="col" style="flex:1.2">
+      <div class="code-head rise" style="--d:2"><span>cypher-shell · live graph</span><span>who approves refunds?</span></div>
+      <div class="code rise" style="--d:2; margin-top:-24px; font-size:17px"><span class="k">MATCH</span> (a:Entity)-[r:RELATES_TO]->(b:Entity)
+<span class="k">WHERE</span> r.fact <span class="k">CONTAINS</span> <span class="s">'approves'</span>
+  <span class="k">AND</span> r.fact <span class="k">CONTAINS</span> <span class="s">'refund'</span>
+<span class="k">RETURN</span> a.name, r.name, b.name,
+       date(r.valid_at), date(r.invalid_at)</div>
+      <table class="t rise" style="--d:3; font-size:17px">
+        <tr><th>a</th><th>r</th><th>b</th><th>valid</th><th>invalid</th></tr>
+        <tr><td>Finance</td><td class="mono" style="font-size:14px">LED_BY</td><td>Priya Raman</td><td class="mono">2025-11-02</td><td class="mono tag-coral">2026-03-03</td></tr>
+        <tr class="on"><td>Tomás Herrera</td><td class="mono" style="font-size:14px">APPROVES_REFUNDS_UNDER</td><td>POL-007</td><td class="mono">2026-03-01</td><td class="mono">null</td></tr>
+        <tr><td>Finance</td><td class="mono" style="font-size:14px">PROCESSES_PAYOUT_AFTER…</td><td>Tomás Herrera</td><td class="mono">2026-03-03</td><td class="mono">null</td></tr>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- 16 · helix stack -->
+<section class="slide" data-title="Helix engine">
+  <div class="eyebrow rise">Helix · open source, piece by piece</div>
+  <h2 class="h2 rise mt16" style="--d:1">One component, <mark>one tool</mark>.</h2>
+  <table class="t stackmap mt32 rise" style="--d:2; font-size:19px">
+    <tr><th style="width:230px">Component</th><th>Open source in Helix</th><th style="width:420px">Its job</th></tr>
+    <tr><td>Sources</td><td><div class="tools"><span data-i="slack"></span><span data-i="confluence"></span><span data-i="notion"></span><span data-i="googledrive"></span><span data-i="hubspot"></span><span data-i="zendesk"></span><span data-i="gong"></span><span class="muted">real export formats</span></div></td><td>what people wrote</td></tr>
+    <tr><td>Ingestion</td><td><div class="tools"><span data-i="python"></span>parsers · pypdf · BeautifulSoup <span class="muted">+</span> <span data-i="claude"></span>Claude Haiku 5.5</div></td><td>dated episodes → entities and facts</td></tr>
+    <tr><td>Ontology</td><td><div class="tools"><span data-i="pydantic"></span>Pydantic entity types</div></td><td>the business vocabulary</td></tr>
+    <tr class="on"><td>Context graph</td><td><div class="tools"><b>Graphiti</b> 0.31 <span class="muted">on</span> <span data-i="neo4j"></span><b>Neo4j</b> 5.26</div></td><td>facts with valid dates and sources</td></tr>
+    <tr><td>Retrieval</td><td><div class="tools">Graphiti hybrid search <span class="muted">+</span> <span data-i="qdrant"></span>fastembed (local)</div></td><td>facts true on the question's date</td></tr>
+    <tr><td>MCP</td><td><div class="tools"><span data-i="modelcontextprotocol" data-ink></span>MCP Python SDK · streamable HTTP</div></td><td>one interface for every agent</td></tr>
+    <tr><td>Agent</td><td><div class="tools"><span data-i="claude"></span>Claude Agent SDK · Opus 5.5</div></td><td>Ask Orbisa</td></tr>
+    <tr><td>Runtime</td><td><div class="tools"><span data-i="docker"></span>Docker Compose <span class="muted">+</span> <span data-i="uv"></span>uv</div></td><td><span class="mono">make up</span></td></tr>
+  </table>
+</section>
+
+<!-- 17 · how it glues together -->
+<section class="slide gridbg" data-title="How it runs">
+  <div class="eyebrow rise">infra/docker-compose.yml</div>
+  <h2 class="h2 rise mt16" style="--d:1">How the pieces <mark>run together</mark>.</h2>
+  <div class="arch mt48 rise" style="--d:2">
+    <span class="lbl-top"><span data-i="docker" style="width:20px;height:20px"></span>compose project · orbisa</span>
+    <div class="svc job"><span class="num">JOB</span><span class="h4">helix-ingest</span><span class="small">reads data/orbisa, writes the graph</span><span class="port">make ingest</span></div>
+    <div class="svc"><span class="num">DATABASE</span><span class="h4" style="display:flex;gap:10px;align-items:center"><span data-i="neo4j"></span>neo4j</span><span class="small">entities, facts, episodes</span><span class="port">:7474 · :7687</span></div>
+    <div class="svc" style="border-width:2.5px"><span class="num">SERVICE</span><span class="h4" style="display:flex;gap:10px;align-items:center"><span data-i="modelcontextprotocol" data-ink></span>helix-mcp</span><span class="small">4 tools over HTTP</span><span class="port">:8765/mcp</span></div>
+    <div class="svc job"><span class="num">JOB</span><span class="h4" style="display:flex;gap:10px;align-items:center"><span data-i="claude"></span>agent</span><span class="small">Ask Orbisa</span><span class="port">make ask Q=Q01</span></div>
+  </div>
+  <div class="statsbar mt24 rise mono" style="--d:3; font-size:16px">
+    <div>data/orbisa <b>→</b> helix-ingest <b>→</b> neo4j</div><div>agent <b>→</b> helix-mcp <b>→</b> neo4j</div><div>same compose project: <b>Langfuse v4</b> · web · worker · Postgres · ClickHouse · Redis · MinIO</div>
+  </div>
+  <div class="row mt-auto rise" style="--d:4; gap:24px; align-items:stretch">
+    <div class="svc ghost" style="flex:1; margin:0"><span class="num tag-coral">MISSING</span><span class="h3">Is it right? Why? What did it cost?</span><span class="small">No traces, no scores, no cost. That is the next part.</span></div>
+  </div>
+</section>
+
+<!-- 18 · close -->
+<section class="slide dark" data-title="Next">
+  <div class="col" style="flex:1; justify-content:center">
+    <div class="eyebrow rise">Next · Part 3</div>
+    <h2 class="display rise mt16" style="--d:1; font-size:104px">We built the context.<br><span style="color:var(--hl)">Now we need to see it.</span></h2>
+    <p class="lead rise mt32" style="--d:2">One question means several searches, many facts, model calls and tool calls. Without observability we only see the final answer.</p>
+    <div class="row mt48 rise" style="--d:3; gap:14px"><span class="btn dark" style="background:var(--hl); color:var(--ink); border-color:var(--hl)">Observability fundamentals <span class="kbd" style="background:var(--ink); color:var(--hl); border-color:var(--ink)">03</span></span></div>
+  </div>
+</section>
+
+</main>
+<script src="assets/icons.js"></script>
+<script src="assets/deck.js"></script>
+</body>
+</html>

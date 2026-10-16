@@ -1,0 +1,12 @@
+{
+  "comments": [
+    {"id": 4501, "type": "Comment", "author_id": 7001, "public": true, "created_at": "2026-09-29T15:30:00Z",
+     "body": "Orion requests a pro-rata refund for the rest of the current term. The two SEV-1 outages in August breached the 99.9% SLA in our MSA, and Section 7.3 gives us a refund right within 60 days of the 15 August renewal."},
+    {"id": 4502, "type": "Comment", "author_id": 900101, "public": true, "created_at": "2026-09-29T16:10:00Z",
+     "body": "Thanks Dana. Per our refund policy, annual subscriptions can only be refunded within 30 days of the renewal date, so I'm afraid we can't offer a refund. We can look into service credits for August."},
+    {"id": 4503, "type": "Comment", "author_id": 7001, "public": true, "created_at": "2026-09-29T18:02:00Z",
+     "body": "That is not what our contract says. Please escalate this to someone who has read our MSA."},
+    {"id": 4504, "type": "Comment", "author_id": 900102, "public": false, "created_at": "2026-09-30T09:00:00Z",
+     "body": "Sam quoted the 2023 refund policy (30 days). The current policy is POL-007 v2 and Orion's MSA has clause 7.3. Escalated to Tomás Herrera (RevOps) for the decision. Do not promise anything until RevOps approves."}
+  ]
+}

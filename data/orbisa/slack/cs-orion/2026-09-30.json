@@ -1,0 +1,32 @@
+[
+  {
+    "type": "message",
+    "user": "U03KWATANA",
+    "text": "Orion opened Zendesk #48233 asking for a refund. Sam answered with the 30-day rule, which is the old 2023 policy. Escalating to Tomás. @jo.l FYI.",
+    "ts": "1790759100.000011",
+    "thread_ts": "1790759100.000011",
+    "reply_count": 2,
+    "reply_users": [
+      "U03THERRER",
+      "U04JLINDQV"
+    ],
+    "reply_users_count": 2,
+    "latest_reply": "1790761440.000112"
+  },
+  {
+    "type": "message",
+    "user": "U03THERRER",
+    "text": "Looking at it. Their MSA has clause 7.3 (SLA-based refund within 60 days of renewal) and August uptime was 99.33%. I want legal to confirm the clause before I approve anything.",
+    "ts": "1790761200.000111",
+    "thread_ts": "1790759100.000011",
+    "parent_user_id": "U03KWATANA"
+  },
+  {
+    "type": "message",
+    "user": "U04JLINDQV",
+    "text": "Thanks Tomás. I will let Dana know it is under review.",
+    "ts": "1790761440.000112",
+    "thread_ts": "1790759100.000011",
+    "parent_user_id": "U03KWATANA"
+  }
+]

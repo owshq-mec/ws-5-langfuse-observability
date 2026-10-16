@@ -1,0 +1,8 @@
+{
+  "comments": [
+    {"id": 3401, "type": "Comment", "author_id": 7002, "public": true, "created_at": "2026-08-27T07:05:00Z",
+     "body": "We have not received any carrier status updates since 06:40 UTC. Tracking calls fail. Second outage this month."},
+    {"id": 3402, "type": "Comment", "author_id": 900102, "public": true, "created_at": "2026-08-27T08:50:00Z",
+     "body": "Hi Marcus, this was INC-2304: an expired certificate on our carrier-webhook gateway. It was fixed at 08:27 UTC (1 hour 47 minutes of impact). We are sorry for a second incident in August."}
+  ]
+}

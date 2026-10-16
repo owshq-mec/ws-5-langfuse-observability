@@ -1,0 +1,23 @@
+[
+  {
+    "type": "message",
+    "user": "U01DOKAFOR",
+    "text": "Deploying tracking-ingest v4.12 to production: Kafka consumer batch size raised from 500 to 2000 for throughput. Rollback plan: redeploy v4.11.",
+    "ts": "1787071200.000017",
+    "thread_ts": "1787071200.000017",
+    "reply_count": 1,
+    "reply_users": [
+      "U05IHOLM00"
+    ],
+    "reply_users_count": 1,
+    "latest_reply": "1787072700.000171"
+  },
+  {
+    "type": "message",
+    "user": "U05IHOLM00",
+    "text": "Deploy finished, dashboards look normal.",
+    "ts": "1787072700.000171",
+    "thread_ts": "1787071200.000017",
+    "parent_user_id": "U01DOKAFOR"
+  }
+]

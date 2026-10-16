@@ -1,0 +1,24 @@
+<html>
+<head><title>Orbisa Wiki : INC-2291 Postmortem — Tracking API outage</title><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"></head>
+<body>
+<div id="page"><div id="main">
+<div id="main-header"><h1 id="title-heading" class="pagetitle"><span id="title-text"> Orbisa Wiki : INC-2291 Postmortem — Tracking API outage </span></h1></div>
+<div id="content" class="view">
+<div class="page-metadata">Created by Ingrid Holm, last modified by Daniel Okafor on Aug 21, 2026</div>
+<div id="main-content" class="wiki-content group">
+<table class="confluenceTable">
+<tr><th>Incident</th><td>INC-2291</td></tr>
+<tr><th>Severity</th><td>SEV-1</td></tr>
+<tr><th>Date</th><td>August 19, 2026, 14:05–17:17 UTC</td></tr>
+<tr><th>Duration</th><td>3 hours 12 minutes</td></tr>
+<tr><th>Impact</th><td>Orbisa Track API returned HTTP 503 for all customers. Enterprise customers affected include Orion Freight Systems and Kodiak Cold Chain.</td></tr>
+</table>
+<h2>Root cause</h2>
+<p>Release v4.12 of the tracking-ingest service changed the Kafka consumer batch size. Consumers fell behind, the API read stale partitions, and health checks failed.</p>
+<h2>Fix</h2>
+<p>Rolled back to v4.11. Added a consumer-lag alert at 30 seconds.</p>
+<h2>Follow-ups</h2>
+<ul><li>Canary deploys for tracking-ingest (owner: Daniel Okafor).</li><li>Customer Success to contact affected Enterprise customers about service credits (owner: Aisha Bello).</li></ul>
+</div></div></div></div>
+</body>
+</html>

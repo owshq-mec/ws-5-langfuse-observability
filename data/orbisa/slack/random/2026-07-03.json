@@ -1,0 +1,23 @@
+[
+  {
+    "type": "message",
+    "user": "U06LFERRET",
+    "text": "Lisbon team summer party is on July 10 at the riverside terrace. Austin folks visiting that week are welcome!",
+    "ts": "1783098300.000015",
+    "thread_ts": "1783098300.000015",
+    "reply_count": 1,
+    "reply_users": [
+      "U05IHOLM00"
+    ],
+    "reply_users_count": 1,
+    "latest_reply": "1783098660.000151"
+  },
+  {
+    "type": "message",
+    "user": "U05IHOLM00",
+    "text": "I will be in Lisbon that week, count me in.",
+    "ts": "1783098660.000151",
+    "thread_ts": "1783098300.000015",
+    "parent_user_id": "U06LFERRET"
+  }
+]

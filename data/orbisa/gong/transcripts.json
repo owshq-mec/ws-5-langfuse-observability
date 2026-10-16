@@ -1,0 +1,206 @@
+{
+  "requestId": "4al018gzaztcr8nbukx",
+  "records": {
+    "totalRecords": 3,
+    "currentPageSize": 3,
+    "currentPageNumber": 0
+  },
+  "callTranscripts": [
+    {
+      "callId": "7782342274025937895",
+      "transcript": [
+        {
+          "speakerId": "6432345678555530068",
+          "topic": "Call Setup",
+          "sentences": [
+            {
+              "start": 4100,
+              "end": 11800,
+              "text": "Thanks for joining, Dana and Marcus. We want to walk through August and what we are changing."
+            }
+          ]
+        },
+        {
+          "speakerId": "6432345678555530101",
+          "topic": "Incidents",
+          "sentences": [
+            {
+              "start": 12500,
+              "end": 21900,
+              "text": "August was rough. Two outages, on the nineteenth and on the twenty-seventh."
+            },
+            {
+              "start": 22100,
+              "end": 30400,
+              "text": "On the nineteenth we had trucks waiting on ETAs for three hours."
+            }
+          ]
+        },
+        {
+          "speakerId": "6432345678555530067",
+          "topic": "Incidents",
+          "sentences": [
+            {
+              "start": 31000,
+              "end": 42200,
+              "text": "I understand. Engineering added canary deploys and certificate monitoring, so both root causes are fixed."
+            }
+          ]
+        },
+        {
+          "speakerId": "6432345678555530102",
+          "topic": "Next Steps",
+          "sentences": [
+            {
+              "start": 43000,
+              "end": 46900,
+              "text": "And what happens if it happens again?"
+            }
+          ]
+        },
+        {
+          "speakerId": "6432345678555530067",
+          "topic": "Next Steps",
+          "sentences": [
+            {
+              "start": 47300,
+              "end": 58800,
+              "text": "If there is another tracking incident this quarter, I will make sure you get a service credit on your next invoice. That is a commitment from me."
+            }
+          ]
+        },
+        {
+          "speakerId": "6432345678555530101",
+          "topic": "Contract",
+          "sentences": [
+            {
+              "start": 59500,
+              "end": 71200,
+              "text": "A credit is fine, but our legal team is reviewing the SLA clause in the MSA. We may ask for more than a credit."
+            }
+          ]
+        },
+        {
+          "speakerId": "6432345678555530067",
+          "topic": "Contract",
+          "sentences": [
+            {
+              "start": 71800,
+              "end": 83900,
+              "text": "Understood. I cannot promise a refund on this call, but send us what legal finds and we will review it with RevOps."
+            }
+          ]
+        },
+        {
+          "speakerId": "6432345678555530068",
+          "topic": "Contract",
+          "sentences": [
+            {
+              "start": 84500,
+              "end": 92300,
+              "text": "For August, the standard SLA credit is ten percent of the monthly fee."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "callId": "7782342274025938011",
+      "transcript": [
+        {
+          "speakerId": "6432345678555530201",
+          "topic": "Pricing",
+          "sentences": [
+            {
+              "start": 3200,
+              "end": 15600,
+              "text": "FleetGlass offered us a three-year deal at a much lower price. To renew with you we would need twenty-five percent off."
+            }
+          ]
+        },
+        {
+          "speakerId": "6432345678555530067",
+          "topic": "Pricing",
+          "sentences": [
+            {
+              "start": 16100,
+              "end": 27400,
+              "text": "Twenty-five percent is above what I can approve. Anything above twenty percent needs executive approval on our side."
+            }
+          ]
+        },
+        {
+          "speakerId": "6432345678555530201",
+          "topic": "Next Steps",
+          "sentences": [
+            {
+              "start": 28000,
+              "end": 33900,
+              "text": "How long will that take? Our renewal is on November thirtieth."
+            }
+          ]
+        },
+        {
+          "speakerId": "6432345678555530067",
+          "topic": "Next Steps",
+          "sentences": [
+            {
+              "start": 34400,
+              "end": 39100,
+              "text": "You will have an answer within two weeks."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "callId": "7782342274025938177",
+      "transcript": [
+        {
+          "speakerId": "6432345678555530302",
+          "topic": "Discovery",
+          "sentences": [
+            {
+              "start": 5200,
+              "end": 16800,
+              "text": "We run about two hundred trucks and today our ETAs come from four different carrier portals."
+            }
+          ]
+        },
+        {
+          "speakerId": "6432345678555530301",
+          "topic": "Product",
+          "sentences": [
+            {
+              "start": 17300,
+              "end": 29900,
+              "text": "Orbisa Track pulls all carrier events into one API and dashboard, so you get one ETA per shipment."
+            }
+          ]
+        },
+        {
+          "speakerId": "6432345678555530302",
+          "topic": "Pricing",
+          "sentences": [
+            {
+              "start": 30500,
+              "end": 34600,
+              "text": "What would that cost for a company our size?"
+            }
+          ]
+        },
+        {
+          "speakerId": "6432345678555530301",
+          "topic": "Pricing",
+          "sentences": [
+            {
+              "start": 35000,
+              "end": 47800,
+              "text": "For your volume it would be Enterprise, which starts at twelve thousand dollars a month and includes a 99.9 percent uptime commitment."
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

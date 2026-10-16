@@ -1,0 +1,206 @@
+[
+  {
+    "id": "U01MCOSTA0",
+    "team_id": "T01ORBISA0",
+    "name": "marina",
+    "deleted": false,
+    "real_name": "Marina Costa",
+    "tz": "America/Chicago",
+    "is_admin": true,
+    "is_bot": false,
+    "updated": 1767225600,
+    "profile": {
+      "real_name": "Marina Costa",
+      "display_name": "Marina",
+      "title": "CEO",
+      "email": "marina@orbisa.example"
+    }
+  },
+  {
+    "id": "U01DOKAFOR",
+    "team_id": "T01ORBISA0",
+    "name": "daniel.o",
+    "deleted": false,
+    "real_name": "Daniel Okafor",
+    "tz": "America/Chicago",
+    "is_admin": false,
+    "is_bot": false,
+    "updated": 1767225600,
+    "profile": {
+      "real_name": "Daniel Okafor",
+      "display_name": "Daniel",
+      "title": "CTO",
+      "email": "danielo@orbisa.example"
+    }
+  },
+  {
+    "id": "U02PRAMAN0",
+    "team_id": "T01ORBISA0",
+    "name": "priya",
+    "deleted": false,
+    "real_name": "Priya Raman",
+    "tz": "America/Chicago",
+    "is_admin": false,
+    "is_bot": false,
+    "updated": 1767225600,
+    "profile": {
+      "real_name": "Priya Raman",
+      "display_name": "Priya",
+      "title": "CFO",
+      "email": "priya@orbisa.example"
+    }
+  },
+  {
+    "id": "U03THERRER",
+    "team_id": "T01ORBISA0",
+    "name": "tomas.h",
+    "deleted": false,
+    "real_name": "Tomás Herrera",
+    "tz": "America/Chicago",
+    "is_admin": false,
+    "is_bot": false,
+    "updated": 1767225600,
+    "profile": {
+      "real_name": "Tomás Herrera",
+      "display_name": "Tomás",
+      "title": "Head of RevOps",
+      "email": "tomash@orbisa.example"
+    }
+  },
+  {
+    "id": "U02RMENDES",
+    "team_id": "T01ORBISA0",
+    "name": "rafa",
+    "deleted": false,
+    "real_name": "Rafael Mendes",
+    "tz": "America/Chicago",
+    "is_admin": false,
+    "is_bot": false,
+    "updated": 1767225600,
+    "profile": {
+      "real_name": "Rafael Mendes",
+      "display_name": "Rafa",
+      "title": "Sales Director",
+      "email": "rafa@orbisa.example"
+    }
+  },
+  {
+    "id": "U04JLINDQV",
+    "team_id": "T01ORBISA0",
+    "name": "jo.l",
+    "deleted": false,
+    "real_name": "Johanna Lindqvist",
+    "tz": "America/Chicago",
+    "is_admin": false,
+    "is_bot": false,
+    "updated": 1767225600,
+    "profile": {
+      "real_name": "Johanna Lindqvist",
+      "display_name": "Jo L.",
+      "title": "Senior Account Executive",
+      "email": "jol@orbisa.example"
+    }
+  },
+  {
+    "id": "U04OBRANDT",
+    "team_id": "T01ORBISA0",
+    "name": "owen",
+    "deleted": false,
+    "real_name": "Owen Brandt",
+    "tz": "America/Chicago",
+    "is_admin": false,
+    "is_bot": false,
+    "updated": 1767225600,
+    "profile": {
+      "real_name": "Owen Brandt",
+      "display_name": "Owen",
+      "title": "Account Executive",
+      "email": "owen@orbisa.example"
+    }
+  },
+  {
+    "id": "U03ABELLO0",
+    "team_id": "T01ORBISA0",
+    "name": "aisha",
+    "deleted": false,
+    "real_name": "Aisha Bello",
+    "tz": "America/Chicago",
+    "is_admin": false,
+    "is_bot": false,
+    "updated": 1767225600,
+    "profile": {
+      "real_name": "Aisha Bello",
+      "display_name": "Aisha",
+      "title": "VP Customer Success",
+      "email": "aisha@orbisa.example"
+    }
+  },
+  {
+    "id": "U03KWATANA",
+    "team_id": "T01ORBISA0",
+    "name": "ken.w",
+    "deleted": false,
+    "real_name": "Ken Watanabe",
+    "tz": "America/Chicago",
+    "is_admin": false,
+    "is_bot": false,
+    "updated": 1767225600,
+    "profile": {
+      "real_name": "Ken Watanabe",
+      "display_name": "Ken",
+      "title": "Support Lead",
+      "email": "kenw@orbisa.example"
+    }
+  },
+  {
+    "id": "U03NSILVA0",
+    "team_id": "T01ORBISA0",
+    "name": "nadia",
+    "deleted": false,
+    "real_name": "Nadia Silva",
+    "tz": "America/Chicago",
+    "is_admin": false,
+    "is_bot": false,
+    "updated": 1767225600,
+    "profile": {
+      "real_name": "Nadia Silva",
+      "display_name": "Nadia",
+      "title": "Data Platform Lead",
+      "email": "nadia@orbisa.example"
+    }
+  },
+  {
+    "id": "U05IHOLM00",
+    "team_id": "T01ORBISA0",
+    "name": "ingrid",
+    "deleted": false,
+    "real_name": "Ingrid Holm",
+    "tz": "America/Chicago",
+    "is_admin": false,
+    "is_bot": false,
+    "updated": 1767225600,
+    "profile": {
+      "real_name": "Ingrid Holm",
+      "display_name": "Ingrid",
+      "title": "Site Reliability Engineer",
+      "email": "ingrid@orbisa.example"
+    }
+  },
+  {
+    "id": "U06LFERRET",
+    "team_id": "T01ORBISA0",
+    "name": "luca",
+    "deleted": false,
+    "real_name": "Luca Ferretti",
+    "tz": "Europe/Lisbon",
+    "is_admin": false,
+    "is_bot": false,
+    "updated": 1767225600,
+    "profile": {
+      "real_name": "Luca Ferretti",
+      "display_name": "Luca",
+      "title": "Director of Routing Product",
+      "email": "luca@orbisa.example"
+    }
+  }
+]

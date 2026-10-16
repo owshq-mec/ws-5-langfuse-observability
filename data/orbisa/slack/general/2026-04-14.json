@@ -1,0 +1,32 @@
+[
+  {
+    "type": "message",
+    "user": "U01MCOSTA0",
+    "text": "Reminder: the Austin office moves to the 5th floor this Friday. Pack your desk by Thursday 5pm. Lunch is on us on Monday in the new kitchen.",
+    "ts": "1776180600.000013",
+    "thread_ts": "1776180600.000013",
+    "reply_count": 2,
+    "reply_users": [
+      "U01MCOSTA0",
+      "U04OBRANDT"
+    ],
+    "reply_users_count": 2,
+    "latest_reply": "1776181620.000132"
+  },
+  {
+    "type": "message",
+    "user": "U04OBRANDT",
+    "text": "Is the parking garage changing too?",
+    "ts": "1776181320.000131",
+    "thread_ts": "1776180600.000013",
+    "parent_user_id": "U01MCOSTA0"
+  },
+  {
+    "type": "message",
+    "user": "U01MCOSTA0",
+    "text": "No, same garage, same badge.",
+    "ts": "1776181620.000132",
+    "thread_ts": "1776180600.000013",
+    "parent_user_id": "U01MCOSTA0"
+  }
+]

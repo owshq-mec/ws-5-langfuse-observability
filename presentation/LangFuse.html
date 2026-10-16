@@ -1,0 +1,154 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>LangFuse · Workshop 5 decks &amp; design system</title>
+<link rel="stylesheet" href="assets/langfuse.css">
+<style>
+  html, body { overflow: auto; height: auto; background: var(--bg); }
+  .page { max-width: 1240px; margin: 0 auto; border-left: 1px solid var(--line); border-right: 1px solid var(--line); background: var(--bg); }
+  header.top { position: sticky; top: 0; z-index: 5; display: flex; align-items: center; justify-content: space-between; height: 60px; padding: 0 28px;
+    border-bottom: 1px solid var(--line); background: rgba(237,237,232,.92); backdrop-filter: blur(6px); }
+  header.top [data-i="langfuse-wordmark"] { width: auto; height: 24px; } header.top [data-i="langfuse-wordmark"] svg { height: 24px; width: auto; }
+  header.top nav { display: flex; gap: 22px; font-size: 15px; color: var(--ink-2); }
+  header.top nav a { color: inherit; text-decoration: none; }
+  section.blk { padding: 72px 64px; border-bottom: 1px solid var(--line); }
+  .hero { padding: 96px 64px 80px; text-align: center; display: flex; flex-direction: column; align-items: center; gap: 26px; }
+  .hero .display { font-size: 92px; }
+  .decks { display: grid; grid-template-columns: repeat(3, 1fr); gap: 22px; margin-top: 36px; }
+  .deckcard { display: flex; flex-direction: column; border: 1px solid var(--line); background: var(--paper); text-decoration: none; color: inherit; transition: transform .2s, box-shadow .2s; }
+  .deckcard:hover { transform: translateY(-3px); box-shadow: 0 12px 30px rgba(30,30,20,.12); }
+  .thumb { position: relative; width: 100%; aspect-ratio: 16 / 9; overflow: hidden; border-bottom: 1px solid var(--line); background: var(--bg); }
+  .thumb iframe { position: absolute; left: 0; top: 0; width: 1600px; height: 900px; border: 0; transform-origin: 0 0; pointer-events: none; }
+  .deckcard .meta { padding: 20px 22px 22px; display: flex; flex-direction: column; gap: 8px; }
+  .deckcard .row2 { display: flex; justify-content: space-between; align-items: center; margin-top: 6px; }
+  .sw { display: grid; grid-template-columns: repeat(6, 1fr); gap: 14px; margin-top: 32px; }
+  .sw > div { border: 1px solid var(--line); background: var(--paper); }
+  .sw .c { height: 96px; border-bottom: 1px solid var(--line); }
+  .sw .m { padding: 10px 12px; font-family: var(--mono); font-size: 12.5px; color: var(--muted); line-height: 1.5; }
+  .sw .m b { color: var(--ink); font-weight: 500; font-family: var(--body); font-size: 14px; }
+  .types { margin-top: 32px; border-top: 1px solid var(--ink); }
+  .types > div { display: grid; grid-template-columns: 220px 1fr; align-items: baseline; gap: 24px; padding: 18px 0; border-bottom: 1px solid var(--line); }
+  .types .spec { font-family: var(--mono); font-size: 13px; color: var(--muted); }
+  .comp { display: grid; grid-template-columns: 1fr 1fr; gap: 22px; margin-top: 32px; }
+  .comp > div { border: 1px solid var(--line); background: var(--paper); padding: 26px; display: flex; flex-direction: column; gap: 16px; }
+  .comp .lab { font-family: var(--mono); font-size: 12.5px; letter-spacing: .1em; text-transform: uppercase; color: var(--muted); }
+  .rules { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; margin-top: 32px; }
+  .keys { display: flex; flex-wrap: wrap; gap: 18px; margin-top: 24px; font-size: 16px; color: var(--ink-2); }
+  .keys span { display: inline-flex; gap: 8px; align-items: center; }
+  footer { padding: 28px 64px; font-family: var(--mono); font-size: 13px; color: var(--muted); display: flex; justify-content: space-between; }
+</style>
+</head>
+<body>
+<div class="page">
+  <header class="top">
+    <div style="display:flex; align-items:center; gap:12px"><span data-i="langfuse-wordmark"></span><span class="mono small" style="font-size:13px">× AIDE · Workshop 5</span></div>
+    <nav><a href="#decks">Decks</a><a href="#colors">Colors</a><a href="#type">Type</a><a href="#components">Components</a><a href="#rules">Rules</a></nav>
+    <span class="btn dark" style="height:38px; font-size:15px">Present <span class="kbd">F</span></span>
+  </header>
+
+  <section class="blk hero hatch">
+    <div class="eyebrow">Design system · draft for approval · 2026-10-16</div>
+    <h1 class="display">Workshop 5, in the <mark>Langfuse</mark> style.</h1>
+    <p class="lead" style="text-align:center">Three HTML decks for the Orbisa session. Warm paper, ink type, one yellow highlighter, framed panels with corner ticks, and monospace labels. Built from langfuse.com.</p>
+    <div class="statsbar" style="width:820px"><div><b>3</b> decks</div><div><b>50</b> slides</div><div><b>1</b> stylesheet</div><div>no build step</div></div>
+  </section>
+
+  <section class="blk" id="decks">
+    <div class="eyebrow">Decks</div>
+    <h2 class="h2 mt16">Open a deck. <mark>Press F.</mark></h2>
+    <div class="decks">
+      <a class="deckcard" href="01-orbisa.html">
+        <div class="thumb"><iframe src="01-orbisa.html#1" loading="lazy" tabindex="-1"></iframe></div>
+        <div class="meta"><span class="num">01 · PART 1 · 09:00</span><span class="h3">The use case</span><span class="small">Orbisa, seven systems, one refund question with four answers, the gap, and how the team works today.</span>
+          <div class="row2"><span class="pill plain">12 slides</span><span class="kbd">→</span></div></div>
+      </a>
+      <a class="deckcard" href="02-context-layer.html">
+        <div class="thumb"><iframe src="02-context-layer.html#1" loading="lazy" tabindex="-1"></iframe></div>
+        <div class="meta"><span class="num">02 · PART 2 · 09:10</span><span class="h3">The context layer</span><span class="small">What it is, five names, six components with real Helix artifacts, graph databases, Neo4j and the Helix stack.</span>
+          <div class="row2"><span class="pill plain">18 slides</span><span class="kbd">→</span></div></div>
+      </a>
+      <a class="deckcard" href="03-langfuse.html">
+        <div class="thumb"><iframe src="03-langfuse.html#1" loading="lazy" tabindex="-1"></iframe></div>
+        <div class="meta"><span class="num">03 · PART 3 · 09:40</span><span class="h3">Observability &amp; Langfuse</span><span class="small">AI-native systems, OpenTelemetry, the data model, every feature with an Orbisa use case, cloud vs self-hosted.</span>
+          <div class="row2"><span class="pill plain">20 slides</span><span class="kbd">→</span></div></div>
+      </a>
+    </div>
+    <div class="keys">
+      <span><span class="kbd">←</span><span class="kbd">→</span> navigate</span><span><span class="kbd">O</span> overview</span><span><span class="kbd">F</span> fullscreen</span>
+      <span><span class="kbd">P</span> print / PDF</span><span><span class="kbd">#7</span> deep link to slide 7</span><span>click: right two thirds next, left third back</span>
+    </div>
+  </section>
+
+  <section class="blk" id="colors">
+    <div class="eyebrow">Colors · sampled from langfuse.com</div>
+    <h2 class="h2 mt16">Paper, ink, and <mark>one highlighter</mark>.</h2>
+    <div class="sw">
+      <div><div class="c" style="background:#ededE8"></div><div class="m"><b>bg</b><br>#EDEDE8<br>slide background</div></div>
+      <div><div class="c" style="background:#f6f6f3"></div><div class="m"><b>paper</b><br>#F6F6F3<br>cards, panels</div></div>
+      <div><div class="c" style="background:#222220"></div><div class="m"><b>ink</b><br>#222220<br>type, dark slides</div></div>
+      <div><div class="c" style="background:#6b6b66"></div><div class="m"><b>muted</b><br>#6B6B66<br>body copy</div></div>
+      <div><div class="c" style="background:#cfcfc9"></div><div class="m"><b>line</b><br>#CFCFC9<br>borders, rules</div></div>
+      <div><div class="c" style="background:#fbff7a"></div><div class="m"><b>highlighter</b><br>#FBFF7A<br>one idea per slide</div></div>
+      <div><div class="c" style="background:#4e9cff"></div><div class="m"><b>logo blue</b><br>#4E9CFF<br>info, retrieval</div></div>
+      <div><div class="c" style="background:#ff5d5f"></div><div class="m"><b>logo coral</b><br>#FF5D5F<br>wrong, missing</div></div>
+      <div><div class="c" style="background:#22a06b"></div><div class="m"><b>green</b><br>#22A06B<br>correct, pass</div></div>
+      <div><div class="c" style="background:#e5a000"></div><div class="m"><b>amber</b><br>#E5A000<br>caveat, partial</div></div>
+      <div><div class="c" style="background:#1863dc"></div><div class="m"><b>link blue</b><br>#1863DC<br>code keys</div></div>
+      <div><div class="c hatch" style="background-color:#f6f6f3"></div><div class="m"><b>hatch</b><br>135° · 10px<br>covers, stale data</div></div>
+    </div>
+  </section>
+
+  <section class="blk" id="type">
+    <div class="eyebrow">Type</div>
+    <h2 class="h2 mt16">Geist for display. Inter for reading. <span class="mono" style="font-size:.8em">Geist Mono</span> for labels.</h2>
+    <div class="types">
+      <div><span class="spec">display · Geist 500 · 124 px</span><span class="display" style="font-size:72px">Making <mark>context</mark> observable.</span></div>
+      <div><span class="spec">h1 · 80 px · h2 · 60 px</span><span class="h2" style="font-size:48px">Four places. <mark>Four answers.</mark></span></div>
+      <div><span class="spec">h3 · 30 px · h4 · 22 px</span><span class="h3">Reciprocal Rank Fusion</span></div>
+      <div><span class="spec">lead · Inter · 28 px · muted</span><span class="lead" style="font-size:22px">Models are smart. They do not know your company.</span></div>
+      <div><span class="spec">eyebrow · Geist Mono · 15 px · caps</span><span class="eyebrow">Ground truth · Q01</span></div>
+      <div><span class="spec">code · Geist Mono · 19 px</span><span class="mono" style="font-size:17px">search_context(<span class="tag-coral">"who approves refunds"</span>, as_of=<span class="hl">"2026-09-29"</span>)</span></div>
+    </div>
+    <p class="small mt16">Langfuse uses its own display face (F37 Analog). It is not open, so the decks use Geist, the closest free match.</p>
+  </section>
+
+  <section class="blk" id="components">
+    <div class="eyebrow">Components</div>
+    <h2 class="h2 mt16">The parts every slide is made of.</h2>
+    <div class="comp">
+      <div><span class="lab">Buttons · keys</span><div class="row" style="gap:12px; flex-wrap:wrap"><span class="btn dark">Start free <span class="kbd">S</span></span><span class="btn">Documentation <span class="kbd">D</span></span><span class="kbd">←</span><span class="kbd">→</span></div></div>
+      <div><span class="lab">Chips · pills</span><div class="row" style="gap:10px; flex-wrap:wrap"><span class="chip"><span data-i="neo4j"></span>Neo4j</span><span class="chip on"><span data-i="langfuse"></span>Langfuse</span><span class="pill ok">correct</span><span class="pill bad">stale</span><span class="pill warn">partial</span><span class="pill info">info</span></div></div>
+      <div><span class="lab">Framed panel · corner ticks</span><div class="frame" style="padding:22px 26px"><span class="body">The 2023 page still exists. The rule that replaced it lives in Slack.</span></div></div>
+      <div><span class="lab">Card · icon box</span><div class="row" style="gap:14px"><div class="card raised grow"><span class="h4"><span class="ibox"><span data-i="list-tree"></span></span>Tracing</span><span class="small">Nested steps with inputs and outputs.</span></div><div class="card hl grow"><span class="h4"><span class="ibox"><span data-i="history"></span></span>Temporal</span><span class="small" style="color:var(--ink-2)">Knows when a fact was true.</span></div></div></div>
+      <div><span class="lab">Stats bar</span><div class="statsbar"><div><b>67</b> episodes</div><div><b>106</b> entities</div><div><b>367</b> facts</div></div></div>
+      <div><span class="lab">Icons · Simple Icons + Lucide</span><div class="row" style="gap:10px; flex-wrap:wrap">
+        <span class="ibox"><span data-i="slack"></span></span><span class="ibox"><span data-i="confluence"></span></span><span class="ibox"><span data-i="notion"></span></span><span class="ibox"><span data-i="googledrive"></span></span><span class="ibox"><span data-i="neo4j"></span></span><span class="ibox"><span data-i="opentelemetry"></span></span><span class="ibox"><span data-i="claude"></span></span>
+        <span class="ibox"><span data-i="scale"></span></span><span class="ibox"><span data-i="flask-conical"></span></span><span class="ibox ink"><span data-i="plug"></span></span></div></div>
+    </div>
+  </section>
+
+  <section class="blk" id="rules">
+    <div class="eyebrow">Rules</div>
+    <h2 class="h2 mt16">Six rules that keep it <mark>Langfuse</mark>.</h2>
+    <div class="rules">
+      <div class="card"><span class="num">01</span><span class="h4">One highlight per slide</span><span class="small">The yellow marks the one idea to remember. Never two colors of highlight.</span></div>
+      <div class="card"><span class="num">02</span><span class="h4">Square corners</span><span class="small">2 px radius at most. Pills are the only round shape.</span></div>
+      <div class="card"><span class="num">03</span><span class="h4">Mono for metadata</span><span class="small">Dates, paths, counts, slide numbers and labels are Geist Mono.</span></div>
+      <div class="card"><span class="num">04</span><span class="h4">Real artifacts</span><span class="small">Code, paths, facts and numbers come from the repo or the running stack. Mock-ups say so.</span></div>
+      <div class="card"><span class="num">05</span><span class="h4">Dark slide = turning point</span><span class="small">Use the ink background only for the gap, a handover, or the call to action.</span></div>
+      <div class="card"><span class="num">06</span><span class="h4">Every feature, one Orbisa use</span><span class="small">No feature appears without the Orbisa example that shows why it matters.</span></div>
+    </div>
+  </section>
+
+  <footer><span>presentation/ · LangFuse.html · assets/langfuse.css · assets/deck.js · assets/icons.js</span><span>Orbisa is fictional · Langfuse logo © Langfuse</span></footer>
+</div>
+<script src="assets/icons.js"></script>
+<script>
+  const fit = () => document.querySelectorAll('.thumb').forEach(t => { const f = t.querySelector('iframe'); f.style.transform = `scale(${t.clientWidth / 1600})`; });
+  addEventListener('resize', fit); fit();
+  addEventListener('keydown', e => { if (e.key === 'f' || e.key === 'F') location.href = '01-orbisa.html'; });
+</script>
+</body>
+</html>

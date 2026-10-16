@@ -1,0 +1,249 @@
+{
+  "tickets": [
+    {
+      "id": 47950,
+      "url": "https://orbisa.zendesk.example/api/v2/tickets/47950.json",
+      "subject": "Is our Growth plan billed annually?",
+      "description": "Invoice INV-2026-0141 shows USD 28,800 for the Growth plan. Is this billed once a year?",
+      "status": "solved",
+      "priority": "low",
+      "type": "question",
+      "requester_id": 7020,
+      "submitter_id": 7020,
+      "assignee_id": 900101,
+      "organization_id": 503,
+      "tags": [
+        "billing",
+        "growth"
+      ],
+      "custom_fields": [
+        {
+          "id": 360001,
+          "value": "bluefin_distribution"
+        }
+      ],
+      "via": {
+        "channel": "email"
+      },
+      "created_at": "2026-02-10T14:12:00Z",
+      "updated_at": "2026-02-10T15:01:00Z"
+    },
+    {
+      "id": 48102,
+      "url": "https://orbisa.zendesk.example/api/v2/tickets/48102.json",
+      "subject": "Cancel and refund our subscription",
+      "description": "We renewed on February 1 but we are moving routing in-house. Please cancel and refund. Our Brisklane terms allow refunds within 60 days.",
+      "status": "solved",
+      "priority": "normal",
+      "type": "task",
+      "requester_id": 7010,
+      "submitter_id": 7010,
+      "assignee_id": 900102,
+      "organization_id": 504,
+      "tags": [
+        "refund",
+        "brisklane_legacy",
+        "escalated_revops"
+      ],
+      "custom_fields": [
+        {
+          "id": 360001,
+          "value": "cedar_and_pine"
+        }
+      ],
+      "via": {
+        "channel": "email"
+      },
+      "created_at": "2026-03-05T10:02:00Z",
+      "updated_at": "2026-03-06T16:00:00Z"
+    },
+    {
+      "id": 48120,
+      "subject": "CSV export is missing the carrier column",
+      "description": "Our weekly shipment CSV export no longer has the carrier column.",
+      "status": "solved",
+      "priority": "normal",
+      "type": "problem",
+      "requester_id": 7020,
+      "assignee_id": 900101,
+      "organization_id": 503,
+      "tags": [
+        "export",
+        "growth"
+      ],
+      "created_at": "2026-04-08T13:10:00Z",
+      "updated_at": "2026-04-09T10:02:00Z",
+      "url": "https://orbisa.zendesk.example/api/v2/tickets/48120.json",
+      "submitter_id": 7020,
+      "custom_fields": [],
+      "via": {
+        "channel": "email"
+      }
+    },
+    {
+      "id": 48166,
+      "subject": "HTTP 429 on bulk tracking requests",
+      "description": "We get HTTP 429 when we poll 5,000 shipments at once.",
+      "status": "solved",
+      "priority": "high",
+      "type": "question",
+      "requester_id": 7030,
+      "assignee_id": 900102,
+      "organization_id": 502,
+      "tags": [
+        "api",
+        "rate_limit",
+        "enterprise"
+      ],
+      "created_at": "2026-06-22T15:45:00Z",
+      "updated_at": "2026-06-22T16:30:00Z",
+      "url": "https://orbisa.zendesk.example/api/v2/tickets/48166.json",
+      "submitter_id": 7030,
+      "custom_fields": [],
+      "via": {
+        "channel": "email"
+      }
+    },
+    {
+      "id": 48190,
+      "url": "https://orbisa.zendesk.example/api/v2/tickets/48190.json",
+      "subject": "Tracking API returning 503 errors",
+      "description": "Since about 14:05 UTC every call to the Track API returns 503. Our dispatch board has no ETAs.",
+      "status": "solved",
+      "priority": "urgent",
+      "type": "incident",
+      "requester_id": 7001,
+      "submitter_id": 7001,
+      "assignee_id": 900101,
+      "organization_id": 501,
+      "tags": [
+        "outage",
+        "inc_2291",
+        "enterprise"
+      ],
+      "custom_fields": [
+        {
+          "id": 360001,
+          "value": "orion_freight"
+        }
+      ],
+      "via": {
+        "channel": "web"
+      },
+      "created_at": "2026-08-19T14:20:00Z",
+      "updated_at": "2026-08-19T17:40:00Z"
+    },
+    {
+      "id": 48207,
+      "url": "https://orbisa.zendesk.example/api/v2/tickets/48207.json",
+      "subject": "No carrier status updates since 06:40 UTC",
+      "description": "We have not received any carrier status updates since 06:40 UTC. Tracking calls fail.",
+      "status": "solved",
+      "priority": "urgent",
+      "type": "incident",
+      "requester_id": 7002,
+      "submitter_id": 7002,
+      "assignee_id": 900102,
+      "organization_id": 501,
+      "tags": [
+        "outage",
+        "inc_2304",
+        "enterprise"
+      ],
+      "custom_fields": [
+        {
+          "id": 360001,
+          "value": "orion_freight"
+        }
+      ],
+      "via": {
+        "channel": "web"
+      },
+      "created_at": "2026-08-27T07:05:00Z",
+      "updated_at": "2026-08-27T08:50:00Z"
+    },
+    {
+      "id": 48233,
+      "url": "https://orbisa.zendesk.example/api/v2/tickets/48233.json",
+      "subject": "Refund request after the August outages",
+      "description": "Orion requests a pro-rata refund for the rest of the current term. The two SEV-1 outages in August breached the 99.9% SLA in our MSA, and Section 7.3 gives us a refund right within 60 days of the 15 August renewal.",
+      "status": "open",
+      "priority": "high",
+      "type": "task",
+      "requester_id": 7001,
+      "submitter_id": 7001,
+      "assignee_id": 900102,
+      "organization_id": 501,
+      "tags": [
+        "refund",
+        "enterprise",
+        "escalated_revops"
+      ],
+      "custom_fields": [
+        {
+          "id": 360001,
+          "value": "orion_freight"
+        }
+      ],
+      "via": {
+        "channel": "email"
+      },
+      "created_at": "2026-09-29T15:30:00Z",
+      "updated_at": "2026-09-30T09:05:00Z"
+    },
+    {
+      "id": 48240,
+      "subject": "SSO setup with Okta",
+      "description": "How do we connect Okta for single sign-on?",
+      "status": "pending",
+      "priority": "normal",
+      "type": "question",
+      "requester_id": 7040,
+      "assignee_id": 900101,
+      "organization_id": 505,
+      "tags": [
+        "sso",
+        "growth"
+      ],
+      "created_at": "2026-10-01T09:20:00Z",
+      "updated_at": "2026-10-01T11:05:00Z",
+      "url": "https://orbisa.zendesk.example/api/v2/tickets/48240.json",
+      "submitter_id": 7040,
+      "custom_fields": [],
+      "via": {
+        "channel": "email"
+      }
+    },
+    {
+      "id": 48251,
+      "url": "https://orbisa.zendesk.example/api/v2/tickets/48251.json",
+      "subject": "Renewed by mistake, can we get a refund?",
+      "description": "Our subscription auto-renewed on October 3 but we decided not to continue. Can we cancel and get a refund?",
+      "status": "open",
+      "priority": "normal",
+      "type": "task",
+      "requester_id": 7020,
+      "submitter_id": 7020,
+      "assignee_id": 900102,
+      "organization_id": 503,
+      "tags": [
+        "refund",
+        "growth",
+        "escalated_revops"
+      ],
+      "custom_fields": [
+        {
+          "id": 360001,
+          "value": "bluefin_distribution"
+        }
+      ],
+      "via": {
+        "channel": "email"
+      },
+      "created_at": "2026-10-13T12:00:00Z",
+      "updated_at": "2026-10-13T12:40:00Z"
+    }
+  ],
+  "after_cursor": null,
+  "end_of_stream": true
+}

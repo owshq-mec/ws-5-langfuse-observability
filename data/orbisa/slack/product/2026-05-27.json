@@ -1,0 +1,23 @@
+[
+  {
+    "type": "message",
+    "user": "U06LFERRET",
+    "text": "Roadmap update: Orbisa Route (Brisklane routing inside Orbisa Track) goes to private beta in Q4 2026. First design partners are being picked by Aisha's team. Feedback welcome in this channel.",
+    "ts": "1779876000.000014",
+    "thread_ts": "1779876000.000014",
+    "reply_count": 1,
+    "reply_users": [
+      "U03ABELLO0"
+    ],
+    "reply_users_count": 1,
+    "latest_reply": "1779877200.000141"
+  },
+  {
+    "type": "message",
+    "user": "U03ABELLO0",
+    "text": "We will propose three Growth customers as design partners.",
+    "ts": "1779877200.000141",
+    "thread_ts": "1779876000.000014",
+    "parent_user_id": "U06LFERRET"
+  }
+]

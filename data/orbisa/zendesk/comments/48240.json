@@ -1,0 +1,20 @@
+{
+  "comments": [
+    {
+      "id": 482401,
+      "type": "Comment",
+      "author_id": 7040,
+      "public": true,
+      "created_at": "2026-10-01T09:20:00Z",
+      "body": "How do we connect Okta for single sign-on?"
+    },
+    {
+      "id": 482402,
+      "type": "Comment",
+      "author_id": 900101,
+      "public": true,
+      "created_at": "2026-10-01T11:05:00Z",
+      "body": "Hi Lena, SSO with Okta is available on Growth and Enterprise. I sent you the setup guide; we need your Okta metadata URL to finish."
+    }
+  ]
+}

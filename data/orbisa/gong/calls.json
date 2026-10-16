@@ -1,0 +1,135 @@
+{
+  "requestId": "4al018gzaztcr8nbukw",
+  "records": {
+    "totalRecords": 3,
+    "currentPageSize": 3,
+    "currentPageNumber": 0
+  },
+  "calls": [
+    {
+      "metaData": {
+        "id": "7782342274025937895",
+        "url": "https://app.gong.example/call?id=7782342274025937895",
+        "title": "Orion Freight Systems - Q3 QBR",
+        "scheduled": "2026-09-08T15:00:00Z",
+        "started": "2026-09-08T15:01:12Z",
+        "duration": 2280,
+        "primaryUserId": "234599484848423",
+        "direction": "Conference",
+        "system": "Zoom",
+        "scope": "External",
+        "media": "Video",
+        "language": "eng",
+        "purpose": "Quarterly business review after the August outages"
+      },
+      "parties": [
+        {
+          "id": "p1",
+          "emailAddress": "jo.l@orbisa.example",
+          "name": "Johanna Lindqvist",
+          "title": "Senior Account Executive",
+          "userId": "234599484848423",
+          "speakerId": "6432345678555530067",
+          "affiliation": "Internal"
+        },
+        {
+          "id": "p2",
+          "emailAddress": "aisha@orbisa.example",
+          "name": "Aisha Bello",
+          "title": "VP Customer Success",
+          "userId": "234599484848499",
+          "speakerId": "6432345678555530068",
+          "affiliation": "Internal"
+        },
+        {
+          "id": "p3",
+          "emailAddress": "dana.whitfield@orionfreight.example",
+          "name": "Dana Whitfield",
+          "title": "VP Operations",
+          "speakerId": "6432345678555530101",
+          "affiliation": "External"
+        },
+        {
+          "id": "p4",
+          "emailAddress": "marcus.ellery@orionfreight.example",
+          "name": "Marcus Ellery",
+          "title": "Director of Procurement",
+          "speakerId": "6432345678555530102",
+          "affiliation": "External"
+        }
+      ]
+    },
+    {
+      "metaData": {
+        "id": "7782342274025938011",
+        "url": "https://app.gong.example/call?id=7782342274025938011",
+        "title": "Kodiak Cold Chain - Renewal discussion",
+        "scheduled": "2026-10-02T17:00:00Z",
+        "started": "2026-10-02T17:02:40Z",
+        "duration": 1500,
+        "primaryUserId": "234599484848423",
+        "direction": "Conference",
+        "system": "Zoom",
+        "scope": "External",
+        "media": "Video",
+        "language": "eng",
+        "purpose": "Renewal pricing for the 2026-11-30 renewal"
+      },
+      "parties": [
+        {
+          "id": "p1",
+          "emailAddress": "jo.l@orbisa.example",
+          "name": "Johanna Lindqvist",
+          "title": "Senior Account Executive",
+          "userId": "234599484848423",
+          "speakerId": "6432345678555530067",
+          "affiliation": "Internal"
+        },
+        {
+          "id": "p5",
+          "emailAddress": "hal.brennan@kodiakcold.example",
+          "name": "Hal Brennan",
+          "title": "Chief Operating Officer",
+          "speakerId": "6432345678555530201",
+          "affiliation": "External"
+        }
+      ]
+    },
+    {
+      "metaData": {
+        "id": "7782342274025938177",
+        "url": "https://app.gong.example/call?id=7782342274025938177",
+        "title": "Pinecrest Logistics - Discovery call",
+        "scheduled": "2026-10-08T14:00:00Z",
+        "started": "2026-10-08T14:01:30Z",
+        "duration": 1320,
+        "primaryUserId": "234599484848411",
+        "direction": "Conference",
+        "system": "Zoom",
+        "scope": "External",
+        "media": "Video",
+        "language": "eng",
+        "purpose": "First call with a prospect"
+      },
+      "parties": [
+        {
+          "id": "p6",
+          "emailAddress": "rafa@orbisa.example",
+          "name": "Rafael Mendes",
+          "title": "Sales Director",
+          "userId": "234599484848411",
+          "speakerId": "6432345678555530301",
+          "affiliation": "Internal"
+        },
+        {
+          "id": "p7",
+          "emailAddress": "arjun.mehta@pinecrest.example",
+          "name": "Arjun Mehta",
+          "title": "VP Supply Chain",
+          "speakerId": "6432345678555530302",
+          "affiliation": "External"
+        }
+      ]
+    }
+  ]
+}

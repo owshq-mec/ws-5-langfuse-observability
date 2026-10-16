@@ -1,0 +1,23 @@
+[
+  {
+    "type": "message",
+    "user": "U01MCOSTA0",
+    "text": "Big day: Orbisa has closed the acquisition of Brisklane! Welcome to the ~60 Brisklane people in Lisbon. Luca Ferretti joins as Director of Routing Product. Brisklane customers stay on their current Brisklane contracts for now, and Owen Brandt is their Account Executive.",
+    "ts": "1741597200.000001",
+    "thread_ts": "1741597200.000001",
+    "reply_count": 1,
+    "reply_users": [
+      "U06LFERRET"
+    ],
+    "reply_users_count": 1,
+    "latest_reply": "1741598040.000011"
+  },
+  {
+    "type": "message",
+    "user": "U06LFERRET",
+    "text": "Thank you Marina, we are excited to build routing into Orbisa Track.",
+    "ts": "1741598040.000011",
+    "thread_ts": "1741597200.000001",
+    "parent_user_id": "U01MCOSTA0"
+  }
+]

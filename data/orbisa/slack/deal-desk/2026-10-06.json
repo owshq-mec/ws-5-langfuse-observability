@@ -1,0 +1,41 @@
+[
+  {
+    "type": "message",
+    "user": "U04JLINDQV",
+    "text": "Kodiak Cold Chain renewal (renews 2026-11-30, ARR 240k): Hal is asking for 25% off to match FleetGlass. Who needs to approve this?",
+    "ts": "1791292200.000012",
+    "thread_ts": "1791292200.000012",
+    "reply_count": 3,
+    "reply_users": [
+      "U02RMENDES",
+      "U03THERRER",
+      "U04JLINDQV"
+    ],
+    "reply_users_count": 3,
+    "latest_reply": "1791293100.000123"
+  },
+  {
+    "type": "message",
+    "user": "U02RMENDES",
+    "text": "Above 20% is the CFO, ping Priya.",
+    "ts": "1791292440.000121",
+    "thread_ts": "1791292200.000012",
+    "parent_user_id": "U04JLINDQV"
+  },
+  {
+    "type": "message",
+    "user": "U03THERRER",
+    "text": "Since June 15 it is CEO and CFO for anything above 20% (Marina's note in #sales). The Confluence matrix is outdated, I will fix it.",
+    "ts": "1791292920.000122",
+    "thread_ts": "1791292200.000012",
+    "parent_user_id": "U04JLINDQV"
+  },
+  {
+    "type": "message",
+    "user": "U04JLINDQV",
+    "text": "Thanks, I will prepare the case for Marina and Priya.",
+    "ts": "1791293100.000123",
+    "thread_ts": "1791292200.000012",
+    "parent_user_id": "U04JLINDQV"
+  }
+]

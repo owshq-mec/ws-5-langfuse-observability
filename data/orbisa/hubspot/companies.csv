@@ -1,0 +1,6 @@
+Record ID,Company name,Company Domain Name,Industry,Number of Employees,Company owner,Lifecycle Stage,City,Country/Region,Plan,ARR,Last renewal date,Next renewal date,Contract paper,Health,Create Date,Last Modified Date
+18342001,Orion Freight Systems,orionfreight.example,Freight & Logistics,2300,Johanna Lindqvist,Customer,Dallas,United States,Enterprise,186000,2026-08-15,2027-08-15,Orbisa MSA 2025-08-15 (includes clause 7.3 SLA refund right),At risk,2025-05-02,2026-09-30
+18342017,Kodiak Cold Chain,kodiakcold.example,Cold Chain Logistics,1200,Johanna Lindqvist,Customer,Denver,United States,Enterprise,240000,2025-11-30,2026-11-30,Orbisa standard terms,At risk,2025-08-19,2026-10-06
+18342044,Bluefin Distribution,bluefindist.example,Wholesale Distribution,380,Owen Brandt,Customer,Tampa,United States,Growth,28800,2026-10-03,2027-10-03,Orbisa standard terms,At risk,2025-07-28,2026-10-13
+18342090,Cedar & Pine Wholesale,cedarandpine.example,Wholesale,45,Owen Brandt,Former customer,Portland,United States,Starter,0,2026-02-01,,Brisklane legacy terms until 2027-01-31 (migration addendum 2025-07-01),Churned,2025-03-12,2026-03-06
+18342115,Mesa Ridge Foods,mesaridge.example,Food Distribution,650,Owen Brandt,Customer,Phoenix,United States,Growth,28800,2026-09-15,2027-09-15,Orbisa standard terms,Healthy,2026-07-30,2026-10-01

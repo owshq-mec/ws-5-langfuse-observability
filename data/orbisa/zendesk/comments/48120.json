@@ -1,0 +1,20 @@
+{
+  "comments": [
+    {
+      "id": 481201,
+      "type": "Comment",
+      "author_id": 7020,
+      "public": true,
+      "created_at": "2026-04-08T13:10:00Z",
+      "body": "Our weekly shipment CSV export no longer has the carrier column."
+    },
+    {
+      "id": 481202,
+      "type": "Comment",
+      "author_id": 900101,
+      "public": true,
+      "created_at": "2026-04-09T10:02:00Z",
+      "body": "Thanks Sofia, this was a bug in the export template. It is fixed and the carrier column is back."
+    }
+  ]
+}

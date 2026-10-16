@@ -1,0 +1,302 @@
+[
+  {
+    "id": "C001ORB001",
+    "name": "announcements",
+    "created": 1556668800,
+    "creator": "U01MCOSTA0",
+    "is_archived": false,
+    "is_general": true,
+    "members": [
+      "U01MCOSTA0",
+      "U01DOKAFOR",
+      "U02PRAMAN0",
+      "U03THERRER",
+      "U02RMENDES",
+      "U04JLINDQV",
+      "U04OBRANDT",
+      "U03ABELLO0",
+      "U03KWATANA",
+      "U03NSILVA0",
+      "U05IHOLM00",
+      "U06LFERRET"
+    ],
+    "purpose": {
+      "value": "Company-wide announcements"
+    }
+  },
+  {
+    "id": "C002ORB002",
+    "name": "revops",
+    "created": 1556668800,
+    "creator": "U01MCOSTA0",
+    "is_archived": false,
+    "is_general": false,
+    "members": [
+      "U01MCOSTA0",
+      "U01DOKAFOR",
+      "U02PRAMAN0",
+      "U03THERRER",
+      "U02RMENDES",
+      "U04JLINDQV",
+      "U04OBRANDT",
+      "U03ABELLO0",
+      "U03KWATANA",
+      "U03NSILVA0",
+      "U05IHOLM00",
+      "U06LFERRET"
+    ],
+    "purpose": {
+      "value": "Revenue operations: approvals, pricing ops, CRM"
+    }
+  },
+  {
+    "id": "C003ORB003",
+    "name": "sales",
+    "created": 1556668800,
+    "creator": "U01MCOSTA0",
+    "is_archived": false,
+    "is_general": false,
+    "members": [
+      "U01MCOSTA0",
+      "U01DOKAFOR",
+      "U02PRAMAN0",
+      "U03THERRER",
+      "U02RMENDES",
+      "U04JLINDQV",
+      "U04OBRANDT",
+      "U03ABELLO0",
+      "U03KWATANA",
+      "U03NSILVA0",
+      "U05IHOLM00",
+      "U06LFERRET"
+    ],
+    "purpose": {
+      "value": "Sales team"
+    }
+  },
+  {
+    "id": "C004ORB004",
+    "name": "deal-desk",
+    "created": 1556668800,
+    "creator": "U01MCOSTA0",
+    "is_archived": false,
+    "is_general": false,
+    "members": [
+      "U01MCOSTA0",
+      "U01DOKAFOR",
+      "U02PRAMAN0",
+      "U03THERRER",
+      "U02RMENDES",
+      "U04JLINDQV",
+      "U04OBRANDT",
+      "U03ABELLO0",
+      "U03KWATANA",
+      "U03NSILVA0",
+      "U05IHOLM00",
+      "U06LFERRET"
+    ],
+    "purpose": {
+      "value": "Deal approvals and pricing questions"
+    }
+  },
+  {
+    "id": "C005ORB005",
+    "name": "incidents",
+    "created": 1556668800,
+    "creator": "U01MCOSTA0",
+    "is_archived": false,
+    "is_general": false,
+    "members": [
+      "U01MCOSTA0",
+      "U01DOKAFOR",
+      "U02PRAMAN0",
+      "U03THERRER",
+      "U02RMENDES",
+      "U04JLINDQV",
+      "U04OBRANDT",
+      "U03ABELLO0",
+      "U03KWATANA",
+      "U03NSILVA0",
+      "U05IHOLM00",
+      "U06LFERRET"
+    ],
+    "purpose": {
+      "value": "Production incidents (SEV-1 and SEV-2)"
+    }
+  },
+  {
+    "id": "C006ORB006",
+    "name": "data-platform",
+    "created": 1556668800,
+    "creator": "U01MCOSTA0",
+    "is_archived": false,
+    "is_general": false,
+    "members": [
+      "U01MCOSTA0",
+      "U01DOKAFOR",
+      "U02PRAMAN0",
+      "U03THERRER",
+      "U02RMENDES",
+      "U04JLINDQV",
+      "U04OBRANDT",
+      "U03ABELLO0",
+      "U03KWATANA",
+      "U03NSILVA0",
+      "U05IHOLM00",
+      "U06LFERRET"
+    ],
+    "purpose": {
+      "value": "Data platform decisions"
+    }
+  },
+  {
+    "id": "C007ORB007",
+    "name": "support",
+    "created": 1556668800,
+    "creator": "U01MCOSTA0",
+    "is_archived": false,
+    "is_general": false,
+    "members": [
+      "U01MCOSTA0",
+      "U01DOKAFOR",
+      "U02PRAMAN0",
+      "U03THERRER",
+      "U02RMENDES",
+      "U04JLINDQV",
+      "U04OBRANDT",
+      "U03ABELLO0",
+      "U03KWATANA",
+      "U03NSILVA0",
+      "U05IHOLM00",
+      "U06LFERRET"
+    ],
+    "purpose": {
+      "value": "Support team coordination"
+    }
+  },
+  {
+    "id": "C008ORB008",
+    "name": "cs-orion",
+    "created": 1556668800,
+    "creator": "U01MCOSTA0",
+    "is_archived": false,
+    "is_general": false,
+    "members": [
+      "U01MCOSTA0",
+      "U01DOKAFOR",
+      "U02PRAMAN0",
+      "U03THERRER",
+      "U02RMENDES",
+      "U04JLINDQV",
+      "U04OBRANDT",
+      "U03ABELLO0",
+      "U03KWATANA",
+      "U03NSILVA0",
+      "U05IHOLM00",
+      "U06LFERRET"
+    ],
+    "purpose": {
+      "value": "Account channel for Orion Freight Systems"
+    }
+  },
+  {
+    "id": "C009ORB009",
+    "name": "general",
+    "created": 1556668800,
+    "creator": "U01MCOSTA0",
+    "is_archived": false,
+    "is_general": false,
+    "members": [
+      "U01MCOSTA0",
+      "U01DOKAFOR",
+      "U02PRAMAN0",
+      "U03THERRER",
+      "U02RMENDES",
+      "U04JLINDQV",
+      "U04OBRANDT",
+      "U03ABELLO0",
+      "U03KWATANA",
+      "U03NSILVA0",
+      "U05IHOLM00",
+      "U06LFERRET"
+    ],
+    "purpose": {
+      "value": "Company-wide chatter"
+    }
+  },
+  {
+    "id": "C010ORB010",
+    "name": "eng-deploys",
+    "created": 1556668800,
+    "creator": "U01MCOSTA0",
+    "is_archived": false,
+    "is_general": false,
+    "members": [
+      "U01MCOSTA0",
+      "U01DOKAFOR",
+      "U02PRAMAN0",
+      "U03THERRER",
+      "U02RMENDES",
+      "U04JLINDQV",
+      "U04OBRANDT",
+      "U03ABELLO0",
+      "U03KWATANA",
+      "U03NSILVA0",
+      "U05IHOLM00",
+      "U06LFERRET"
+    ],
+    "purpose": {
+      "value": "Production deploy log"
+    }
+  },
+  {
+    "id": "C011ORB011",
+    "name": "random",
+    "created": 1556668800,
+    "creator": "U01MCOSTA0",
+    "is_archived": false,
+    "is_general": false,
+    "members": [
+      "U01MCOSTA0",
+      "U01DOKAFOR",
+      "U02PRAMAN0",
+      "U03THERRER",
+      "U02RMENDES",
+      "U04JLINDQV",
+      "U04OBRANDT",
+      "U03ABELLO0",
+      "U03KWATANA",
+      "U03NSILVA0",
+      "U05IHOLM00",
+      "U06LFERRET"
+    ],
+    "purpose": {
+      "value": "Anything goes"
+    }
+  },
+  {
+    "id": "C012ORB012",
+    "name": "product",
+    "created": 1556668800,
+    "creator": "U01MCOSTA0",
+    "is_archived": false,
+    "is_general": false,
+    "members": [
+      "U01MCOSTA0",
+      "U01DOKAFOR",
+      "U02PRAMAN0",
+      "U03THERRER",
+      "U02RMENDES",
+      "U04JLINDQV",
+      "U04OBRANDT",
+      "U03ABELLO0",
+      "U03KWATANA",
+      "U03NSILVA0",
+      "U05IHOLM00",
+      "U06LFERRET"
+    ],
+    "purpose": {
+      "value": "Product roadmap discussion"
+    }
+  }
+]

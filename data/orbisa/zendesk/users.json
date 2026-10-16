@@ -1,0 +1,105 @@
+{
+  "users": [
+    {
+      "id": 900101,
+      "name": "Sam Patel",
+      "email": "sam.patel@orbisa.example",
+      "role": "agent",
+      "organization_id": null
+    },
+    {
+      "id": 900102,
+      "name": "Ken Watanabe",
+      "email": "ken.watanabe@orbisa.example",
+      "role": "admin",
+      "organization_id": null
+    },
+    {
+      "id": 900103,
+      "name": "Jo Lindqvist",
+      "email": "jo.l@orbisa.example",
+      "role": "agent",
+      "organization_id": null
+    },
+    {
+      "id": 7001,
+      "name": "Dana Whitfield",
+      "email": "dana.whitfield@orionfreight.example",
+      "role": "end-user",
+      "organization_id": 501
+    },
+    {
+      "id": 7002,
+      "name": "Marcus Ellery",
+      "email": "marcus.ellery@orionfreight.example",
+      "role": "end-user",
+      "organization_id": 501
+    },
+    {
+      "id": 7020,
+      "name": "Sofia Ruiz",
+      "email": "sofia.ruiz@bluefindist.example",
+      "role": "end-user",
+      "organization_id": 503
+    },
+    {
+      "id": 7010,
+      "name": "Tom Avery",
+      "email": "tom@cedarandpine.example",
+      "role": "end-user",
+      "organization_id": 504
+    },
+    {
+      "id": 7030,
+      "name": "Hal Brennan",
+      "email": "hal.brennan@kodiakcold.example",
+      "role": "end-user",
+      "organization_id": 502
+    },
+    {
+      "id": 7040,
+      "name": "Lena Okoro",
+      "email": "lena.okoro@mesaridge.example",
+      "role": "end-user",
+      "organization_id": 505
+    }
+  ],
+  "organizations": [
+    {
+      "id": 501,
+      "name": "Orion Freight Systems",
+      "tags": [
+        "enterprise"
+      ]
+    },
+    {
+      "id": 503,
+      "name": "Bluefin Distribution",
+      "tags": [
+        "growth"
+      ]
+    },
+    {
+      "id": 504,
+      "name": "Cedar & Pine Wholesale",
+      "tags": [
+        "starter",
+        "brisklane_legacy"
+      ]
+    },
+    {
+      "id": 502,
+      "name": "Kodiak Cold Chain",
+      "tags": [
+        "enterprise"
+      ]
+    },
+    {
+      "id": 505,
+      "name": "Mesa Ridge Foods",
+      "tags": [
+        "growth"
+      ]
+    }
+  ]
+}

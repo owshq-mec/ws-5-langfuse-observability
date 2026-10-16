@@ -1,0 +1,23 @@
+[
+  {
+    "type": "message",
+    "user": "U04JLINDQV",
+    "text": "QBR recap from yesterday: Dana and Marcus want assurance after August. I told them that if there is another tracking incident this quarter we will give them a service credit. I did not promise a refund. Dana said their legal team is reviewing the SLA clause in the MSA.",
+    "ts": "1788948900.000010",
+    "thread_ts": "1788948900.000010",
+    "reply_count": 1,
+    "reply_users": [
+      "U03ABELLO0"
+    ],
+    "reply_users_count": 1,
+    "latest_reply": "1788949860.000101"
+  },
+  {
+    "type": "message",
+    "user": "U03ABELLO0",
+    "text": "Good. The August credit under POL-012 should be 10% of the monthly fee. I will confirm the number.",
+    "ts": "1788949860.000101",
+    "thread_ts": "1788948900.000010",
+    "parent_user_id": "U04JLINDQV"
+  }
+]
