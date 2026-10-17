@@ -21,6 +21,9 @@
   .deckcard:hover { transform: translateY(-3px); box-shadow: 0 12px 30px rgba(30,30,20,.12); }
   .thumb { position: relative; width: 100%; aspect-ratio: 16 / 9; overflow: hidden; border-bottom: 1px solid var(--line); background: var(--bg); }
   .thumb iframe { position: absolute; left: 0; top: 0; width: 1600px; height: 900px; border: 0; transform-origin: 0 0; pointer-events: none; }
+  .deckcard.wide { grid-column: 1 / -1; flex-direction: row; }
+  .deckcard.wide .thumb { width: 50%; flex: none; border-bottom: 0; border-right: 1px solid var(--line); }
+  .deckcard.wide .meta { justify-content: center; }
   .deckcard .meta { padding: 20px 22px 22px; display: flex; flex-direction: column; gap: 8px; }
   .deckcard .row2 { display: flex; justify-content: space-between; align-items: center; margin-top: 6px; }
   .sw { display: grid; grid-template-columns: repeat(6, 1fr); gap: 14px; margin-top: 32px; }
@@ -51,33 +54,38 @@
   <section class="blk hero hatch">
     <div class="eyebrow">Design system · draft for approval · 2026-10-16</div>
     <h1 class="display">Workshop 5, in the <mark>Langfuse</mark> style.</h1>
-    <p class="lead" style="text-align:center">Four HTML decks for the whole Orbisa morning, chained end to end. Warm paper, ink type, one yellow highlighter, framed panels with corner ticks, and monospace labels. Built from langfuse.com.</p>
-    <div class="statsbar" style="width:880px"><div><b>4</b> decks</div><div><b>92</b> slides</div><div><b>1</b> stylesheet</div><div>no build step</div></div>
+    <p class="lead" style="text-align:center">Five HTML decks for the whole Orbisa morning, chained end to end. Warm paper, ink type, one yellow highlighter, framed panels with corner ticks, and monospace labels. Built from langfuse.com.</p>
+    <div class="statsbar" style="width:880px"><div><b>5</b> decks</div><div><b>133</b> slides</div><div><b>1</b> stylesheet</div><div>no build step</div></div>
   </section>
 
   <section class="blk" id="decks">
     <div class="eyebrow">Decks</div>
     <h2 class="h2 mt16">Open a deck. <mark>Press F.</mark></h2>
     <div class="decks">
+      <a class="deckcard wide" href="00-agenda.html">
+        <div class="thumb"><iframe src="00-agenda.html#2" loading="lazy" tabindex="-1"></iframe></div>
+        <div class="meta"><span class="num">00 · WELCOME</span><span class="h3">Before we start</span><span class="small">Where Luan is teaching context engineering next, and the intent of the morning: problem before tool, context before prompt, evidence before demo.</span>
+          <div class="row2"><span class="pill plain">2 slides</span><span class="kbd">→</span></div></div>
+      </a>
       <a class="deckcard" href="01-orbisa.html">
         <div class="thumb"><iframe src="01-orbisa.html#1" loading="lazy" tabindex="-1"></iframe></div>
         <div class="meta"><span class="num">01 · PART 1 · 09:00</span><span class="h3">The use case</span><span class="small">Orbisa, seven systems, the people and their aliases, one refund question with four answers, the other traps, the gap.</span>
-          <div class="row2"><span class="pill plain">14 slides</span><span class="kbd">→</span></div></div>
+          <div class="row2"><span class="pill plain">19 slides</span><span class="kbd">→</span></div></div>
       </a>
       <a class="deckcard" href="02-context-layer.html">
         <div class="thumb"><iframe src="02-context-layer.html#1" loading="lazy" tabindex="-1"></iframe></div>
         <div class="meta"><span class="num">02 · PART 2 · 09:10</span><span class="h3">The context layer</span><span class="small">Context engineering, context rot, RAG → GraphRAG → temporal graphs, six components with real Helix artifacts, MCP, Neo4j and GQL, best practices.</span>
-          <div class="row2"><span class="pill plain">26 slides</span><span class="kbd">→</span></div></div>
+          <div class="row2"><span class="pill plain">28 slides</span><span class="kbd">→</span></div></div>
       </a>
       <a class="deckcard" href="03-langfuse.html">
         <div class="thumb"><iframe src="03-langfuse.html#1" loading="lazy" tabindex="-1"></iframe></div>
         <div class="meta"><span class="num">03 · PART 3 · 09:40</span><span class="h3">Observability &amp; Langfuse</span><span class="small">AI-native systems, OpenTelemetry agent spans, Langfuse v4, every feature with an Orbisa use, error analysis, best practices, cloud vs self-hosted.</span>
-          <div class="row2"><span class="pill plain">27 slides</span><span class="kbd">→</span></div></div>
+          <div class="row2"><span class="pill plain">28 slides</span><span class="kbd">→</span></div></div>
       </a>
       <a class="deckcard" href="04-prompts.html">
         <div class="thumb"><iframe src="04-prompts.html#1" loading="lazy" tabindex="-1"></iframe></div>
         <div class="meta"><span class="num">04 · PART 4 · 10:25</span><span class="h3">The team session</span><span class="small">Roles, the working agreement, prompts 00–13 with their gates, target architecture, pairing habits and a troubleshooting sheet.</span>
-          <div class="row2"><span class="pill plain">25 slides</span><span class="kbd">→</span></div></div>
+          <div class="row2"><span class="pill plain">56 slides</span><span class="kbd">→</span></div></div>
       </a>
     </div>
     <div class="keys">
@@ -154,7 +162,7 @@
 <script>
   const fit = () => document.querySelectorAll('.thumb').forEach(t => { const f = t.querySelector('iframe'); f.style.transform = `scale(${t.clientWidth / 1600})`; });
   addEventListener('resize', fit); fit();
-  addEventListener('keydown', e => { if (e.key === 'f' || e.key === 'F') location.href = '01-orbisa.html'; });
+  addEventListener('keydown', e => { if (e.key === 'f' || e.key === 'F') location.href = '00-agenda.html'; });
 </script>
 </body>
 </html>

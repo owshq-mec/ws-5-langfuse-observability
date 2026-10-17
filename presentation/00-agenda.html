@@ -1,0 +1,157 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>00 · Before we start</title>
+<link rel="stylesheet" href="assets/langfuse.css">
+<style>
+  .sp  { --c: var(--blue);  --t: #edf4ff; --tx: var(--blue-ink); }
+  .rj  { --c: var(--green); --t: #e9f7ef; --tx: #136b45; }
+  .sea { --c: var(--brown); --t: var(--brown-t); --tx: #6b4220; }
+
+  /* timeline */
+  .road { grid-template-columns: 1.6fr 1fr 1fr 1.6fr 1fr 1fr; align-items: stretch; }
+  .road::before { top: 34px; }
+  .road > div { display: flex; flex-direction: column; padding-top: 58px; padding-right: 14px; }
+  .road > div::before { top: 26px; }
+  .road .d { font-size: 14px; }
+  .road > div.on .d { color: var(--ink); font-weight: 500; }
+
+  /* stop cards */
+  .stop { flex: 1; display: flex; flex-direction: column; gap: 10px; padding: 16px 18px 18px; border: 1.5px solid var(--c); background: var(--t); }
+  .stop .ibox { width: 44px; height: 44px; } .stop .ibox [data-i] { width: 22px; height: 22px; }
+  .stop .cal { margin-top: auto; display: flex; align-items: baseline; gap: 10px; border-top: 1px solid var(--c); padding-top: 12px; }
+  .stop .day { font-family: var(--display); font-size: 56px; font-weight: 500; letter-spacing: -.04em; line-height: .9; color: var(--tx); }
+  .stop .mo { font-family: var(--mono); font-size: 13px; letter-spacing: .08em; text-transform: uppercase; color: var(--tx); }
+  .stop .tag { align-self: flex-start; white-space: nowrap; font-family: var(--mono); font-size: 12px; font-weight: 500; letter-spacing: .08em; text-transform: uppercase; background: var(--c); color: #fff; padding: 3px 8px; }
+  .stop .nm { font-family: var(--display); font-size: 23px; font-weight: 500; line-height: 1.15; letter-spacing: -.01em; }
+  .stop .topic { font-size: 17px; line-height: 1.4; color: var(--ink-2); }
+  .stop.ce { background: var(--hl); border: 2px solid var(--ink); box-shadow: 0 10px 26px rgba(34, 34, 32, .16); }
+  .stop.ce .cal { border-top-color: var(--ink); }
+  .stop.ce .day { color: var(--ink); font-size: 72px; }
+  .stop.ce .mo { color: var(--ink); }
+  .stop.ce .nm { font-size: 28px; font-weight: 600; }
+
+  /* legend row, same pattern as the Orion notice row */
+  .notice { display: grid; grid-template-columns: repeat(3, 1fr) 1.25fr; gap: 14px; }
+  .notice > div { border: 1.5px solid var(--c); background: var(--t); padding: 12px 18px; display: flex; flex-direction: column; gap: 5px; }
+  .notice .k { display: flex; align-items: center; gap: 10px; font-family: var(--display); font-weight: 600; font-size: 20px; letter-spacing: -.01em; }
+  .notice .k i { font-style: normal; font-family: var(--mono); font-size: 13px; font-weight: 500; background: var(--c); color: var(--ct, #fff); padding: 2px 7px; }
+  .notice p { font-size: 15.5px; color: var(--ink-2); line-height: 1.38; }
+  .notice .ce { --c: var(--ink); --t: var(--hl); --ct: var(--hl); }
+  .notice .ce p { color: var(--ink); }
+
+  /* intent: three shifts, same pattern as the ground-truth chain */
+  .chain { display: grid; grid-template-columns: 1fr 44px 1fr 44px 1fr; align-items: stretch; }
+  .chain .arrow { display: grid; place-items: center; } .chain .arrow [data-i] { width: 28px; height: 28px; }
+  .who { border: 1.5px solid var(--c); background: var(--t); padding: 18px 22px 20px; display: flex; flex-direction: column; gap: 12px; }
+  .who .k { display: flex; align-items: center; gap: 12px; }
+  .who .k .ibox { width: 44px; height: 44px; } .who .k .ibox [data-i] { width: 22px; height: 22px; }
+  .who .k i { font-style: normal; font-family: var(--mono); font-size: 13px; font-weight: 500; letter-spacing: .08em; text-transform: uppercase; background: var(--c); color: var(--ct, #fff); padding: 3px 8px; }
+  .who .ttl { font-family: var(--display); font-size: 30px; font-weight: 500; letter-spacing: -.02em; line-height: 1.1; }
+  .who.ce { --c: var(--ink); --t: var(--hl); --ct: var(--hl); border-width: 2px; box-shadow: 0 10px 26px rgba(34, 34, 32, .14); }
+  .hab { display: flex; flex-direction: column; gap: 6px; padding: 12px 14px; }
+  .hab-tag { align-self: flex-start; font-family: var(--mono); font-size: 11.5px; font-weight: 600; letter-spacing: .12em; text-transform: uppercase; padding: 2px 8px; }
+  .hab.old { border: 1.5px dashed var(--line); background: rgba(255, 255, 255, .5); }
+  .hab.old .hab-tag { border: 1.5px solid var(--faint); color: var(--muted); }
+  .hab.old p { display: flex; align-items: center; gap: 8px; font-size: 18px; line-height: 1.35; color: var(--muted); }
+  .hab.old p [data-i] { width: 18px; height: 18px; color: var(--coral); flex: none; }
+  .hab.new { border: 1.5px solid var(--c); background: #fff; }
+  .hab.new .hab-tag { background: var(--c); color: var(--ct, #fff); }
+  .hab.new p { font-size: 19px; line-height: 1.38; color: var(--ink); font-weight: 500; }
+  .who .refs { display: flex; flex-wrap: wrap; gap: 8px; margin-top: auto; }
+  .who .refs .pill { font-size: 13px; }
+  .own-note { display: flex; align-items: center; gap: 18px; background: var(--ink); color: #e6e6e0; padding: 14px 20px; font-size: 21px; }
+  .own-note .ms-tag { font-family: var(--mono); font-size: 13px; font-weight: 600; letter-spacing: .14em; text-transform: uppercase; background: var(--hl); color: var(--ink); padding: 5px 12px; flex: none; }
+  .own-note b { color: var(--hl); font-weight: 600; }
+</style>
+</head>
+<body data-deck="00 · Before we start" data-part="Welcome" data-next="01-orbisa.html">
+<main class="deck">
+
+<!-- 1 · on the road -->
+<section class="slide" data-title="On the road">
+  <div class="eyebrow rise">Before we start · Luan Moreno · Oct – Dec 2026</div>
+  <h2 class="h2 rise mt16" style="--d:1">Taking <mark>context engineering</mark> on the road.</h2>
+  <p class="lead rise" style="--d:2; margin-top:14px">Six talks in seven weeks, from São Paulo to Seattle.</p>
+  <div class="tl road mt24 rise" style="--d:3; flex:1">
+    <div class="on"><span class="d">2026-10-20 · Tue</span>
+      <div class="stop ce sp"><span class="ibox ink"><span data-i="brain-circuit""></span></span>
+        <span class="tag">São Paulo</span>
+        <span class="nm">Serasa Experian</span>
+        <span class="topic">Data Platforms, Context Engineering &amp; Agentic Systems</span>
+        <div class="cal"><span class="day">20</span><span class="mo">Oct</span></div></div></div>
+    <div><span class="d">2026-10-26 · Mon</span>
+      <div class="stop sp"><span class="ibox"><span data-i="presentation""></span></span>
+        <span class="tag">São Paulo</span>
+        <span class="nm">G4 Traction</span>
+        <div class="cal"><span class="day">26</span><span class="mo">Oct</span></div></div></div>
+    <div><span class="d">2026-11-07 · Sat</span>
+      <div class="stop rj"><span class="ibox"><span data-i="users-round""></span></span>
+        <span class="tag">Rio de Janeiro</span>
+        <span class="nm">Databricks Meetup</span>
+        <div class="cal"><span class="day">07</span><span class="mo">Nov</span></div></div></div>
+    <div class="on"><span class="d">2026-11-09 · Mon</span>
+      <div class="stop ce sea"><span class="ibox ink"><span data-i="brain-circuit""></span></span>
+        <span class="tag">Seattle</span>
+        <span class="nm">Chelan PUD</span>
+        <span class="topic">Context Engineering</span>
+        <div class="cal"><span class="day">09</span><span class="mo">Nov</span></div></div></div>
+    <div><span class="d">2026-12-01 · Tue</span>
+      <div class="stop sp"><span class="ibox"><span data-i="presentation""></span></span>
+        <span class="tag">São Paulo</span>
+        <span class="nm">Seven Summit</span>
+        <div class="cal"><span class="day">01</span><span class="mo">Dec</span></div></div></div>
+    <div><span class="d">2026-12-05 · Sat</span>
+      <div class="stop rj"><span class="ibox"><span data-i="users-round""></span></span>
+        <span class="tag">Rio de Janeiro</span>
+        <span class="nm">The Plumbers</span>
+        <div class="cal"><span class="day">05</span><span class="mo">Dec</span></div></div></div>
+  </div>
+  <div class="notice mt24 rise" style="--d:4">
+    <div class="sp"><span class="k"><i>3</i>São Paulo</span><p>Serasa Experian · G4 Traction · Seven Summit</p></div>
+    <div class="rj"><span class="k"><i>2</i>Rio de Janeiro</span><p>Databricks Meetup · The Plumbers</p></div>
+    <div class="sea"><span class="k"><i>1</i>Seattle</span><p>Chelan PUD, the one stop outside Brazil</p></div>
+    <div class="ce"><span class="k"><i>2</i>Context engineering</span><p>Serasa and Chelan PUD go deep on <b>what we build today</b>.</p></div>
+  </div>
+</section>
+
+<!-- 2 · intent -->
+<section class="slide" data-title="Why we are here">
+  <div class="eyebrow rise">Why we are here · the intent of this workshop</div>
+  <h2 class="h2 rise mt16" style="--d:1">Rethink the <mark>question</mark>, not the model.</h2>
+  <p class="lead rise" style="--d:2; margin-top:14px">Many AI projects go wrong before the first prompt is written. Three habits change how you design a solution.</p>
+  <div class="chain mt32 rise" style="--d:3">
+    <div class="who" style="--c:var(--blue); --t:#edf4ff">
+      <span class="k"><span class="ibox"><span data-i="target"></span></span><i>Shift 01</i></span>
+      <span class="ttl">Problem before tool</span>
+      <div class="hab old"><span class="hab-tag">Old habit</span><p><span data-i="x"></span>“Let’s add an agent.”</p></div>
+      <div class="hab new"><span class="hab-tag">New habit</span><p>Write the problem statement first. Narrow it until a test can fail.</p></div>
+      <div class="refs"><span class="pill info">deck 01 · Orbisa</span><span class="pill info">deck 04 · team session</span></div>
+    </div>
+    <div class="arrow"><span data-i="arrow-right"></span></div>
+    <div class="who" style="--c:var(--green); --t:#e9f7ef">
+      <span class="k"><span class="ibox"><span data-i="network"></span></span><i>Shift 02</i></span>
+      <span class="ttl">Context before prompt</span>
+      <div class="hab old"><span class="hab-tag">Old habit</span><p><span data-i="x"></span>“Tweak the prompt until it looks right.”</p></div>
+      <div class="hab new"><span class="hab-tag">New habit</span><p>Ask what the agent can find, and when that fact was true.</p></div>
+      <div class="refs"><span class="pill ok">deck 02 · context layer</span></div>
+    </div>
+    <div class="arrow"><span data-i="arrow-right"></span></div>
+    <div class="who ce">
+      <span class="k"><span class="ibox ink"><span data-i="list-tree"></span></span><i>Shift 03</i></span>
+      <span class="ttl">Evidence before demo</span>
+      <div class="hab old"><span class="hab-tag">Old habit</span><p><span data-i="x"></span>“It worked in the demo.”</p></div>
+      <div class="hab new"><span class="hab-tag">New habit</span><p>Show the trace, the score and the cost of every answer.</p></div>
+      <div class="refs"><span class="pill plain">deck 03 · Langfuse</span></div>
+    </div>
+  </div>
+  <div class="own-note mt-auto rise" style="--d:4"><span class="ms-tag">Today</span><span>You watch all three happen on <b>one system</b>: Orbisa, a company with seven systems and one simple question.</span></div>
+</section>
+
+</main>
+<script src="assets/icons.js"></script>
+<script src="assets/deck.js"></script>
+</body>
+</html>
