@@ -13,14 +13,10 @@
   .ans .src { display: flex; align-items: center; gap: 10px; font-family: var(--mono); font-size: 14px; color: var(--muted); }
   .ans.win { background: var(--hl); border-color: var(--hl-deep); box-shadow: 0 0 0 1.5px var(--ink); }
   .ans .stamp { position: absolute; top: 18px; right: 18px; }
+  .ans .pill { align-self: flex-start; }
   .sys { display: flex; flex-direction: column; gap: 14px; padding: 24px; border: 1px solid var(--line); background: var(--paper); }
   .sys .what { font-size: 19px; color: var(--ink-2); line-height: 1.4; }
   .sys .fmt { font-family: var(--mono); font-size: 13.5px; color: var(--muted); margin-top: auto; }
-  .bar { display: grid; grid-template-columns: 210px 1fr 40px; align-items: center; gap: 18px; font-size: 19px; }
-  .bar .track { height: 30px; border: 1px solid var(--line); background: var(--paper); position: relative; }
-  .bar .fill { position: absolute; inset: 0 auto 0 0; background: var(--ink); }
-  .bar .fill.hl { background: var(--hl); border-right: 1.5px solid var(--ink); }
-  .bar b { font-family: var(--mono); font-weight: 500; }
   .flow { display: grid; grid-template-columns: 1.15fr 40px 1.6fr 40px 1fr 40px 1fr; align-items: stretch; }
   .flow .arrow { display: grid; place-items: center; color: var(--ink); }
   .flow .arrow [data-i] { width: 30px; height: 30px; }
@@ -28,12 +24,119 @@
   .agenda-row .t { font-family: var(--mono); font-size: 20px; color: var(--muted); }
   .agenda-row .chips { display: flex; flex-wrap: wrap; gap: 8px; }
   .agenda-row .chips .pill { font-size: 13px; }
+  .notice { display: grid; grid-template-columns: repeat(3, 1fr) 1.1fr; gap: 14px; }
+  .notice > div { border: 1.5px solid var(--c); background: var(--t); padding: 12px 18px; display: flex; flex-direction: column; gap: 5px; }
+  .notice .k { display: flex; align-items: center; gap: 10px; font-family: var(--display); font-weight: 600; font-size: 20px; letter-spacing: -.01em; }
+  .notice .k i { font-style: normal; font-family: var(--mono); font-size: 13px; font-weight: 500; background: var(--c); color: var(--ct, #fff); padding: 2px 7px; }
+  .notice p { font-size: 16px; color: var(--ink-2); line-height: 1.38; }
+  .chain { display: grid; grid-template-columns: 1fr 44px 1fr 44px 1fr; align-items: stretch; }
+  .chain .arrow { display: grid; place-items: center; } .chain .arrow [data-i] { width: 28px; height: 28px; }
+  .who { border: 1.5px solid var(--c); background: var(--t); padding: 18px 22px 20px; display: flex; flex-direction: column; gap: 10px; }
+  .who .k { display: flex; align-items: center; gap: 12px; }
+  .who .k .ibox { width: 44px; height: 44px; } .who .k .ibox [data-i] { width: 22px; height: 22px; }
+  .who .k i { font-style: normal; font-family: var(--mono); font-size: 13px; font-weight: 500; letter-spacing: .08em; text-transform: uppercase; background: var(--c); color: var(--ct, #fff); padding: 3px 8px; }
+  .who p { font-size: 17px; line-height: 1.42; color: var(--ink-2); }
+  .who .pill { align-self: flex-start; margin-top: auto; }
+  .vs { border: 1px solid var(--line); background: var(--paper); padding: 14px 18px 16px; display: flex; flex-direction: column; gap: 10px; }
+  .vs .row { gap: 8px; flex-wrap: wrap; }
+  .vs-h { font-size: 13px; letter-spacing: .1em; font-weight: 500; }
+  .fields { gap: 0; border: 1px solid var(--line); background: var(--paper); }
+  .fields > div { flex: 1; display: grid; grid-template-columns: 200px 1fr; column-gap: 16px; align-items: center; padding: 10px 18px; }
+  .fields > div + div { border-top: 1px solid var(--line); }
+  .fields .f { display: flex; flex-wrap: wrap; align-items: center; gap: 5px 6px; }
+  .fields code { font-family: var(--mono); font-size: 14.5px; font-weight: 500; color: var(--blue-ink); flex-basis: 100%; }
+  .fields .pill { font-size: 11.5px; padding: 1px 9px 1px 7px; gap: 6px; }
+  .fields .pill::before { width: 6px; height: 6px; }
+  .fields p { font-size: 15.5px; line-height: 1.35; color: var(--ink-2); }
+  .gb-row { display: grid; grid-template-columns: .8fr 1.2fr; gap: 18px; align-items: stretch; }
+  .gb { padding: 20px 24px; display: flex; flex-direction: column; gap: 12px; }
+  .gb.green { border: 1.5px dashed var(--line); background: var(--paper); color: var(--muted); }
+  .gb.brown { border: 2px solid var(--brown); background: var(--brown-t); box-shadow: 0 8px 22px rgba(138, 90, 46, .16); }
+  .gb-h { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+  .gb-tag { font-family: var(--mono); font-size: 15px; font-weight: 600; letter-spacing: .14em; text-transform: uppercase; padding: 5px 12px; }
+  .gb.green .gb-tag { border: 1.5px solid var(--green); color: var(--green); }
+  .gb.brown .gb-tag { background: var(--brown); color: #fff; }
+  .gb ul { list-style: none; display: flex; flex-direction: column; gap: 6px; font-size: 19px; line-height: 1.4; }
+  .gb ul li::before { content: "—"; margin-right: 10px; color: var(--faint); }
+  .gb.brown ul { color: var(--ink); } .gb.brown ul li::before { color: var(--brown); }
+  .ae-steps { display: grid; grid-template-columns: repeat(4, 1fr); border: 1px solid var(--line); background: var(--paper); }
+  .ae-steps > div { padding: 16px 20px 18px; display: flex; flex-direction: column; gap: 6px; }
+  .ae-steps > div + div { border-left: 1px solid var(--line); }
+  .ae-steps .n { font-family: var(--mono); font-size: 13px; font-weight: 600; color: #fff; background: var(--brown); align-self: flex-start; padding: 2px 7px; }
+  .ae-steps .small { font-size: 16px; }
+  .bf-note { display: flex; align-items: center; gap: 18px; border: 2px solid var(--brown); background: var(--brown-t); padding: 12px 18px; font-size: 21px; color: var(--ink); }
+  .bf-note .bf-tag { font-family: var(--mono); font-size: 13px; font-weight: 600; letter-spacing: .14em; text-transform: uppercase; background: var(--brown); color: #fff; padding: 5px 10px; flex: none; }
+  .cc { display: inline-flex; align-items: center; gap: 10px; padding: 2px 16px 2px 8px; border: 1.5px solid #d97757; background: #fdf0ea; color: var(--ink); border-radius: 999px; font-weight: 500; vertical-align: 2px; }
+  .cc [data-i] { width: 28px; height: 28px; }
+  .eyebrow.mission { color: var(--ink); font-weight: 500; }
+  .eyebrow.mission::before { background: var(--hl); outline: 1.5px solid var(--ink); }
+  .ms-tag { font-family: var(--mono); font-size: 13px; font-weight: 600; letter-spacing: .14em; text-transform: uppercase; background: var(--ink); color: var(--hl); padding: 5px 12px; flex: none; }
+  .own-note { display: flex; align-items: center; gap: 18px; background: var(--ink); color: #e6e6e0; padding: 14px 20px; font-size: 21px; }
+  .own-note .ms-tag { background: var(--hl); color: var(--ink); }
+  .own-note b { color: var(--hl); font-weight: 600; }
+  .mind { display: grid; grid-template-columns: .72fr 1.28fr; gap: 18px; align-items: stretch; }
+  .io { padding: 18px 22px; display: flex; flex-direction: column; gap: 12px; }
+  .io-h { display: flex; align-items: center; gap: 12px; font-family: var(--mono); font-size: 14px; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
+  .io-tag { font-weight: 600; letter-spacing: .12em; padding: 4px 10px; }
+  .io.old { border: 1.5px dashed var(--line); background: var(--paper); }
+  .io.old .io-tag { border: 1.5px solid var(--faint); color: var(--muted); }
+  .io.old ol { padding-left: 24px; display: flex; flex-direction: column; gap: 6px; font-size: 19px; color: var(--muted); }
+  .io-f { margin-top: auto; font-size: 17px; color: var(--coral); font-weight: 500; }
+  .io.new { border: 2px solid var(--ink); background: var(--card); box-shadow: 0 8px 22px rgba(34, 34, 32, .12); }
+  .io.new .io-h { color: var(--ink); } .io.new .io-tag { background: var(--ink); color: var(--hl); }
+  .io-steps { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; flex: 1; }
+  .io-steps > div { display: flex; flex-direction: column; gap: 6px; padding: 12px 14px; border: 1px solid var(--line); background: var(--paper); }
+  .io-steps > div:first-child { background: var(--hl); border-color: var(--hl-deep); }
+  .io-steps .n { font-family: var(--mono); font-size: 12.5px; font-weight: 600; background: var(--ink); color: var(--hl); align-self: flex-start; padding: 1px 7px; }
+  .io-steps b { font-size: 17px; font-weight: 600; line-height: 1.25; }
+  .io-steps span:not(.n) { font-size: 15px; line-height: 1.38; color: var(--ink-2); }
+  .es { display: grid; grid-template-columns: 190px repeat(4, 1fr); border: 1.5px solid var(--ink); background: var(--paper); }
+  .es > * { padding: 12px 16px; display: flex; flex-direction: column; gap: 3px; justify-content: center; }
+  .es > * + * { border-left: 1px solid var(--line); }
+  .es .es-h { background: var(--ink); color: var(--hl); font-family: var(--display); font-weight: 600; font-size: 22px; letter-spacing: -.01em; }
+  .es .es-h small { font-family: var(--mono); font-size: 11.5px; font-weight: 400; color: #b5b5ad; letter-spacing: .04em; }
+  .es b { font-size: 18px; font-weight: 600; } .es span { font-size: 15px; color: var(--ink-2); line-height: 1.35; }
+  .warn-note { display: flex; align-items: center; gap: 14px; border: 1.5px solid var(--coral); background: #fff0f0; padding: 10px 16px; font-size: 17px; color: var(--ink); }
+  .warn-note .src-c { margin-left: auto; font-family: var(--mono); font-size: 12px; color: var(--muted); white-space: nowrap; }
+  .layers { display: flex; flex-direction: column; align-items: center; gap: 14px; }
+  .ly { display: grid; grid-template-columns: 230px 1fr; align-items: center; border: 1.5px solid var(--c); background: var(--t); }
+  .ly-h { display: flex; flex-direction: column; gap: 3px; padding: 16px 18px; align-self: stretch; justify-content: center; background: var(--c); color: var(--ct, #fff); }
+  .ly-h i { font-style: normal; font-family: var(--mono); font-size: 11.5px; letter-spacing: .14em; text-transform: uppercase; opacity: .85; }
+  .ly-h b { font-family: var(--display); font-size: 22px; font-weight: 600; letter-spacing: -.01em; line-height: 1.1; }
+  .ly-h small { font-size: 12.5px; line-height: 1.3; opacity: .9; }
+  .ly-c { display: flex; flex-wrap: wrap; gap: 8px; padding: 16px 18px; }
+  .lc { display: inline-flex; align-items: center; gap: 6px; font-family: var(--mono); font-size: 13.5px; padding: 4px 10px; border: 1px solid var(--line); background: #fff; color: var(--ink-2); border-radius: 999px; white-space: nowrap; }
+  .lc.today { background: var(--hl); border: 1.5px solid var(--ink); color: var(--ink); font-weight: 500; }
+  .lc.sk { flex-direction: column; align-items: flex-start; gap: 0; border-radius: 6px; padding: 5px 12px; }
+  .lc.sk b { font-family: var(--body); font-size: 15px; font-weight: 600; color: var(--ink); } .lc.sk small { font-size: 11.5px; color: var(--muted); }
+  .ly.l3 { --c: var(--blue); --t: #edf4ff; }
+  .ly.l2 { --c: var(--coral); --t: #fff0f0; }
+  .ly.l1 { --c: var(--green); --t: #e9f7ef; }
+  .ly.l0 { --c: var(--ink); --t: #f1f1ea; --ct: var(--hl); }
+  .ain { display: grid; grid-template-columns: 1fr 270px; gap: 18px; align-items: stretch; }
+  .grp { display: inline-flex; align-items: center; flex-wrap: wrap; gap: 6px; padding: 6px 10px; border: 1px dashed var(--c); background: rgba(255, 255, 255, .55); }
+  .grp small { font-family: var(--mono); font-size: 11px; letter-spacing: .1em; text-transform: uppercase; color: var(--muted); margin-right: 4px; }
+  .grp i { font-style: normal; font-family: var(--mono); font-size: 15px; color: var(--ink-2); }
+  .grp.dom { border: 1.5px solid var(--brown); background: var(--brown-t); }
+  .grp.dom small { color: var(--brown); font-weight: 600; }
+  .lc.dm { border-color: #d9c2a8; }
+  .lc.dm.today { border-color: var(--ink); }
+  .xplane { position: relative; background: var(--ink); color: #e6e6e0; padding: 20px 22px; display: flex; flex-direction: column; gap: 10px;
+    background-image: repeating-linear-gradient(135deg, rgba(251, 255, 122, .06) 0 10px, transparent 10px 20px); }
+  .xp-k { font-family: var(--mono); font-size: 12px; letter-spacing: .14em; text-transform: uppercase; color: var(--hl); }
+  .xp-t { font-family: var(--display); font-size: 34px; font-weight: 600; letter-spacing: -.02em; color: #fff; line-height: 1; }
+  .xp-s { font-size: 17px; line-height: 1.4; } .xp-s em { font-style: normal; color: var(--hl); font-weight: 600; }
+  .xp-items { display: flex; flex-direction: column; gap: 8px; margin-top: 6px; }
+  .xp-items > div { display: flex; flex-direction: column; gap: 4px; font-size: 18px; font-weight: 500; color: #fff; padding: 9px 14px; border: 1px solid #45433e; background: #2a2826; }
+  .xp-items small { font-size: 13px; font-weight: 400; color: #b5b5ad; }
+  .xp-items span { align-self: flex-start; font-family: var(--mono); font-size: 12px; color: var(--ink); background: var(--hl); padding: 1px 6px; }
+  .xp-ev { margin-top: auto; font-size: 14px; line-height: 1.45; color: #b5b5ad; border-top: 1px solid #45433e; padding-top: 10px; } .xp-ev b { color: var(--hl); font-weight: 600; }
   .eq { font-family: var(--mono); font-size: 29px; letter-spacing: -.01em; }
   .gap-q { font-family: var(--display); font-weight: 500; font-size: 40px; letter-spacing: -.02em; display: flex; align-items: center; gap: 18px; }
   .gap-q .ibox { background: #2a2826; border-color: #45433e; color: var(--hl); box-shadow: none; }
 </style>
 </head>
-<body data-deck="01 · The use case" data-part="Part 1 · Use case" data-next="02-context-layer.html">
+<body data-deck="01 · The use case" data-part="Part 1 · Use case" data-prev="00-agenda.html" data-next="02-context-layer.html">
 <main class="deck">
 
 <!-- 1 · cover -->
@@ -72,10 +175,10 @@
     <div class="agenda-row rise" style="--d:6; border-bottom:1px solid var(--ink)"><span class="t">10:25</span><span class="h3"><mark>Prompts</mark> — we build it, as a team</span><div class="chips"><span class="pill info">discover</span><span class="pill info">define</span><span class="pill info">design</span><span class="pill ok">build</span><span class="pill warn">readout</span></div></div>
   </div>
   <div class="grid4 mt-auto rise" style="--d:7; gap:14px">
-    <div class="card" style="padding:16px 20px"><span class="num">DECK 01 · 14 SLIDES</span><span class="h4">The use case</span></div>
-    <div class="card" style="padding:16px 20px"><span class="num">DECK 02 · 26 SLIDES</span><span class="h4">The context layer</span></div>
-    <div class="card" style="padding:16px 20px"><span class="num">DECK 03 · 27 SLIDES</span><span class="h4">Observability &amp; Langfuse</span></div>
-    <div class="card hl" style="padding:16px 20px"><span class="num" style="color:var(--ink-2)">DECK 04 · 25 SLIDES</span><span class="h4">The team session</span></div>
+    <div class="card" style="padding:16px 20px"><span class="num">DECK 01 · 19 SLIDES</span><span class="h4">The use case</span></div>
+    <div class="card" style="padding:16px 20px"><span class="num">DECK 02 · 28 SLIDES</span><span class="h4">The context layer</span></div>
+    <div class="card" style="padding:16px 20px"><span class="num">DECK 03 · 28 SLIDES</span><span class="h4">Observability &amp; Langfuse</span></div>
+    <div class="card hl" style="padding:16px 20px"><span class="num" style="color:var(--ink-2)">DECK 04 · 56 SLIDES</span><span class="h4">The team session</span></div>
   </div>
 </section>
 
@@ -155,6 +258,7 @@
       <span class="mono small">Zendesk #48233 · 2026-09-29 · Sam Patel, Support</span>
     </div>
     <p class="q-quote rise mt24" style="--d:1">“Orion Freight Systems is asking for a refund <span class="sweep" style="--d:3">45 days after their renewal</span>. Are they eligible, and who must approve it?”</p>
+    <p class="lead rise mt24" style="--d:2; max-width:1000px"><b>Orion Freight Systems</b> is an Orbisa customer: a freight and logistics company in Dallas, Texas, with about 2,300 people. It tracks its shipments with Orbisa Track and signed an Enterprise contract in August 2025.</p>
     <div class="row mt32 rise" style="--d:4; gap:10px">
       <span class="pill plain">Enterprise · USD 186,000 / year</span>
       <span class="pill plain">owner: Johanna Lindqvist</span>
@@ -213,6 +317,12 @@
     <div><span class="d">2026-09-08</span><div class="h4">QBR call</div><p class="small mt8">Promise: a credit, not a refund (Gong)</p></div>
     <div class="on"><span class="d">2026-09-29</span><div class="h4">Request · day 45</div><p class="small mt8">Support answers with the 2023 rule</p></div>
   </div>
+  <div class="notice mt24 rise" style="--d:3">
+    <div style="--c:var(--coral); --t:#fff0f0"><span class="k"><i>01</i>Facts expire</span><p>"30 days" and "Finance approves" were true once. Not anymore.</p></div>
+    <div style="--c:var(--blue); --t:#edf4ff"><span class="k"><i>02</i>The pieces live apart</span><p>Contract in Drive, approver in Slack, outages in two postmortems.</p></div>
+    <div style="--c:var(--green); --t:#e9f7ef"><span class="k"><i>03</i>Some sources win</span><p>A signed contract beats a policy page and a promise made on a call.</p></div>
+    <div style="--c:var(--ink); --t:var(--hl); --ct:var(--hl)"><span class="k"><i>?</i>Think about it</span><p style="color:var(--ink)">If the agent answers wrong, how would you see <b>which fact</b> it used?</p></div>
+  </div>
   <div class="win mt-auto rise" style="--d:4; margin-bottom:34px">
     <div class="marks">
       <div class="mk" style="left:calc(4/60*100%)"><span>INC-2291 · d4</span></div>
@@ -256,6 +366,10 @@
         <li>know the approver changed in March</li>
         <li>cite where each fact came from</li>
       </ol>
+      <div class="tip mt16">
+        <span class="tip-tag"><span class="ic"><span data-i="lightbulb" data-w="2"></span></span>Tip</span>
+        <p><b>Design from the inside out.</b> Take one problem at a time: read the contract, drop the stale page, add up the incidents, check who approves today, cite the source. Each step is something you can test and trace on its own.</p>
+      </div>
     </div>
   </div>
 </section>
@@ -280,32 +394,104 @@
   </div>
 </section>
 
-<!-- 9 · ground truth categories -->
+<!-- 9 · why ground truth -->
 <section class="slide" data-title="Ground truth">
-  <div class="row gap-l" style="flex:1; align-items:center">
-    <div class="col" style="flex:.9">
-      <div class="eyebrow rise">data/orbisa/truth/questions.jsonl</div>
-      <h2 class="h2 rise" style="--d:1"><mark>22 questions</mark> with known answers.</h2>
-      <p class="lead rise" style="--d:2">Each one has the expected answer, the facts it needs, the sources, and the trap that leads to a wrong answer.</p>
-      <div class="code rise mt16" style="--d:3; font-size:16px; white-space:pre-wrap">{ <span class="k">"id"</span>: <span class="s">"Q01"</span>, <span class="k">"as_of"</span>: <span class="s">"2026-09-29"</span>,
-  <span class="k">"expected_sources"</span>: [<span class="s">"drive/Orion…MSA.pdf"</span>, …],
-  <span class="k">"trap"</span>: <span class="s">"Using the 2023 30-day policy…"</span> }</div>
+  <div class="eyebrow rise">Ground truth · why it matters</div>
+  <h2 class="h2 rise mt16" style="--d:1">No ground truth, <mark>no proof</mark>.</h2>
+  <p class="lead rise mt16" style="--d:2">An agent always answers, and it always sounds sure. Ground truth is the wall it cannot move: questions where people already know the right answer.</p>
+  <div class="chain mt32 rise" style="--d:3">
+    <div class="who" style="--c:var(--green); --t:#e9f7ef">
+      <span class="k"><span class="ibox"><span data-i="users"></span></span><i>01 · humans</i></span>
+      <span class="h4">Know the truth</span>
+      <p>Support, RevOps and Legal own the rules. Only they can say what "correct" means for Orion.</p>
+      <span class="pill ok">signs off every answer</span>
     </div>
-    <div class="col" style="flex:1; justify-content:center; gap:22px">
-      <div class="bar rise" style="--d:2"><span>temporal</span><div class="track"><div class="fill" style="width:100%"></div></div><b>5</b></div>
-      <div class="bar rise" style="--d:3"><span>multi-source</span><div class="track"><div class="fill" style="width:100%"></div></div><b>5</b></div>
-      <div class="bar rise" style="--d:4"><span>lookup</span><div class="track"><div class="fill" style="width:80%"></div></div><b>4</b></div>
-      <div class="bar rise" style="--d:5"><span>conflict</span><div class="track"><div class="fill" style="width:60%"></div></div><b>3</b></div>
-      <div class="bar rise" style="--d:6"><span>false premise</span><div class="track"><div class="fill" style="width:60%"></div></div><b>3</b></div>
-      <div class="bar rise" style="--d:7"><span>alias</span><div class="track"><div class="fill" style="width:20%"></div></div><b>1</b></div>
-      <div class="bar rise" style="--d:8"><span>anchor (Q01)</span><div class="track"><div class="fill hl" style="width:20%"></div></div><b>1</b></div>
+    <div class="arrow"><span data-i="arrow-right"></span></div>
+    <div class="who" style="--c:var(--blue); --t:#edf4ff">
+      <span class="k"><span class="ibox"><span data-i="notebook-pen"></span></span><i>02 · engineers</i></span>
+      <span class="h4">Craft the file</span>
+      <p>Turn that knowledge into questions with an answer, facts, sources, a date and a trap.</p>
+      <span class="pill info">reviewed like code, in git</span>
     </div>
+    <div class="arrow"><span data-i="arrow-right"></span></div>
+    <div class="who" style="--c:var(--ink); --t:var(--hl); --ct:var(--hl)">
+      <span class="k"><span class="ibox ink"><span data-i="gauge"></span></span><i>03 · the system</i></span>
+      <span class="h4">Gets measured</span>
+      <p style="color:var(--ink)">Every prompt and model version runs against the same 22 questions. Langfuse scores each one.</p>
+      <span class="pill plain">a score, not an opinion</span>
+    </div>
+  </div>
+  <div class="grid2 mt-auto rise" style="--d:4; gap:18px">
+    <div class="vs"><span class="mono small vs-h" style="color:var(--coral)">WITHOUT GROUND TRUTH</span>
+      <div class="row"><span class="pill bad">"looks right to me" reviews</span><span class="pill bad">a prompt change breaks Q01, nobody notices</span><span class="pill bad">the team argues opinions</span><span class="pill bad">the judge is never checked</span></div></div>
+    <div class="vs"><span class="mono small vs-h" style="color:var(--green)">WITH GROUND TRUTH</span>
+      <div class="row"><span class="pill ok">a score per question and category</span><span class="pill ok">every change runs the same 22 questions</span><span class="pill ok">disagreements end with a source</span><span class="pill ok">the judge is checked against people</span></div></div>
+  </div>
+</section>
+
+<!-- 9b · crafting the truth file -->
+<section class="slide" data-title="Crafting the truth file">
+  <div class="eyebrow rise">data/orbisa/truth/questions.jsonl · how to craft it</div>
+  <h2 class="h2 rise mt16" style="--d:1">One line per question. <mark>Every field is a check.</mark></h2>
+  <div class="row gap-l mt32" style="flex:1">
+    <div class="col" style="flex:1.05; gap:16px">
+      <div class="code rise" style="--d:2; font-size:15px; line-height:1.55; white-space:pre-wrap; padding:18px 22px">{ <span class="k">"id"</span>: <span class="s">"Q01"</span>, <span class="k">"category"</span>: <span class="s">"anchor"</span>, <span class="k">"as_of"</span>: <span class="s">"2026-09-29"</span>,
+  <span class="k">"question"</span>: <span class="s">"Orion Freight Systems is asking for a refund 45 days after their renewal. Are they eligible, and who must approve it?"</span>,
+  <span class="k">"expected_answer"</span>: <span class="s">"Yes. Pro-rata refund under MSA clause 7.3 … approved by Tomás Herrera, not Finance."</span>,
+  <span class="k">"expected_facts"</span>: [<span class="s">"Orion renewed on 2026-08-15"</span>, <span class="s">"August 2026 uptime was 99.33%"</span>, …],
+  <span class="k">"expected_sources"</span>: [<span class="s">"drive/Orion_…_MSA_2025-08-15.pdf"</span>, <span class="s">"slack/revops/2026-03-03.json"</span>, …],
+  <span class="k">"trap"</span>: <span class="s">"Using the 2023 30-day policy (not eligible, Finance approves)…"</span> }</div>
+      <div class="row rise" style="--d:3; gap:8px; flex-wrap:wrap; align-items:center">
+        <span class="mono small" style="font-size:13px; letter-spacing:.08em; margin-right:4px">22 QUESTIONS</span>
+        <span class="pill plain">temporal 5</span><span class="pill plain">multi_source 5</span><span class="pill plain">lookup 4</span><span class="pill plain">conflict 3</span><span class="pill plain">false_premise 3</span><span class="pill plain">alias 1</span><span class="pill plain">anchor 1</span>
+      </div>
+      <div class="tip mt-auto rise" style="--d:5">
+        <span class="tip-tag"><span class="ic"><span data-i="lightbulb" data-w="2"></span></span>Tip</span>
+        <p><b>Write the trap first.</b> If you cannot name the wrong answer a careless agent would give, the question does not test anything.</p>
+      </div>
+    </div>
+    <div class="col fields rise" style="--d:3; flex:.95">
+      <div><span class="f"><code>question</code><span class="pill ok">human</span></span><p>Taken from a real ticket or Slack thread, in the user's own words.</p></div>
+      <div><span class="f"><code>expected_answer</code><span class="pill ok">human</span></span><p>Written and signed by the owner of the rule. Never by the model.</p></div>
+      <div><span class="f"><code>as_of</code><span class="pill info">engineer</span></span><p>The date of the question. In 2025 the same question had another answer.</p></div>
+      <div><span class="f"><code>expected_facts</code><span class="pill info">engineer</span></span><p>1–5 small facts split from the answer. A judge checks each one.</p></div>
+      <div><span class="f"><code>expected_sources</code><span class="pill info">engineer</span></span><p>Exact file paths. Code checks the citations, no LLM needed.</p></div>
+      <div><span class="f"><code>trap</code><span class="pill ok">human</span><span class="pill info">engineer</span></span><p>The wrong answer a careless agent gives. It names what you test.</p></div>
+      <div><span class="f"><code>category</code><span class="pill info">engineer</span></span><p>Groups scores by failure type: temporal, conflict, false premise…</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- 9c · agentic engineering today -->
+<section class="slide" data-title="Agentic engineering today">
+  <div class="eyebrow rise">Agentic engineering today</div>
+  <h2 class="h2 rise mt16" style="--d:1">Most of the work is in systems <mark>that already exist</mark>.</h2>
+  <p class="lead rise mt16" style="--d:2; max-width:1240px">B2B platforms, large systems and acquired companies are not rebuilt. They are migrated, adjusted and extended, with an agent at your side.</p>
+  <div class="gb-row mt32 rise" style="--d:3">
+    <div class="gb green">
+      <div class="gb-h"><span class="gb-tag">Greenfield</span><span class="pill plain">the exception</span></div>
+      <ul><li>A blank repo. You pick the stack.</li><li>No users, no data, no history.</li><li>Mistakes are cheap.</li></ul>
+    </div>
+    <div class="gb brown">
+      <div class="gb-h"><span class="gb-tag">Brownfield</span><span class="pill brown">the normal job</span></div>
+      <ul><li>Code, data and users already exist.</li><li>Old and new rules live side by side, like Brisklane and Orbisa.</li><li>Every change must keep what works working.</li></ul>
+      <div class="row" style="gap:8px; flex-wrap:wrap"><span class="pill brown">migrations</span><span class="pill brown">adjustments</span><span class="pill brown">enhancements</span><span class="pill brown">integrations after an acquisition</span></div>
+    </div>
+  </div>
+  <div class="col mt-auto rise" style="--d:4; gap:10px">
+  <span class="mono small" style="font-size:13px; letter-spacing:.1em; color:var(--brown); font-weight:500">HOW AN AGENTIC ENGINEER WORKS IN BROWNFIELD</span>
+  <div class="ae-steps">
+    <div><span class="n">01</span><span class="h4">Read the system</span><span class="small">The agent explores code, data and docs before it changes anything.</span></div>
+    <div><span class="n">02</span><span class="h4">Frame the change</span><span class="small">The engineer sets the problem, the limits and the gates.</span></div>
+    <div><span class="n">03</span><span class="h4">Change in small steps</span><span class="small">The agent proposes. You review every diff.</span></div>
+    <div><span class="n">04</span><span class="h4">Prove it still works</span><span class="small">Tests, ground truth and traces, not a feeling.</span></div>
+  </div>
   </div>
 </section>
 
 <!-- 10 · what exists -->
 <section class="slide" data-title="What exists">
-  <div class="eyebrow rise">Brownfield</div>
+  <div class="eyebrow bf rise"><span class="bf-tag">Brownfield</span>you join a system that already runs</div>
   <h2 class="h2 rise mt16" style="--d:1">The team already built <mark>Helix</mark> and <mark>Ask Orbisa</mark>.</h2>
   <div class="flow mt48 rise" style="--d:2">
     <div class="card" style="gap:14px">
@@ -337,6 +523,7 @@
       <span class="small">Claude Agent SDK</span>
     </div>
   </div>
+  <div class="bf-note mt32 rise" style="--d:3"><span class="bf-tag">Our job today</span><span>We do not rebuild Helix or Ask Orbisa. We <b>observe</b> them, <b>measure</b> them and <b>change</b> them in small steps.</span></div>
   <div class="grid4 mt-auto rise" style="--d:3; grid-template-columns:repeat(5,1fr); margin-bottom:28px">
     <div class="stat"><div class="n">7</div><div class="l">systems</div></div>
     <div class="stat"><div class="n">67</div><div class="l">episodes</div></div>
@@ -362,11 +549,76 @@
   </div>
 </section>
 
+<!-- 11b · how AI-native engineers think -->
+<section class="slide" data-title="How AI-native engineers think">
+  <div class="eyebrow rise">AI-native engineering · the mindset</div>
+  <h2 class="h2 rise mt16" style="--d:1">Code is cheap now. <mark>Understanding is not.</mark></h2>
+  <div class="mind mt32 rise" style="--d:2">
+    <div class="io old">
+      <div class="io-h"><span class="io-tag">The old habit</span><span>inside out</span></div>
+      <ol><li>Pick the stack.</li><li>Build the parts.</li><li>Look for a problem it solves.</li></ol>
+      <p class="io-f">Fast code, wrong problem.</p>
+    </div>
+    <div class="io new">
+      <div class="io-h"><span class="io-tag">AI-native</span><span>start from the end</span></div>
+      <div class="io-steps">
+        <div><span class="n">1</span><b>The pain</b><span>Support gives wrong refund answers. Money and trust leak out.</span></div>
+        <div><span class="n">2</span><b>What "done" looks like</b><span>Q01: eligible, Tomás approves, every fact cited.</span></div>
+        <div><span class="n">3</span><b>The hurdles</b><span>7 systems, stale pages, aliases, dates that change the answer.</span></div>
+        <div><span class="n">4</span><b>Only then, the solution</b><span>Graph, MCP, agent, traces. The agent writes most of the code.</span></div>
+      </div>
+    </div>
+  </div>
+  <div class="tip mt24 rise" style="--d:3">
+    <span class="tip-tag"><span class="ic"><span data-i="lightbulb" data-w="2"></span></span>Before you open the editor</span>
+    <p>Can you say <b>who is hurting</b>, <b>what "right" looks like</b> and <b>what makes it hard</b>? If not, you are not ready to prompt the agent.</p>
+  </div>
+  <div class="col mt-auto rise" style="--d:4; gap:12px">
+    <div class="es">
+      <span class="es-h">E-shaped<small>Sarah DaVanzo's 4 E's</small></span>
+      <div><b>Experience</b><span>knows the business and its people</span></div>
+      <div><b>Expertise</b><span>deep fundamentals, to judge what the agent writes</span></div>
+      <div><b>Exploration</b><span>asks questions before giving answers</span></div>
+      <div><b>Execution</b><span>ships, measures and proves it works</span></div>
+    </div>
+    <div class="warn-note"><span class="pill bad">not 100% domain</span><span>AI-co-authored pull requests had <b>1.7× more issues</b> and <b>75% more logic errors</b> than human ones. You only judge what you know.</span><span class="src-c">CodeRabbit · 470 PRs · Dec 2025</span></div>
+  </div>
+</section>
+
+<!-- 11c · the AI-native engineer in 4 layers -->
+<section class="slide" data-title="The AI-native engineer">
+  <div class="eyebrow rise">The AI-native engineer · 4 layers + 1 cross-plane</div>
+  <h2 class="h2 rise mt16" style="--d:1">The base is the widest. <mark>Everything rests on it.</mark></h2>
+  <div class="ain mt24 rise" style="--d:2">
+    <div class="layers">
+      <div class="ly l3" style="width:74%"><div class="ly-h"><i>Layer 3</i><b>Roles</b><small>the uniform · changes fastest</small></div><div class="ly-c"><span class="lc">FDE</span><span class="lc">Agentic AI Engineer</span><span class="lc today">Context Engineer</span><span class="lc today">AI Evals Engineer</span><span class="lc">AI Data Engineer</span><span class="lc">AI Platform / LLMOps</span></div></div>
+      <div class="ly l2" style="width:82%"><div class="ly-h"><i>Layer 2</i><b>Skins</b><small>what you wear · 2–3 per person, by phase</small></div><div class="ly-c"><span class="lc sk"><b>Prototyper</b><small>picks and kills ideas</small></span><span class="lc sk"><b>Builder</b><small>idea to production</small></span><span class="lc sk"><b>Sweeper</b><small>simplifies, unships</small></span><span class="lc sk"><b>Grower</b><small>product to fit</small></span><span class="lc sk today"><b>Maintainer</b><small>reliable at scale</small></span></div></div>
+      <div class="ly l1" style="width:91%"><div class="ly-h"><i>Layer 1</i><b>The harness</b><small>agent = model + harness</small></div><div class="ly-c"><span class="grp"><small>build the agent</small><span class="lc">Prompt</span><i>⊂</i><span class="lc today">Context</span><i>⊂</i><span class="lc">Harness</span></span><span class="grp"><small>close the loop</small><span class="lc">Loop</span><i>→</i><span class="lc today">Observe</span><i>→</i><span class="lc today">Eval</span></span></div></div>
+      <div class="ly l0" style="width:100%"><div class="ly-h"><i>Layer 0</i><b>Foundations</b><small>you only judge what you know: the code and the business</small></div><div class="ly-c"><span class="grp"><small>engineering</small><span class="lc">Software</span><span class="lc">Data</span><span class="lc">DevOps &amp; platform</span><span class="lc">ML</span></span><span class="grp dom"><small>domain</small><span class="lc today dm">the business</span><span class="lc dm">its rules</span><span class="lc dm">its people</span><span class="lc dm">problem framing</span></span></div></div>
+    </div>
+    <div class="xplane">
+      <span class="xp-k">Cross-plane</span>
+      <b class="xp-t">Judgment</b>
+      <span class="xp-s">You decide <em>what</em>. The agent does <em>how</em>.</span>
+      <div class="xp-items">
+        <div><span>01</span>What to build<small>the problem worth solving</small></div>
+        <div><span>02</span>Whether it is right<small>verify against ground truth</small></div>
+        <div><span>03</span>What to cut<small>agents add, people subtract</small></div>
+      </div>
+      <p class="xp-ev">~400K Claude Code sessions: <b>domain expertise</b>, not coding background, predicts success.</p>
+    </div>
+  </div>
+  <div class="row mt-auto rise" style="--d:3; justify-content:space-between; align-items:center; gap:24px">
+    <span class="row" style="gap:12px; align-items:center"><span class="lc today" style="font-size:13px">today's workshop</span><span class="body" style="font-size:18px">The disciplines converge. <b>Taste comes from the base.</b></span></span>
+    <span class="mono small" style="font-size:11.5px; text-align:right; line-height:1.5">Anthropic, How Claude Code is used in practice, Jun 2026 · Böckeler, Harness engineering, Apr 2026<br>Cherny, five archetypes, Jun 2026 · Husain &amp; Shankar, AI evals: error analysis first</span>
+  </div>
+</section>
+
 <!-- 12 · how we work today -->
 <section class="slide" data-title="How we work today">
-  <div class="eyebrow rise">You are new engineers at Orbisa</div>
+  <div class="eyebrow mission rise"><span class="ms-tag">Your role</span>You are the new engineers at Orbisa</div>
   <h2 class="h2 rise mt16" style="--d:1">We build the observability <mark>as a team</mark>.</h2>
-  <p class="lead rise mt16" style="--d:2">Claude Code is our pair. It proposes and asks. The team decides at every gate.</p>
+  <p class="lead rise mt16" style="--d:2; max-width:none"><span class="cc"><span data-i="claude"></span>Claude Code</span> is our pair. It proposes and asks. The team decides at every gate.</p>
   <div class="steps mt48 rise" style="--d:3; min-height:330px">
     <div><span class="ibox"><span data-i="search"></span></span><span class="num mt8">00 – 02</span><span class="h3">Discover</span><span class="small">Read the brief. Run the system. Collect evidence.</span></div>
     <div><span class="ibox"><span data-i="target"></span></span><span class="num mt8">03 – 04</span><span class="h3">Define</span><span class="small">Pick one problem statement. Narrow it.</span><span class="pill plain mt8" style="align-self:flex-start">decisions/01</span></div>
@@ -374,10 +626,36 @@
     <div class="on"><span class="ibox"><span data-i="boxes"></span></span><span class="num mt8">06 – 12</span><span class="h3">Build</span><span class="small">Tracing, prompts, datasets, experiments, evals, dashboards.</span></div>
     <div><span class="ibox"><span data-i="file-text"></span></span><span class="num mt8">13</span><span class="h3">Readout</span><span class="small">Did we meet our success criteria?</span><span class="pill plain mt8" style="align-self:flex-start">decisions/03</span></div>
   </div>
+  <div class="own-note mt24 rise" style="--d:4"><span class="ms-tag">From here on</span><span>Helix and Ask Orbisa are now <b>yours</b>. You trace them, score them and watch them, starting with prompt 00.</span></div>
   <div class="row mt-auto rise" style="--d:5; gap:14px">
     <span class="btn dark">Next: the context layer <span class="kbd">02</span></span>
     <span class="btn">Brief: docs/orbisa-case-study.pdf</span>
   </div>
+</section>
+
+<!-- your turn -->
+<section class="slide hatch" data-title="Your turn">
+  <div class="yt-body">
+    <div class="col" style="gap:0">
+      <div class="eyebrow rise">Your turn · before Part 2</div>
+      <h2 class="display yt-title rise mt24" style="--d:1">Questions?<br><mark>What do you think?</mark></h2>
+      <p class="lead rise mt24" style="--d:2">Now it is your turn. No question is too small.</p>
+      <div class="yt-ask rise mt32" style="--d:2">
+        <span><span class="ibox hl"><span data-i="vote"></span></span>Raise your hand</span>
+        <span class="or">or</span>
+        <span><span class="ibox"><span data-i="messages-square"></span></span>Write in the chat</span>
+      </div>
+    </div>
+    <div>
+      <div class="yt-q-h rise" style="--d:2">Think about it</div>
+      <div class="yt-q">
+      <div class="rise" style="--d:3"><span>01</span><p>Where does your company keep the same fact in more than one place? Which one wins today?</p></div>
+      <div class="rise" style="--d:4"><span>02</span><p>Q01 had four answers. Which source would you have trusted first, and why?</p></div>
+      <div class="rise" style="--d:5"><span>03</span><p>Look at the four layers. Where are you strongest today? Where do you want to grow?</p></div>
+      </div>
+    </div>
+  </div>
+  <div class="yt-next mt24 rise" style="--d:6"><span class="yt-tag">Next · Part 2</span><span><b>The context layer.</b> How Helix turns seven systems into facts an agent can trust.</span><span class="kbd">→</span></div>
 </section>
 
 </main>
