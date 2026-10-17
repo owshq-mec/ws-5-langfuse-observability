@@ -155,3 +155,16 @@ Langfuse, not read about them.
   CEO + CFO discount rule as no longer valid (Q07).
 - `read_source` has no as-of date: it returns a whole document, including any part written after the
   question's date (for example the full Zendesk thread).
+- Future leaks through dates (found with Langfuse traces in the reference build, 2026-10-16): on an as-of date
+  before a change, `search_context` still shows `valid_until` set by the later decision (Q09 on 2025-10-01 sees
+  `valid_until: 2025-11-04`), `list_sources` lists every document with its date, and `read_source` returns
+  combined files whole (all Gong calls, all HubSpot rows, the whole Zendesk thread). About half of the temporal
+  answers mention a date they could not know (Q03 on 2025-12-01 cites the 2026-03-03 move to RevOps). A code
+  score "answer mentions a date after as-of on which a source document was recorded" makes it measurable.
+- Wrong end date: the 12-month Brisklane retention fact is closed on 2025-11-04 (the decision day), not on
+  2026-01-01 (the effective date). `find_entities` summaries are built from all episodes regardless of date.
+- HubSpot rows are dated by "Last Modified Date", so as of 2026-09-29 only 1 of 5 companies exists in Helix.
+- Ground truth vs Helix paths: Helix serves `hubspot/deals.csv` and `hubspot/contacts.csv` inside
+  `hubspot/companies.csv`, `gong/calls.json` inside `gong/transcripts.json`, and Zendesk tickets as
+  `zendesk/comments/<id>.json`. Q09 and Q21 list expected sources recorded after their as-of date. Source-recall
+  evaluators must map paths and skip later documents; the ground truth is left as it is.

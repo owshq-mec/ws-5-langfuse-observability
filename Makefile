@@ -1,7 +1,7 @@
 COMPOSE = docker compose -f infra/docker-compose.yml --env-file .env
 Q ?= Q01
 
-.PHONY: env up down ps logs ingest ask ask-local rebuild test
+.PHONY: env up down ps logs ingest ask ask-local rebuild test alerts
 
 env:            ## generate .env secrets (safe to re-run)
 	uv run python scripts/init_env.py
@@ -32,3 +32,6 @@ rebuild:        ## rebuild the Helix image after code changes and restart the MC
 
 test:
 	uv run pytest -q
+
+alerts:         ## alerts received by the local webhook receiver (alert-sink)
+	uv run python scripts/alert_sink.py --tail

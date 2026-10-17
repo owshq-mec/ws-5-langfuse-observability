@@ -60,6 +60,10 @@ x-langfuse-env: &langfuse-env
   # Code evaluators (TypeScript/JavaScript only) run inside the worker. Trusted local workshop only.
   LANGFUSE_CODE_EVAL_DISPATCHER: insecure-local
   QUEUE_CONSUMER_CODE_EVAL_EXECUTION_QUEUE_IS_ENABLED: "true"
+  # Alert webhooks go only to our local receiver (alert-sink), so alert payloads never leave the laptop.
+  # The whitelist exempts that private hostname from Langfuse's SSRF block; ALLOWED_HOSTS rejects any other host.
+  LANGFUSE_WEBHOOK_WHITELISTED_HOST: alert-sink
+  LANGFUSE_WEBHOOK_ALLOWED_HOSTS: alert-sink
 
 x-langfuse-depends: &langfuse-depends
   postgres:
@@ -116,6 +120,22 @@ services:
     depends_on:
       neo4j:
         condition: service_healthy
+
+  alert-sink:
+    <<: *helix
+    # Langfuse webhooks accept only ports 80 and 443, so the receiver listens on 80 inside the network.
+    command: ["python", "/app/scripts/alert_sink.py", "--port", "80"]
+    restart: unless-stopped
+    volumes:
+      - ../scripts:/app/scripts:ro
+      - ../.helix:/app/.helix
+    ports:
+      - "8787:80"
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:80/')"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
 
   agent:
     <<: *helix

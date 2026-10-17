@@ -29,8 +29,10 @@ make ask Q=Q01           # asks a ground-truth question through the agent
 | Helix MCP server | http://localhost:8765/mcp | tools: `search_context`, `find_entities`, `read_source`, `list_sources` |
 | Neo4j Browser | http://localhost:7474 | user `neo4j`, password `NEO4J_PASSWORD` in `.env` |
 | MinIO (Langfuse blob storage) | http://localhost:9090 | used by Langfuse for events, media and exports |
+| alert-sink | http://localhost:8787 | local receiver for Langfuse alert webhooks (`http://alert-sink/langfuse` inside Docker); `make alerts` |
 
-Other commands: `make ps`, `make logs`, `make rebuild` (after changing `src/`), `make down`, `make test`.
+Other commands: `make ps`, `make logs`, `make rebuild` (after changing `src/`), `make down`, `make test`,
+`make alerts`.
 
 ## Repository
 

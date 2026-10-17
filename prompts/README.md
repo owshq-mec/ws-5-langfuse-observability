@@ -37,7 +37,7 @@ Each file has four parts:
 ## Environment (already running before the session)
 
 ```bash
-make up        # Neo4j, Helix MCP (:8765), Langfuse v4 (:3000) in Docker
+make up        # Neo4j, Helix MCP (:8765), Langfuse v4 (:3000), alert-sink (:8787) in Docker
 make ingest    # load the Orbisa corpus into the graph (once)
 make ask Q=Q01 # ask a ground-truth question
 ```
@@ -51,8 +51,14 @@ Langfuse UI: http://localhost:3000 — user and password are in `.env` (`LANGFUS
   `http://langfuse-web:3000`. The Python SDK stays on **v4** (`langfuse>=4.18,<5`).
 - Ground every API call in current docs (langfuse.com/docs, append `.md` for plain text) or the installed
   package source in `.venv`. Never guess a signature.
+- This Langfuse runs in v4 **events_only** mode: read data through the v2/v3 endpoints
+  (`/api/public/v2/observations`, `/api/public/v3/scores`, `/api/public/v2/metrics`). The v1 `observations`
+  and `traces` endpoints answer "not available on deployments running in Langfuse v4 events_only mode".
+- Read SDK objects as attributes (`page.data[0].trace_id`), not as dicts.
 - Observability is a layer: Helix and the agent must keep working when Langfuse is down.
 - Self-hosted limits we accept: server-side masking, audit logs and data retention need an Enterprise key
   (we use SDK-side masking); code evaluators run TypeScript/JavaScript only; LLM-as-a-judge needs an LLM
-  connection in project settings.
+  connection (it can be created through the public API). Alerts and their automations are UI-only.
+- `.env` values win over the shell (see `src/context/config.py`). To test "Langfuse keys missing", point
+  `HELIX_ENV_FILE=/dev/null` at an empty file instead of editing `.env`.
 - After a code change in `src/`, run `make rebuild` so the Helix container picks it up.
