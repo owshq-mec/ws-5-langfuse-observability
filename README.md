@@ -10,7 +10,7 @@ Then follow the team session in [`prompts/`](prompts/README.md).
 
 > Orbisa, Brisklane, Helix and every person and number in this repo are fictional.
 
-![Architecture](docs/architecture-wide.png)
+![Architecture](docs/architecture.png)
 
 ## Run everything in Docker
 

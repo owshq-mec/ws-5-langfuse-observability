@@ -1,0 +1,272 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Architecture · Orbisa · Helix · Langfuse</title>
+<link rel="stylesheet" href="assets/langfuse.css">
+<style>
+  html, body { overflow: visible; height: auto; background: var(--page); }
+  #canvas { width: 1600px; margin: 0 auto; background: var(--bg); position: relative; padding: 72px 72px 56px;
+    background-image: linear-gradient(rgba(34,34,32,.045) 1px, transparent 1px), linear-gradient(90deg, rgba(34,34,32,.045) 1px, transparent 1px);
+    background-size: 40px 40px; }
+  .main { width: 1290px; }
+  header h1 { font-family: var(--display); font-weight: 500; font-size: 58px; line-height: 1.06; letter-spacing: -.03em; margin-top: 14px; }
+  header p { font-size: 24px; color: var(--muted); margin-top: 16px; line-height: 1.45; }
+  .band { position: relative; border: 2px solid var(--c); background: var(--t); padding: 30px 30px 30px; margin-top: 0; }
+  .band .bl { display: flex; align-items: center; justify-content: space-between; margin-bottom: 22px; }
+  .band .bn { display: flex; align-items: center; gap: 14px; font-family: var(--display); font-weight: 500; font-size: 34px; letter-spacing: -.02em; }
+  .band .bn .ix { font-family: var(--mono); font-size: 16px; font-weight: 500; background: var(--c); color: var(--ct, #fff); padding: 5px 10px; letter-spacing: .04em; }
+  .band .bm { font-family: var(--mono); font-size: 16px; color: var(--ink-2); }
+  .src { --c: #4e9cff; --t: #edf4ff; }
+  .helix { --c: #22a06b; --t: #e9f7ef; }
+  .agent { --c: #ff5d5f; --t: #fff0f0; }
+  .lf { --c: #222220; --t: #fdffd6; --ct: var(--hl); }
+  .tiles { display: grid; grid-template-columns: repeat(7, 1fr); gap: 12px; }
+  .tile { background: #fff; border: 1.5px solid var(--c); padding: 16px 14px; display: flex; flex-direction: column; gap: 8px; }
+  .tile .tn { display: flex; align-items: center; gap: 9px; font-size: 21px; font-weight: 600; }
+  .tile .tn [data-i] { width: 24px; height: 24px; }
+  .tile .td { font-size: 16px; color: var(--ink-2); line-height: 1.35; }
+  .tile .tf { font-family: var(--mono); font-size: 13px; color: var(--muted); margin-top: auto; }
+  .flow { display: grid; grid-template-columns: 1fr 44px 1fr 44px 1.25fr 44px 1.15fr; align-items: stretch; }
+  .flow .ar { display: grid; place-items: center; } .flow .ar [data-i] { width: 30px; height: 30px; color: var(--c); }
+  .box { background: #fff; border: 1.5px solid var(--c); padding: 18px 18px; display: flex; flex-direction: column; gap: 9px; }
+  .box .k { font-family: var(--mono); font-size: 13px; letter-spacing: .1em; text-transform: uppercase; color: var(--muted); }
+  .box .v { font-size: 23px; font-weight: 600; display: flex; align-items: center; gap: 10px; line-height: 1.2; }
+  .box .v [data-i] { width: 26px; height: 26px; }
+  .box .d { font-size: 16.5px; color: var(--ink-2); line-height: 1.4; }
+  .box .p { font-family: var(--mono); font-size: 14px; color: var(--ink-2); margin-top: auto; }
+  .box.strong { border-width: 3px; }
+  .box.fill { background: var(--c); color: #fff; } .box.fill .k, .box.fill .d, .box.fill .p { color: rgba(255,255,255,.85); }
+  .mcp { margin-top: 18px; display: grid; grid-template-columns: 330px 1fr; gap: 18px; align-items: stretch; }
+  .tools { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
+  .tool { background: #fff; border: 1.5px dashed var(--c); padding: 12px 14px; display: flex; flex-direction: column; gap: 6px; justify-content: center; }
+  .tool .tc { font-family: var(--mono); font-size: 16.5px; font-weight: 500; }
+  .tool .tt { font-size: 15px; color: var(--ink-2); }
+  .conn { display: grid; grid-template-columns: 1fr; justify-items: center; height: 110px; position: relative; }
+  .agentrow { display: grid; grid-template-columns: 1fr 44px 1.5fr 44px 1fr; align-items: stretch; }
+  .agentrow .ar { display: grid; place-items: center; } .agentrow .ar [data-i] { width: 30px; height: 30px; color: var(--c); }
+  .feat { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+  .feat .box { border-color: var(--ink); }
+  .feat .box .v [data-i] { color: var(--ink); }
+  .feat .pr { font-family: var(--mono); font-size: 13px; background: var(--hl); border: 1px solid var(--hl-deep); padding: 2px 8px; align-self: flex-start; color: var(--ink); }
+  .stack { margin-top: 18px; display: grid; grid-template-columns: repeat(6, 1fr); border: 1.5px solid var(--ink); background: #fff; }
+  .stack > div { padding: 14px 14px; display: flex; flex-direction: column; gap: 6px; }
+  .stack > div + div { border-left: 1px solid var(--line); }
+  .stack .sn { display: flex; align-items: center; gap: 8px; font-size: 18px; font-weight: 600; } .stack .sn [data-i] { width: 22px; height: 22px; }
+  .stack .sd { font-family: var(--mono); font-size: 13px; color: var(--muted); }
+  .built { font-family: var(--mono); font-size: 15px; background: var(--ink); color: var(--hl); padding: 6px 12px; }
+  .wire { position: absolute; transform: translate(-50%, -50%); display: inline-flex; align-items: center; gap: 10px; z-index: 3;
+    padding: 7px 16px 7px 7px; border-radius: 999px; background: #fff; border: 1.5px solid var(--cc);
+    font-family: var(--mono); font-size: 15.5px; color: var(--ink); white-space: nowrap;
+    box-shadow: 0 8px 22px rgba(34,34,32,.12), 0 1px 0 rgba(34,34,32,.05); }
+  .wire .ic { width: 30px; height: 30px; border-radius: 50%; background: var(--cc); display: grid; place-items: center; flex: none; color: #fff; }
+  .wire .ic svg { width: 17px; height: 17px; }
+  .wire b { font-weight: 600; }
+  .wire .tx { display: flex; flex-direction: column; line-height: 1.25; }
+  .wire .tx small { font-size: 13px; color: var(--muted); }
+  .wire.hl { background: var(--hl); }
+  footer .lg svg { width: 60px; height: 16px; overflow: visible; }
+  #rail { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; overflow: visible; }
+  footer { margin-top: 34px; display: flex; justify-content: space-between; align-items: center; font-family: var(--mono); font-size: 15px; color: var(--muted); }
+  footer .lg { display: flex; gap: 30px; align-items: center; }
+  footer .lg span { display: inline-flex; gap: 10px; align-items: center; white-space: nowrap; }
+  footer > span { white-space: nowrap; }
+</style>
+</head>
+<body>
+<div id="canvas">
+  <div class="main">
+    <header>
+      <div class="eyebrow">Architecture · AIDE Workshop 5 · everything runs in Docker Compose</div>
+      <h1>From seven systems to <mark>answers you can prove</mark>.</h1>
+      <p>Helix turns Orbisa's exports into dated facts. Ask Orbisa answers through MCP. Langfuse shows what happened, whether it was right, and what it cost.</p>
+    </header>
+
+    <div class="conn" style="height:60px"></div>
+
+    <!-- 01 sources -->
+    <section class="band src" id="b-src">
+      <div class="bl"><span class="bn"><span class="ix">01</span>Sources</span><span class="bm">data/orbisa · 64 files · real export formats</span></div>
+      <div class="tiles">
+        <div class="tile"><span class="tn"><span data-i="slack"></span>Slack</span><span class="td">decisions in threads</span><span class="tf">channel/day JSON</span></div>
+        <div class="tile"><span class="tn"><span data-i="confluence"></span>Confluence</span><span class="td">policies, postmortems</span><span class="tf">HTML export</span></div>
+        <div class="tile"><span class="tn"><span data-i="notion"></span>Notion</span><span class="td">Brisklane handbook</span><span class="tf">Markdown + CSV</span></div>
+        <div class="tile"><span class="tn"><span data-i="googledrive"></span>Drive</span><span class="td">signed contracts</span><span class="tf">PDF</span></div>
+        <div class="tile"><span class="tn"><span data-i="hubspot"></span>HubSpot</span><span class="td">customers, deals</span><span class="tf">CRM CSV</span></div>
+        <div class="tile"><span class="tn"><span data-i="zendesk"></span>Zendesk</span><span class="td">tickets, replies</span><span class="tf">ticket export</span></div>
+        <div class="tile"><span class="tn"><span data-i="gong"></span>Gong</span><span class="td">call transcripts</span><span class="tf">calls JSON</span></div>
+      </div>
+    </section>
+
+    <div class="conn" id="c1" style="height:170px"></div>
+
+    <!-- 02 helix -->
+    <section class="band helix" id="b-helix">
+      <div class="bl"><span class="bn"><span class="ix">02</span>Helix · context engine</span><span class="bm">src/context · 106 entities · 367 facts</span></div>
+      <div class="flow">
+        <div class="box"><span class="k">Ingestion</span><span class="v"><span data-i="claude"></span>Extract facts</span><span class="d">One parser per system. Claude Haiku 5.5 pulls entities and facts.</span><span class="p">Graphiti episodes</span></div>
+        <div class="ar"><span data-i="arrow-right"></span></div>
+        <div class="box"><span class="k">Ontology</span><span class="v"><span data-i="pydantic"></span>8 entity types</span><span class="d">Customer, Person, Team, Policy, Contract, Plan, Incident, Product.</span><span class="p">Pydantic models</span></div>
+        <div class="ar"><span data-i="arrow-right"></span></div>
+        <div class="box strong"><span class="k">Context graph</span><span class="v"><span data-i="neo4j"></span>Graphiti on Neo4j</span><span class="d">Facts are edges with <b>valid from / until</b> and their <b>sources</b>. Old facts are closed, not deleted.</span><span class="p">neo4j :7474 · :7687</span></div>
+        <div class="ar"><span data-i="arrow-right"></span></div>
+        <div class="box"><span class="k">Retrieval</span><span class="v"><span data-i="search"></span>Hybrid + as-of</span><span class="d">Keyword + vector (local fastembed), merged with RRF, then filtered by the question's date.</span><span class="p">no embedding API key</span></div>
+      </div>
+      <div class="mcp" id="mcp">
+        <div class="box fill" id="mcpbox"><span class="k">Delivery</span><span class="v"><span data-i="modelcontextprotocol" data-ink></span>helix-mcp</span><span class="d">MCP Python SDK · streamable HTTP</span><span class="p">:8765/mcp</span></div>
+        <div class="tools">
+          <div class="tool"><span class="tc">search_context</span><span class="tt">facts + status + sources, for an as-of date</span></div>
+          <div class="tool"><span class="tc">find_entities</span><span class="tt">customers, people, policies</span></div>
+          <div class="tool"><span class="tc">read_source</span><span class="tt">the original document</span></div>
+          <div class="tool"><span class="tc">list_sources</span><span class="tt">every document, by system</span></div>
+        </div>
+      </div>
+    </section>
+
+    <div class="conn" id="c2" style="height:150px"></div>
+
+    <!-- 03 agent -->
+    <section class="band agent" id="b-agent">
+      <div class="bl"><span class="bn"><span class="ix">03</span>Ask Orbisa · agent</span><span class="bm">src/clients/agent · make ask Q=Q01</span></div>
+      <div class="agentrow">
+        <div class="box"><span class="k">Question</span><span class="v"><span data-i="user"></span>An employee asks</span><span class="d">"Is Orion eligible for a refund?" + the <b>as-of date</b>.</span></div>
+        <div class="ar"><span data-i="arrow-right"></span></div>
+        <div class="box strong" id="agentbox"><span class="k">Claude Agent SDK</span><span class="v"><span data-i="claude"></span>Claude Opus 5.5</span><span class="d">Runs the Claude Code CLI. Only tools: <span class="mono" style="font-size:15px">mcp__helix__*</span>. Searches several times, reads the contract, checks dates.</span><span class="p">system prompt · max 15 turns</span></div>
+        <div class="ar"><span data-i="arrow-right"></span></div>
+        <div class="box"><span class="k">Answer</span><span class="v"><span data-i="circle-check"></span>With sources</span><span class="d">Direct answer, reasons with dates and numbers, a final <b>Sources:</b> line.</span></div>
+      </div>
+    </section>
+
+    <div class="conn" id="c3" style="height:150px"></div>
+
+    <!-- 04 langfuse -->
+    <section class="band lf" id="b-lf">
+      <div class="bl"><span class="bn"><span class="ix">04</span><span data-i="langfuse" style="width:40px;height:36px"></span>Langfuse v4 · self-hosted</span><span class="built">src/observability · built by the team · prompts 06–12</span></div>
+      <div class="feat">
+        <div class="box"><span class="k">See</span><span class="v"><span data-i="list-tree"></span>Traces · sessions</span><span class="d">One trace per question: agent → model calls → tools → retrieval. Cost and latency.</span><span class="pr">06 · 07 · 08</span></div>
+        <div class="box"><span class="k">Change safely</span><span class="v"><span data-i="file-text"></span>Prompt management</span><span class="d">System prompt and tool descriptions, versioned with labels.</span><span class="pr">09</span></div>
+        <div class="box"><span class="k">Test</span><span class="v"><span data-i="flask-conical"></span>Datasets · experiments</span><span class="d">22 ground-truth questions; compare prompt versions run by run.</span><span class="pr">10</span></div>
+        <div class="box"><span class="k">Judge</span><span class="v"><span data-i="scale"></span>Evaluators · queues</span><span class="d">Code checks, LLM-as-a-judge, human review of the worst answers.</span><span class="pr">10 · 11</span></div>
+        <div class="box"><span class="k">Watch</span><span class="v"><span data-i="layout-dashboard"></span>Dashboards · alerts</span><span class="d">Health at a glance; an alert when quality drops.</span><span class="pr">12</span></div>
+        <div class="box"><span class="k">Investigate</span><span class="v"><span data-i="plug"></span>MCP server · API</span><span class="d">An agent reads the failures and proposes a fix.</span><span class="pr">12</span></div>
+      </div>
+      <div class="stack">
+        <div><span class="sn"><span data-i="langfuse"></span>langfuse-web</span><span class="sd">UI · API · OTLP · :3000</span></div>
+        <div><span class="sn"><span data-i="cpu"></span>worker</span><span class="sd">ingestion · evals</span></div>
+        <div><span class="sn"><span data-i="clickhouse"></span>ClickHouse</span><span class="sd">observations · scores</span></div>
+        <div><span class="sn"><span data-i="postgresql"></span>Postgres 17</span><span class="sd">prompts · datasets</span></div>
+        <div><span class="sn"><span data-i="redis"></span>Redis 7</span><span class="sd">queue · cache</span></div>
+        <div><span class="sn"><span data-i="minio"></span>MinIO</span><span class="sd">payloads · :9090</span></div>
+      </div>
+    </section>
+
+    <footer>
+      <div class="lg">
+        <span><svg viewBox="0 0 60 16"><defs><linearGradient id="lg1" gradientUnits="userSpaceOnUse" x1="4" y1="8" x2="46" y2="8"><stop offset="0" stop-color="#4e9cff"/><stop offset="1" stop-color="#22a06b"/></linearGradient></defs><path d="M4 8 H46" stroke="url(#lg1)" stroke-width="5" stroke-linecap="round"/><path d="M44 2.5 L56 8 L44 13.5 L47.5 8 Z" fill="#22a06b"/></svg>data</span>
+        <span><svg viewBox="0 0 60 16"><path d="M4 4 H48" stroke="#22a06b" stroke-width="4" stroke-linecap="round"/><path d="M4 12 H48" stroke="#ff5d5f" stroke-width="4" stroke-linecap="round"/></svg>request · response</span>
+        <span><svg viewBox="0 0 60 16"><path d="M4 8 H46" stroke="#222220" stroke-width="5" stroke-linecap="round" stroke-dasharray="0 10"/><path d="M44 2.5 L56 8 L44 13.5 L47.5 8 Z" fill="#222220"/></svg>telemetry · prompts</span>
+        <span><span data-i="docker" style="width:24px;height:24px"></span>docker compose</span>
+      </div>
+      <span>Orbisa, Brisklane and Helix are fictional</span>
+    </footer>
+  </div>
+  <svg id="rail"></svg>
+</div>
+<script src="assets/icons.js"></script>
+<script>
+  const COL = { blue: '#4e9cff', green: '#22a06b', coral: '#ff5d5f', ink: '#222220' };
+  const canvas = document.getElementById('canvas');
+  const svg = document.getElementById('rail');
+  let defs = '', body = '', gid = 0;
+
+  const R = el => { const c = canvas.getBoundingClientRect(), b = el.getBoundingClientRect();
+    return { l: b.left - c.left, r: b.right - c.left, t: b.top - c.top, b: b.bottom - c.top, cx: (b.left + b.right) / 2 - c.left, cy: (b.top + b.bottom) / 2 - c.top }; };
+  const $ = s => document.querySelector(s);
+  function grad(x1, y1, x2, y2, a, b) {
+    const id = 'g' + (gid++);
+    defs += `<linearGradient id="${id}" gradientUnits="userSpaceOnUse" x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}"><stop offset="0" stop-color="${a}"/><stop offset="1" stop-color="${b}"/></linearGradient>`;
+    return `url(#${id})`;
+  }
+  function arrow(color) {
+    const id = 'a' + color.slice(1);
+    if (!defs.includes(`id="${id}"`)) defs += `<marker id="${id}" viewBox="0 0 12 12" refX="8.5" refY="6" markerUnits="userSpaceOnUse" markerWidth="20" markerHeight="20" orient="auto"><path d="M1.5 1.5 L11 6 L1.5 10.5 L4.2 6 Z" fill="${color}" stroke="${color}" stroke-width="1" stroke-linejoin="round"/></marker>`;
+    return `url(#${id})`;
+  }
+  // orthogonal polyline with rounded corners
+  function rounded(pts, r = 26) {
+    let d = `M ${pts[0][0]} ${pts[0][1]}`;
+    for (let i = 1; i < pts.length - 1; i++) {
+      const [ax, ay] = pts[i - 1], [px, py] = pts[i], [bx, by] = pts[i + 1];
+      const l1 = Math.hypot(px - ax, py - ay), l2 = Math.hypot(bx - px, by - py), k = Math.min(r, l1 / 2, l2 / 2);
+      d += ` L ${px - (px - ax) / l1 * k} ${py - (py - ay) / l1 * k} Q ${px} ${py} ${px + (bx - px) / l2 * k} ${py + (by - py) / l2 * k}`;
+    }
+    const z = pts[pts.length - 1]; return d + ` L ${z[0]} ${z[1]}`;
+  }
+  function wire(d, stroke, { w = 5, dotted = false, end = null } = {}) {
+    body += `<path d="${d}" fill="none" stroke="rgba(255,255,255,.8)" stroke-width="${w + (dotted ? 5 : 7)}" stroke-linecap="round" stroke-linejoin="round"` + (dotted ? ` stroke-dasharray="0 ${w * 2.3}"` : '') + '/>';
+    body += `<path d="${d}" fill="none" stroke="${stroke}" stroke-width="${w}" stroke-linecap="round" stroke-linejoin="round" filter="url(#soft)"`
+      + (dotted ? ` stroke-dasharray="0 ${w * 2.3}"` : '') + (end ? ` marker-end="${arrow(end)}"` : '') + '/>';
+  }
+  function port(x, y, color, r = 7) {
+    body += `<circle cx="${x}" cy="${y}" r="${r + 3}" fill="rgba(255,255,255,.8)"/><circle cx="${x}" cy="${y}" r="${r}" fill="#fff" stroke="${color}" stroke-width="3"/><circle cx="${x}" cy="${y}" r="${r * .38}" fill="${color}"/>`;
+  }
+  function icon(name, color = '#fff') {
+    const ic = window.LF_ICONS[name];
+    const a = ic.stroke ? `fill="none" stroke="${color}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"` : ic.raw ? '' : `fill="${color}"`;
+    return `<svg viewBox="${ic.vb}" ${a}>${ic.body}</svg>`;
+  }
+  function chip(x, y, color, ic, html, cls = '') {
+    const el = document.createElement('div');
+    el.className = 'wire ' + cls; el.style.setProperty('--cc', color);
+    el.style.left = x + 'px'; el.style.top = y + 'px';
+    el.innerHTML = `<span class="ic">${icon(ic)}</span><span class="tx">${html}</span>`;
+    canvas.appendChild(el);
+  }
+
+  function draw() {
+    const src = R($('#b-src')), hx = R($('#b-helix')), ag = R($('#b-agent')), lf = R($('#b-lf'));
+    const mcpRow = R($('#mcp')), mcp = R($('#mcpbox')), claude = R($('#agentbox'));
+    defs = `<filter id="soft" filterUnits="userSpaceOnUse" x="0" y="0" width="${canvas.clientWidth}" height="${canvas.clientHeight}"><feDropShadow dx="0" dy="2" stdDeviation="1.6" flood-color="#222220" flood-opacity=".18"/></filter>`;
+
+    // 1 · Sources → Helix: fan-in from every tile into one trunk
+    const mx = (hx.l + hx.r) / 2, ym = src.b + 72, yEnd = hx.t - 3;
+    document.querySelectorAll('#b-src .tile').forEach(t => {
+      const r = R(t), x = r.cx, y = r.b;
+      wire(`M ${x} ${y} L ${x} ${src.b + 10} C ${x} ${src.b + 52}, ${mx} ${ym - 34}, ${mx} ${ym}`, grad(x, y, mx, ym, COL.blue, '#3aa58a'), { w: 3 });
+      port(x, y, COL.blue, 5);
+    });
+    wire(`M ${mx} ${ym} L ${mx} ${yEnd}`, grad(mx, ym, mx, yEnd, '#3aa58a', COL.green), { w: 6, end: COL.green });
+    port(mx, ym, COL.green, 6);
+    chip(mx, (ym + yEnd) / 2 + 2, COL.green, 'split', '<b>helix-ingest</b><small>64 files → 67 dated episodes</small>');
+
+    // 2 · Helix ↔ Ask Orbisa: two parallel rounded routes (request up, response down)
+    const ymid = (hx.b + ag.t) / 2, x1 = mcp.cx, x2 = claude.cx, o = 11;
+    const resp = [[x1 + o, mcp.b], [x1 + o, ymid - o], [x2 + o, ymid - o], [x2 + o, claude.t]];
+    const req = [[x2 - o, claude.t], [x2 - o, ymid + o], [x1 - o, ymid + o], [x1 - o, mcp.b]];
+    wire(rounded(resp, 30), grad(x1, mcp.b, x2, claude.t, COL.green, COL.coral), { w: 5, end: COL.coral });
+    wire(rounded(req, 30), grad(x2, claude.t, x1, mcp.b, COL.coral, COL.green), { w: 5, end: COL.green });
+    port(x1 + o, mcp.b, COL.green, 6); port(x2 - o, claude.t, COL.coral, 6);
+    chip((x1 + x2) / 2, ymid, COL.ink, 'plug', '<b>MCP tool calls</b><small>streamable HTTP · traceparent header</small>');
+
+    // 3 · Ask Orbisa → Langfuse: OTLP spans (dotted) and prompt versions (dotted, upward)
+    const xa = claude.cx - 170, xp = claude.cx + 170, yc = (ag.b + lf.t) / 2;
+    wire(`M ${xa} ${claude.b} L ${xa} ${lf.t - 4}`, grad(xa, claude.b, xa, lf.t, COL.coral, COL.ink), { w: 6, dotted: true, end: COL.ink });
+    port(xa, claude.b, COL.coral, 6);
+    chip(xa, yc, COL.coral, 'activity', '<b>OTLP spans</b><small>ask-orbisa + Claude Code CLI</small>');
+    wire(`M ${xp} ${lf.t} L ${xp} ${claude.b + 4}`, grad(xp, lf.t, xp, claude.b, COL.ink, COL.coral), { w: 6, dotted: true, end: COL.coral });
+    port(xp, lf.t, COL.ink, 6);
+    chip(xp, yc, COL.ink, 'file-text', '<b>prompt versions</b><small>fetched by label</small>', 'hl');
+
+    // 4 · Helix spans rail on the right, rounded
+    const xr = hx.r + 112, y0 = mcpRow.cy, y1 = lf.t + 118;
+    wire(rounded([[hx.r, y0], [xr, y0], [xr, y1], [lf.r + 2, y1]], 34), grad(xr, y0, xr, y1, COL.green, COL.ink), { w: 6, dotted: true, end: COL.ink });
+    port(hx.r, y0, COL.green, 6);
+    chip(xr, (y0 + y1) / 2, COL.green, 'search', '<b>Helix spans</b><small>retriever · tool</small><small>same trace id</small>');
+
+    svg.setAttribute('viewBox', `0 0 ${canvas.clientWidth} ${canvas.clientHeight}`);
+    svg.innerHTML = `<defs>${defs}</defs>${body}`;
+  }
+  document.fonts.ready.then(() => requestAnimationFrame(draw));
+</script>
+</body>
+</html>
