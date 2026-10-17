@@ -6,3 +6,4 @@ __pycache__/
 .helix/
 .fastembed_cache/
 .playwright-mcp
+.DS_Store
