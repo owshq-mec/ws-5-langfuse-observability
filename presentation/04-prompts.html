@@ -1,0 +1,609 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>04 · The team session — prompts 00–13</title>
+<link rel="stylesheet" href="assets/langfuse.css">
+<style>
+  .term { background: #161514; border: 1px solid #3a3835; box-shadow: 0 30px 60px rgba(0,0,0,.35); font-family: var(--mono); font-size: 16px; color: #e6e6e0; }
+  .term .tb { display: flex; gap: 8px; align-items: center; padding: 12px 16px; border-bottom: 1px solid #3a3835; color: #8f8f88; font-size: 13px; }
+  .term .tb i { width: 11px; height: 11px; border-radius: 50%; background: #3a3835; display: inline-block; }
+  .term .bd { padding: 20px 22px; line-height: 1.75; white-space: pre-wrap; }
+  .term .p { color: var(--hl); } .term .g { color: #8f8f88; } .term .ok { color: #5fd39a; }
+  .usecase { border-left: 4px solid var(--ink); background: var(--paper); padding: 20px 24px; display: flex; flex-direction: column; gap: 8px; }
+  .usecase .lab { font-family: var(--mono); font-size: 13px; letter-spacing: .1em; color: var(--muted); }
+  .gate { border: 2px solid var(--ink); background: var(--hl); padding: 16px 22px; display: flex; gap: 16px; align-items: center; }
+  .gate .gl { font-family: var(--mono); font-size: 13px; letter-spacing: .12em; background: var(--ink); color: var(--hl); padding: 4px 10px; flex: none; }
+  .gate .gt { font-size: 20px; color: var(--ink); line-height: 1.4; }
+  .phead { display: flex; align-items: center; gap: 18px; }
+  .phead .pn { font-family: var(--mono); font-size: 44px; font-weight: 500; letter-spacing: -.02em; border: 2px solid var(--ink); padding: 4px 14px; background: var(--paper); }
+  .phead .ph { font-family: var(--mono); font-size: 13px; letter-spacing: .12em; text-transform: uppercase; color: var(--muted); }
+  .gantt { position: relative; height: 92px; display: flex; border: 1.5px solid var(--ink); }
+  .gantt > div { display: flex; flex-direction: column; justify-content: center; padding: 0 16px; border-right: 1px solid var(--ink); gap: 4px; }
+  .gantt > div:last-child { border-right: 0; }
+  .gantt .t { font-family: var(--mono); font-size: 12.5px; color: var(--muted); }
+  .gantt .n { font-size: 20px; font-weight: 500; }
+  .gantt .on { background: var(--hl); }
+  .gantt-ticks { position: relative; height: 26px; font-family: var(--mono); font-size: 13px; color: var(--muted); }
+  .gantt-ticks span { position: absolute; top: 6px; transform: translateX(-50%); }
+  .tpl { font-family: var(--mono); font-size: 34px; line-height: 1.7; letter-spacing: -.01em; }
+  .ph-slot { display: inline-block; padding: 0 12px; border: 1.5px dashed var(--ink); background: var(--paper); }
+  .ph-slot.a { background: #e3efff; border-color: var(--blue); } .ph-slot.b { background: #ffe0e0; border-color: var(--coral); }
+  .ph-slot.c { background: #fff1d6; border-color: var(--amber); } .ph-slot.d { background: var(--hl); border-color: var(--ink); }
+  .dots { display: inline-flex; gap: 5px; } .dots i { width: 13px; height: 13px; border: 1.5px solid var(--ink); border-radius: 50%; display: inline-block; }
+  .dots i.f { background: var(--ink); }
+  .arch { position: relative; width: 1360px; height: 520px; }
+  .arch > svg { position: absolute; inset: 0; overflow: visible; }
+  .abox { position: absolute; border: 1.5px solid var(--ink); background: var(--paper); padding: 12px 16px; display: flex; flex-direction: column; gap: 4px; }
+  .abox .k { font-family: var(--mono); font-size: 12px; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
+  .abox .v { font-size: 19px; font-weight: 500; display: flex; align-items: center; gap: 10px; }
+  .abox .p { font-family: var(--mono); font-size: 12.5px; color: var(--muted); }
+  .alab { position: absolute; font-family: var(--mono); font-size: 13px; background: var(--bg); padding: 2px 8px; border: 1px solid var(--line); white-space: nowrap; }
+  .stairs { display: flex; align-items: flex-end; gap: 10px; height: 470px; }
+  .stairs > div { flex: 1; display: flex; flex-direction: column; justify-content: flex-start; gap: 8px; border: 1.5px solid var(--ink); background: var(--paper);
+    padding: 16px 14px; box-shadow: 8px 8px 0 rgba(34,34,32,.08); }
+  .stairs .pn { font-family: var(--mono); font-size: 26px; font-weight: 500; }
+  .stairs .w { font-size: 15.5px; color: var(--ink-2); line-height: 1.35; }
+  .stairs .on { background: var(--hl); }
+  .tp { display: flex; font-family: var(--mono); font-size: 30px; border: 1.5px solid var(--ink); background: var(--card); }
+  .tp > span { padding: 16px 14px 12px; position: relative; display: flex; flex-direction: column; gap: 8px; }
+  .tp > span i { font-style: normal; font-size: 12.5px; color: var(--ink-2); letter-spacing: .02em; } .tp > span + span { border-left: 1px dashed var(--line); }
+  .tp-l { display: flex; font-family: var(--mono); font-size: 13px; color: var(--muted); }
+  .lane { border: 1px solid var(--line); background: var(--paper); }
+  .seq { position: relative; width: 100%; height: 400px; }
+  .seq > svg { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; }
+  .vrail { display: flex; align-items: center; gap: 0; }
+  .vrail .v { border: 1.5px solid var(--ink); background: var(--paper); padding: 22px 24px; min-width: 260px; flex: 1; display: flex; flex-direction: column; gap: 8px; }
+  .vrail .ln { width: 46px; height: 2px; background: var(--ink); }
+  .dash { display: grid; grid-template-columns: repeat(3, 1fr); grid-auto-rows: 132px; gap: 14px; }
+  .dash > div { border: 1px solid var(--line); background: var(--card); padding: 14px 16px; display: flex; flex-direction: column; gap: 8px; box-shadow: var(--shadow); }
+  .dash .wt { font-family: var(--mono); font-size: 12.5px; color: var(--muted); display: flex; gap: 8px; align-items: center; }
+  .dash > div > svg { flex: 1; width: 100%; }
+  .refs { display: grid; grid-template-columns: 1fr 1fr; gap: 0 40px; }
+  .refs > div { display: grid; grid-template-columns: 40px 1fr; gap: 14px; padding: 22px 0; border-bottom: 1px solid var(--line); align-items: start; }
+  .refs .t { font-size: 20px; font-weight: 500; } .refs .ru { font-family: var(--mono); font-size: 13px; color: var(--muted); margin-top: 3px; }
+  .tri { position: relative; width: 640px; height: 560px; }
+  .tri > svg { position: absolute; inset: 0; overflow: visible; }
+  .tri .role { position: absolute; width: 230px; transform: translate(-50%, -50%); display: flex; flex-direction: column; align-items: center; text-align: center; gap: 8px; }
+  .tri .role .ibox { width: 92px; height: 92px; } .tri .role .ibox [data-i] { width: 44px; height: 44px; }
+</style>
+</head>
+<body data-deck="04 · The team session" data-part="Part 4 · Prompts" data-prev="03-langfuse.html">
+<main class="deck">
+
+<!-- 1 · cover -->
+<section class="slide dark" data-title="Cover">
+  <div class="row" style="flex:1; align-items:center; gap:64px">
+    <div class="col" style="flex:1">
+      <div class="eyebrow rise">Part 4 · 10:25 – 13:00</div>
+      <h1 class="display rise" style="--d:1">Build it<br><span style="color:var(--hl)">as a team.</span></h1>
+      <p class="lead rise" style="--d:2">Fourteen prompts. One shared screen. Claude Code proposes, the team decides, and every step ends at a gate.</p>
+      <div class="row rise" style="--d:3; gap:10px"><span class="chip">prompts/00 → 13</span><span class="chip">decisions/</span><span class="chip">src/observability/</span></div>
+    </div>
+    <div class="term rise" style="--d:2; flex:1">
+      <div class="tb"><i></i><i></i><i></i><span style="margin-left:10px">claude · ws-5-langfuse-observability</span></div>
+      <div class="bd"><span class="p">&gt;</span> You are pairing with a team of engineers who
+  just joined Orbisa. We inherit an existing
+  system (brownfield)…
+<span class="g">  [prompts/00-working-agreement.md]</span>
+
+<span class="ok">●</span> Rules, in my words:
+  1. You decide, I propose 2–3 options.
+  2. I show a plan and wait for "go".
+  3. After each change I show where to look.
+  …
+<span class="ok">●</span> One question before we start: who on the team
+  has used OpenTelemetry before?<span class="blink">▍</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- 2 · roles -->
+<section class="slide gridbg" data-title="Three roles">
+  <div class="row gap-l" style="flex:1; align-items:center">
+    <div class="col" style="flex:.85">
+      <div class="eyebrow rise">Who does what</div>
+      <h2 class="h2 rise" style="--d:1">Three roles. <mark>One decides.</mark></h2>
+      <p class="lead rise" style="--d:2; font-size:24px">Claude Code is a strong pair, not the owner. Every choice that shapes the system is a team vote.</p>
+      <div class="usecase rise" style="--d:3"><span class="lab">THE RULE</span><span class="body">No gate passed, no next prompt.</span></div>
+    </div>
+    <div class="tri fade" style="--d:2">
+      <svg viewBox="0 0 640 560"><defs><marker id="t1" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#222220"/></marker></defs>
+        <g stroke="#222220" stroke-width="2" fill="none">
+          <line x1="200" y1="160" x2="110" y2="370" marker-end="url(#t1)"/>
+          <line x1="440" y1="160" x2="530" y2="370" marker-end="url(#t1)"/>
+          <line x1="470" y1="470" x2="190" y2="470" marker-end="url(#t1)"/>
+        </g>
+        <g font-family="Geist Mono, monospace" font-size="15" fill="#3d3d38">
+          <text x="0" y="250">keeps time</text><text x="0" y="272">reads aloud</text><text x="520" y="250">pastes</text><text x="520" y="272">prompts</text><text x="205" y="456" font-size="13.5">proposes, builds, proves</text>
+        </g>
+      </svg>
+      <div class="role" style="left:320px; top:90px"><span class="ibox"><span data-i="presentation"></span></span><span class="h4">Facilitator</span><span class="small">Pastes prompts, keeps time, reads Claude aloud.</span></div>
+      <div class="role" style="left:110px; top:450px"><span class="ibox hl"><span data-i="users"></span></span><span class="h4">Team</span><span class="small">Talks, challenges, decides at each gate.</span></div>
+      <div class="role" style="left:540px; top:450px"><span class="ibox ink"><span data-i="claude"></span></span><span class="h4">Claude Code</span><span class="small">Options, plans, code, evidence.</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- 3 · working agreement -->
+<section class="slide" data-title="Working agreement">
+  <div class="row gap-l" style="flex:1">
+    <div class="col" style="flex:.7">
+      <div class="phead rise"><span class="pn">00</span><div><div class="ph">Setup</div><div class="h3">Working agreement</div></div></div>
+      <p class="lead rise mt16" style="--d:1; font-size:24px">Pasted once. It sets how Claude behaves for the rest of the day.</p>
+      <div class="gate rise mt-auto" style="--d:4"><span class="gl">GATE</span><span class="gt">The team answered Claude's question and everyone has seen the rules.</span></div>
+    </div>
+    <div class="docx rise" style="--d:2; flex:1.3; align-self:center">
+      <div class="dh"><span data-i="file-text" style="width:18px;height:18px"></span>prompts/00-working-agreement.md · the seven rules</div>
+      <div class="check" style="border-top:0; padding:6px 22px 10px">
+        <div><span class="ring">1</span><span><b>We decide, you propose.</b> 2–3 options, trade-offs, a recommendation. Then stop.</span><span></span></div>
+        <div><span class="ring">2</span><span><b>Plan before code.</b> Five bullets, wait for "go".</span><span></span></div>
+        <div><span class="ring">3</span><span><b>Show the proof.</b> A command, a file, or a place in Langfuse.</span><span></span></div>
+        <div><span class="ring">4</span><span><b>Ask, don't assume.</b> Ambiguity becomes a question.</span><span></span></div>
+        <div><span class="ring">5</span><span><b>Write decisions down</b> in <span class="mono" style="font-size:16px">decisions/</span>.</span><span></span></div>
+        <div><span class="ring">6</span><span><b>Plain language.</b> Several of us are not native speakers.</span><span></span></div>
+        <div><span class="ring">7</span><span><b>Don't rewrite Helix.</b> Make it observable, prove whether it works.</span><span></span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 4 · anatomy of a prompt -->
+<section class="slide gridbg" data-title="Anatomy of a prompt">
+  <div class="eyebrow rise">How to read every prompt file</div>
+  <h2 class="h2 rise mt16" style="--d:1">Four parts. <mark>Always the same.</mark></h2>
+  <div class="row gap-l mt32" style="flex:1; align-items:center">
+    <div class="docx rise" style="--d:2; flex:1.2">
+      <div class="dh"><span data-i="file-text" style="width:18px;height:18px"></span>prompts/06-build-trace-helix.md</div>
+      <div class="sec"><span class="k"><span class="ring">1</span>Facilitator</span><span class="small">First build increment. The team checks the result in the Langfuse UI, not in the code.</span></div>
+      <div class="sec" style="background:var(--hl)"><span class="k"><span class="ring">2</span>Prompt</span><span class="mono" style="font-size:14.5px; line-height:1.6">Build increment 1 from decisions/02-solution-design.md: trace the Helix MCP server. Plan first, wait for go. …</span></div>
+      <div class="sec"><span class="k"><span class="ring">3</span>Discussion</span><span class="small">Open a search observation: can you see which facts were hidden as future?</span></div>
+      <div class="sec"><span class="k"><span class="ring">4</span>Gate</span><span class="small">Retriever observations are visible in Langfuse, and the agent still works with the keys removed.</span></div>
+    </div>
+    <div class="col rise" style="--d:3; flex:.8; gap:30px">
+      <div class="row" style="gap:14px; align-items:center"><span class="ring">1</span><span class="body"><b>For the facilitator.</b> What to set up, what to watch.</span></div>
+      <div class="row" style="gap:14px; align-items:center"><span class="ring" style="background:var(--hl)">2</span><span class="body"><b>Paste as is</b> into Claude Code.</span></div>
+      <div class="row" style="gap:14px; align-items:center"><span class="ring">3</span><span class="body"><b>Ask the room</b> while Claude works.</span></div>
+      <div class="row" style="gap:14px; align-items:center"><span class="ring">4</span><span class="body"><b>Agree</b> before moving on.</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- 5 · session map -->
+<section class="slide" data-title="Session map">
+  <div class="eyebrow rise">10:25 → 13:00 · suggested timing</div>
+  <h2 class="h2 rise mt16" style="--d:1">Most of the time goes to <mark>building</mark>.</h2>
+  <div class="rise mt48" style="--d:2">
+    <div class="gantt">
+      <div style="width:12.9%"><span class="t">00–02</span><span class="n">Discover</span></div>
+      <div style="width:12.9%"><span class="t">03–04</span><span class="n">Define</span></div>
+      <div style="width:12.9%"><span class="t">05</span><span class="n">Design</span></div>
+      <div class="on" style="width:51.6%"><span class="t">06–12 · break inside</span><span class="n">Build</span></div>
+      <div style="width:9.7%"><span class="t">13</span><span class="n">Readout</span></div>
+    </div>
+    <div class="gantt-ticks"><span style="left:0; transform:none">10:25</span><span style="left:12.9%">10:45</span><span style="left:25.8%">11:05</span><span style="left:38.7%">11:25</span><span style="left:90.3%">12:45</span><span style="left:100%; transform:translateX(-100%)">13:00</span></div>
+  </div>
+  <div class="grid4 mt48" style="grid-template-columns:repeat(5,1fr)">
+    <div class="card rise" style="--d:3"><span class="num">OUTPUT</span><span class="small">Shared summary, the system running, gaps with evidence.</span></div>
+    <div class="card rise" style="--d:3"><span class="num">OUTPUT</span><span class="small"><span class="mono">decisions/01-problem-statement.md</span></span></div>
+    <div class="card rise" style="--d:4"><span class="num">OUTPUT</span><span class="small"><span class="mono">decisions/02-solution-design.md</span></span></div>
+    <div class="card hl rise" style="--d:4"><span class="num" style="color:var(--ink-2)">OUTPUT</span><span class="small" style="color:var(--ink-2)">Seven increments in <span class="mono">src/observability/</span>, each visible in Langfuse.</span></div>
+    <div class="card rise" style="--d:5"><span class="num">OUTPUT</span><span class="small"><span class="mono">decisions/03-readout.md</span></span></div>
+  </div>
+</section>
+
+<!-- 6 · discover -->
+<section class="slide" data-title="Discover">
+  <div class="eyebrow rise">Discover · 01 – 02</div>
+  <h2 class="h2 rise mt16" style="--d:1">Understand before you <mark>touch anything</mark>.</h2>
+  <div class="grid2 mt32" style="gap:24px; flex:1">
+    <div class="col rise" style="--d:2">
+      <div class="phead"><span class="pn">01</span><div><div class="ph">Understand the brief</div><div class="h4">Read the PDF together</div></div></div>
+      <p class="body">Claude summarizes the case study and quizzes the team. No second walkthrough of the story.</p>
+      <div class="usecase"><span class="lab">DISCUSS</span><span class="body">Who is hurt today when Ask Orbisa is wrong?</span></div>
+      <div class="gate mt-auto"><span class="gl">GATE</span><span class="gt">The Orion case in one sentence. Top three open questions.</span></div>
+    </div>
+    <div class="col rise" style="--d:3">
+      <div class="phead"><span class="pn">02</span><div><div class="ph">Explore the brownfield</div><div class="h4">Run the system, collect evidence</div></div></div>
+      <div class="statsbar mono" style="font-size:16px"><div>make ps</div><div>make ask Q=Q01</div><div>Neo4j :7474</div></div>
+      <div class="usecase"><span class="lab">DISCUSS</span><span class="body">What can we <b>not</b> see today? Make a gap list with evidence.</span></div>
+      <div class="gate mt-auto"><span class="gl">GATE</span><span class="gt">Everyone saw the system answer. The gap list is on the board.</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- 7 · problem statement template -->
+<section class="slide gridbg" data-title="Select a problem">
+  <div class="phead rise"><span class="pn">03</span><div><div class="ph">Define</div><div class="h3">Select the problem statement</div></div></div>
+  <div class="tpl rise mt48" style="--d:1">“<span class="ph-slot a">who</span> cannot <span class="ph-slot b">do what</span><br>because <span class="ph-slot c">cause</span>, which leads to<br><span class="ph-slot d">business impact</span>.”</div>
+  <div class="grid4 mt-auto" style="gap:16px">
+    <div class="card rise" style="--d:2"><span class="h4"><span data-i="sparkles"></span>5 candidates</span><span class="small">Claude drafts them. Really different from each other.</span></div>
+    <div class="card rise" style="--d:3"><span class="h4"><span data-i="shield-check"></span>Must cover</span><span class="small">Trust in answers · change safety · cost or operations.</span></div>
+    <div class="card rise" style="--d:4"><span class="h4"><span data-i="file-search"></span>Evidence</span><span class="small">Two facts each, with page or file path. Measurable? Size?</span></div>
+    <div class="card hl rise" style="--d:5"><span class="h4"><span data-i="vote"></span>Dot vote</span><span class="small" style="color:var(--ink-2)">Three votes each. Claude does not pick.</span></div>
+  </div>
+  <div class="usecase rise mt16" style="--d:6"><span class="lab">WATCH FOR</span><span class="body">A solution in disguise: "we need dashboards" is not a problem. Rewrite it.</span></div>
+</section>
+
+<!-- 8 · narrow -->
+<section class="slide" data-title="Narrow it">
+  <div class="row gap-l" style="flex:1">
+    <div class="col" style="flex:.8">
+      <div class="phead rise"><span class="pn">04</span><div><div class="ph">Define</div><div class="h3">Narrow the statement</div></div></div>
+      <p class="lead rise" style="--d:1; font-size:24px">Still too wide for a morning. Claude asks five questions, <b style="color:var(--ink)">one at a time</b>.</p>
+      <div class="docx rise mt-auto" style="--d:4"><div class="dh"><span data-i="file-text" style="width:18px;height:18px"></span>decisions/01-problem-statement.md</div>
+        <div class="sec"><span class="k">contains</span><span class="small">statement · primary user · scope · success criteria · constraints · out of scope · risks</span></div></div>
+    </div>
+    <div class="funnel rise" style="--d:2; flex:1.2; justify-content:center">
+      <div style="width:100%"><span>For whom exactly?</span><span class="num">one primary user</span></div>
+      <div style="width:90%"><span>Which questions?</span><span class="num">a subset of the 22</span></div>
+      <div class="on" style="width:80%"><span>What is success?</span><span class="num">3–5 measurable criteria</span></div>
+      <div style="width:70%"><span>Which constraints?</span><span class="num">self-hosted · fail open</span></div>
+      <div style="width:60%"><span>What is out?</span><span class="num">explicitly</span></div>
+      <div class="gate" style="width:52%; clip-path:none; height:auto; justify-content:flex-start"><span class="gl">GATE</span><span class="gt" style="font-size:17px">The team agrees with every line.</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- 9 · success criteria -->
+<section class="slide" data-title="Success criteria">
+  <div class="eyebrow rise">What "measurable" looks like</div>
+  <h2 class="h2 rise mt16" style="--d:1">Numbers the team <mark>chooses</mark>, Langfuse <mark>measures</mark>.</h2>
+  <table class="t mt32 rise" style="--d:2">
+    <tr><th>Criterion</th><th>Target</th><th>How measured</th><th>Today</th></tr>
+    <tr class="on"><td>Correct on temporal questions</td><td class="mono">≥ 0.8</td><td>LLM judge on the dataset (prompt 10)</td><td><span class="pill plain">?</span></td></tr>
+    <tr><td>Cites the expected sources</td><td class="mono">≥ 0.7</td><td>code evaluator <span class="mono">source_recall</span></td><td><span class="pill plain">?</span></td></tr>
+    <tr><td>Says "I don't know" on false premises</td><td class="mono">3 / 3</td><td>code evaluator <span class="mono">abstained</span></td><td><span class="pill plain">?</span></td></tr>
+    <tr><td>Cost per correct answer</td><td class="mono">≤ $0.20</td><td>run-level evaluator + Metrics API</td><td><span class="pill plain">?</span></td></tr>
+    <tr><td>Agent works with Langfuse down</td><td class="mono">yes</td><td>run with keys removed, every gate</td><td><span class="pill plain">?</span></td></tr>
+  </table>
+  <div class="row mt-auto rise" style="--d:3; gap:14px; align-items:center">
+    <span class="pill warn">example values — the team sets the real ones in prompt 04</span>
+    <span class="small">Which criterion fails today? That one goes on the readout.</span>
+  </div>
+</section>
+
+<!-- 10 · design options -->
+<section class="slide" data-title="Design options">
+  <div class="phead rise"><span class="pn">05</span><div><div class="ph">Design</div><div class="h3">Three ways to make it observable</div></div></div>
+  <table class="t mt32 rise" style="--d:1; font-size:18px">
+    <tr><th style="width:300px">Approach</th><th>What we see</th><th>Effort</th><th>Lock-in</th><th>Main risk</th></tr>
+    <tr><td><span class="tag">A</span> Langfuse SDK only</td><td>Helix tools + the agent function</td><td><span class="dots"><i class="f"></i><i></i><i></i></span></td><td><span class="dots"><i class="f"></i><i class="f"></i><i></i></span></td><td>model calls inside the CLI stay hidden</td></tr>
+    <tr class="on"><td><span class="tag ink">B</span> Standards first</td><td>agent · model calls · tools · retrieval in one tree</td><td><span class="dots"><i class="f"></i><i class="f"></i><i></i></span></td><td><span class="dots"><i class="f"></i><i></i><i></i></span></td><td>trace linking and cost not yet proven on self-hosted</td></tr>
+    <tr><td><span class="tag">C</span> LLM gateway / proxy</td><td>model calls and cost, no retrieval detail</td><td><span class="dots"><i class="f"></i><i class="f"></i><i></i></span></td><td><span class="dots"><i class="f"></i><i class="f"></i><i class="f"></i></span></td><td>extra hop; Helix still needs its own spans</td></tr>
+  </table>
+  <div class="row gap-l mt-auto rise" style="--d:2; align-items:stretch">
+    <div class="usecase grow"><span class="lab">PART 1 FIRST</span><span class="body">Concepts with one Orbisa question: trace, observation types, context propagation, OTLP.</span></div>
+    <div class="usecase grow"><span class="lab">PART 3 AFTER THE VOTE</span><span class="body">Mermaid trace diagram, verb-first names, scores ↔ criteria, ordered increments.</span></div>
+  </div>
+  <p class="small mono rise mt16" style="--d:3; font-size:13px">starting point only — Claude builds this table with evidence in prompt 05; dots = more is more</p>
+</section>
+
+<!-- 11 · target architecture -->
+<section class="slide gridbg" data-title="Target architecture">
+  <div class="eyebrow rise">If the team picks B</div>
+  <h2 class="h2 rise mt16" style="--d:1">Two ways in, <mark>one trace</mark>.</h2>
+  <div class="arch mt24 fade" style="--d:2">
+    <svg viewBox="0 0 1360 520"><defs><marker id="aa" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#222220"/></marker></defs>
+      <g stroke="#222220" stroke-width="2" fill="none">
+        <path d="M170 126 V 278" marker-end="url(#aa)"/>
+        <path d="M320 328 H 518" marker-end="url(#aa)"/>
+        <path d="M680 376 V 418" marker-end="url(#aa)"/>
+        <path d="M520 78 H 322" marker-end="url(#aa)"/>
+        <path d="M840 78 C 940 78, 960 170, 1038 170" marker-end="url(#aa)"/>
+        <path d="M840 328 H 1038" marker-end="url(#aa)"/>
+        <path d="M170 376 V 505 H 1190 V 402" marker-end="url(#aa)" stroke-dasharray="7 5"/>
+        <path d="M170 30 V 12 H 1190 V 118" marker-end="url(#aa)"/>
+      </g>
+    </svg>
+    <div class="abox" style="left:20px; top:30px; width:300px; height:96px"><span class="k">agent observation · SDK</span><span class="v"><span data-i="claude"></span>ask()</span><span class="p">src/clients/agent</span></div>
+    <div class="abox" style="left:20px; top:280px; width:300px; height:96px"><span class="k">inside the Agent SDK</span><span class="v"><span data-i="terminal"></span>Claude Code CLI</span><span class="p">model calls · tool calls</span></div>
+    <div class="abox" style="left:520px; top:30px; width:320px; height:96px"><span class="k">offline · prompt 10</span><span class="v"><span data-i="flask-conical"></span>experiments/run.py</span><span class="p">dataset "orbisa-truth"</span></div>
+    <div class="abox" style="left:520px; top:280px; width:320px; height:96px; border-width:2.5px"><span class="k">retrieval observations · SDK</span><span class="v"><span data-i="modelcontextprotocol" data-ink></span>helix-mcp</span><span class="p">:8765/mcp</span></div>
+    <div class="abox" style="left:520px; top:420px; width:320px; height:62px; flex-direction:row; align-items:center"><span class="v"><span data-i="neo4j"></span>neo4j</span></div>
+    <div class="abox" style="left:1040px; top:120px; width:300px; height:280px; background:var(--hl); border-width:2px">
+      <span class="k" style="color:var(--ink-2)">self-hosted · :3000</span><span class="v" style="font-size:24px"><span data-i="langfuse" style="width:30px;height:30px"></span>Langfuse v4</span>
+      <span class="small" style="color:var(--ink-2); margin-top:6px">OTLP <span class="mono" style="font-size:13px">/api/public/otel</span></span>
+      <span class="small" style="color:var(--ink-2)">SDK ingestion</span><span class="small" style="color:var(--ink-2)">worker → judges → scores</span><span class="small" style="color:var(--ink-2)">datasets · prompts · dashboards</span>
+    </div>
+    <span class="alab" style="left:182px; top:190px">TRACEPARENT env</span>
+    <span class="alab" style="left:338px; top:298px">HTTP + traceparent header</span>
+    <span class="alab" style="left:360px; top:48px">task = ask(q, as_of)</span>
+    <span class="alab" style="left:880px; top:100px">items · scores</span>
+    <span class="alab" style="left:880px; top:298px">SDK spans</span>
+    <span class="alab" style="left:420px; top:492px">OTLP spans</span>
+    <span class="alab" style="left:880px; top:0px">agent observation</span>
+  </div>
+</section>
+
+<!-- 12 · increments -->
+<section class="slide" data-title="Build increments">
+  <div class="eyebrow rise">Build · 06 – 12</div>
+  <h2 class="h2 rise mt16" style="--d:1">Seven steps up. Each one <mark>visible in Langfuse</mark>.</h2>
+  <div class="stairs mt32 rise" style="--d:2">
+    <div style="height:150px"><span class="pn">06</span><span class="w">Helix retrieval observations</span></div>
+    <div style="height:200px"><span class="pn">07</span><span class="w">Agent trace, model calls, tokens, cost</span></div>
+    <div class="on" style="height:250px"><span class="pn">08</span><span class="w">One linked trace. Sessions, users, tags. Masked emails.</span></div>
+    <div style="height:300px"><span class="pn">09</span><span class="w">Prompt versions on every trace</span></div>
+    <div style="height:350px"><span class="pn">10</span><span class="w">Dataset + two experiment runs compared</span></div>
+    <div style="height:400px"><span class="pn">11</span><span class="w">Live scores + review queue</span></div>
+    <div style="height:450px; background:var(--ink); color:var(--paper)"><span class="pn" style="color:var(--hl)">12</span><span class="w" style="color:#e6e6e0">Dashboard, alert, an agent proposes the fix</span></div>
+  </div>
+</section>
+
+<!-- 13 · 06 trace helix -->
+<section class="slide" data-title="06 · Trace Helix">
+  <div class="phead rise"><span class="pn">06</span><div><div class="ph">Build · increment 1</div><div class="h3">Trace Helix</div></div></div>
+  <div class="row gap-l vc" style="align-items:center">
+    <div class="col rise" style="--d:1; flex:1">
+      <div class="check">
+        <div><span class="bx on"><span data-i="check"></span></span><span><span class="mono" style="font-size:16px">src/observability/tracing/</span> returns the client</span><span class="tag">SDK v4</span></div>
+        <div><span class="bx on"><span data-i="check"></span></span><span>No keys → tracing is a no-op</span><span class="tag hl">fail open</span></div>
+        <div><span class="bx on"><span data-i="check"></span></span><span>4 MCP tools: <b>retriever</b> × 2, <b>tool</b> × 2</span><span class="tag">types</span></div>
+        <div><span class="bx on"><span data-i="check"></span></span><span>Search metadata: as_of, facts, hidden, systems</span><span class="tag">context</span></div>
+        <div><span class="bx on"><span data-i="check"></span></span><span>Flush on shutdown · <span class="mono" style="font-size:16px">make test</span></span><span class="tag">jobs</span></div>
+      </div>
+    </div>
+    <div class="col rise" style="--d:2; flex:1">
+      <div class="docx"><div class="dh"><span data-i="langfuse" style="width:18px;height:18px"></span>observation · <span class="tag">retriever</span> search-context</div>
+        <div class="code" style="border:0; font-size:15.5px; background:transparent">{ <span class="k">"as_of"</span>: <span class="s">"2026-09-29"</span>,
+  <span class="k">"facts"</span>: <span class="n">10</span>,
+  <span class="k">"hidden_as_future"</span>: <span class="n">0</span>,
+  <span class="k">"systems"</span>: [<span class="s">"slack"</span>, <span class="s">"confluence"</span>, …] }</div></div>
+      <p class="small mono" style="font-size:13px">observation name and values illustrative · names come from decisions/02</p>
+      <div class="usecase"><span class="lab">DISCUSS</span><span class="body">Each tool call is its own trace for now. Is that a problem? (08 fixes it.)</span></div>
+    </div>
+  </div>
+  <div class="gate rise mt16" style="--d:3"><span class="gl">GATE</span><span class="gt">Retriever observations visible in Langfuse. The agent still works with the keys removed.</span></div>
+</section>
+
+<!-- 14 · 07 otel -->
+<section class="slide gridbg" data-title="07 · Trace the agent">
+  <div class="phead rise"><span class="pn">07</span><div><div class="ph">Build · increment 2 · the OpenTelemetry lesson</div><div class="h3">Langfuse is just an OTLP backend</div></div></div>
+  <div class="seq mt24 fade" style="--d:1">
+    <svg viewBox="0 0 1360 400"><defs><marker id="sq" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#222220"/></marker></defs>
+      <g font-family="Geist Mono, monospace" font-size="15" fill="#222220">
+        <rect x="80" y="0" width="260" height="46" fill="#f6f6f3" stroke="#222220" stroke-width="1.5"/><text x="150" y="29">ask() · runner.py</text>
+        <rect x="550" y="0" width="260" height="46" fill="#f6f6f3" stroke="#222220" stroke-width="1.5"/><text x="615" y="29">Claude Code CLI</text>
+        <rect x="1020" y="0" width="260" height="46" fill="#fbff7a" stroke="#222220" stroke-width="2"/><text x="1080" y="29">Langfuse :3000</text>
+      </g>
+      <g stroke="#9a9a93" stroke-dasharray="5 6"><line x1="210" y1="46" x2="210" y2="390"/><line x1="680" y1="46" x2="680" y2="390"/><line x1="1150" y1="46" x2="1150" y2="390"/></g>
+      <g stroke="#222220" stroke-width="2" fill="none">
+        <path d="M210 90 H 1146" marker-end="url(#sq)"/>
+        <path d="M210 160 H 676" marker-end="url(#sq)"/>
+        <path d="M680 230 H 1146" marker-end="url(#sq)"/>
+        <path d="M680 290 H 1146" marker-end="url(#sq)"/>
+        <path d="M676 350 H 214" marker-end="url(#sq)"/>
+      </g>
+      <g font-family="Geist Mono, monospace" font-size="14.5" fill="#3d3d38">
+        <text x="230" y="80">1 · agent observation starts (SDK)</text>
+        <text x="230" y="150">2 · env: OTEL_* + TRACEPARENT</text>
+        <text x="700" y="220">3 · OTLP spans: llm_request (tokens, model)</text>
+        <text x="700" y="280">4 · OTLP spans: tool calls</text>
+        <text x="300" y="340">5 · answer</text>
+      </g>
+    </svg>
+  </div>
+  <div class="row gap-l rise" style="--d:2; align-items:stretch">
+    <div class="usecase grow"><span class="lab">DISCUSS</span><span class="body">Where does the time go: the model, or Helix? What does one question cost × Support's daily volume?</span></div>
+    <div class="usecase grow" style="border-left-color:var(--amber)"><span class="lab">IF COST IS MISSING</span><span class="body">Show the evidence, propose the OpenInference instrumentor, wait for the team.</span></div>
+  </div>
+  <div class="gate rise mt16" style="--d:3"><span class="gl">GATE</span><span class="gt">One trace per question, rooted at the agent observation, with model calls and usage visible.</span></div>
+</section>
+
+<!-- 15 · 08 link -->
+<section class="slide" data-title="08 · Link and enrich">
+  <div class="phead rise"><span class="pn">08</span><div><div class="ph">Build · increment 3</div><div class="h3">One trace, from the agent down to retrieval</div></div></div>
+  <div class="col mt32 rise" style="--d:1; gap:8px">
+    <span class="num">W3C TRACE CONTEXT · THE HTTP HEADER THE CLI SENDS TO HELIX</span>
+    <div class="tp"><span style="color:var(--muted)">traceparent:<i>header</i></span><span style="background:var(--hl)">00<i>version</i></span><span style="background:#e3efff">4bf92f3577b34da6a3ce929d0e0e4736<i>trace-id · same for the whole question</i></span><span style="background:#fff1d6">00f067aa0ba902b7<i>parent-id · the agent's tool span</i></span><span style="background:#dcf3e5">01<i>sampled</i></span></div>
+  </div>
+  <div class="grid3 vc" style="gap:18px">
+    <div class="card raised rise" style="--d:2"><span class="num">PART A · LINK</span><span class="h4">Extract the header in Helix</span><span class="small">Read <span class="mono">ctx.headers</span>, <span class="mono">propagate.extract()</span>, attach. Retrieval becomes a child.</span></div>
+    <div class="card raised rise" style="--d:3"><span class="num">PART B · ENRICH</span><span class="h4">propagate_attributes</span><span class="small">session (<span class="mono">--session</span>), user (<span class="mono">--user</span>), tags: category + <span class="mono">as-of:&lt;date&gt;</span>, environment "workshop".</span></div>
+    <div class="card raised rise" style="--d:4"><span class="num">PART C · MASK</span><span class="h4">Emails → &lt;email&gt;</span><span class="small">SDK mask function. Server-side masking needs an Enterprise key. Are the CLI's spans masked too?</span></div>
+  </div>
+  <div class="gate rise mt-auto" style="--d:5"><span class="gl">GATE</span><span class="gt">Q01 is one trace. Sessions, users and tags filter correctly. Emails masked where the SDK sees them.</span></div>
+</section>
+
+<!-- 16 · 09 prompts -->
+<section class="slide gridbg" data-title="09 · Prompt management">
+  <div class="phead rise"><span class="pn">09</span><div><div class="ph">Build · increment 4</div><div class="h3">Prompts move out of the code</div></div></div>
+  <div class="vrail vc rise" style="--d:1">
+    <div class="v"><span class="num">SOURCE</span><span class="mono" style="font-size:15px">system_prompt.md</span><span class="small">+ 4 tool docstrings</span></div>
+    <div class="ln"></div>
+    <div class="v"><span class="num">PUSH</span><span class="mono" style="font-size:15px">prompts/push.py</span><span class="small">new version only if text changed</span></div>
+    <div class="ln"></div>
+    <div class="v" style="background:var(--ink); color:var(--paper)"><span class="num" style="color:#a8a8a0">v1</span><span class="mono" style="font-size:15px">ask-orbisa-system</span><span class="tag hl" style="align-self:flex-start">production</span></div>
+    <div class="ln"></div>
+    <div class="v" style="background:var(--hl)"><span class="num" style="color:var(--ink-2)">v2</span><span class="mono" style="font-size:15px">+ one rule</span><span class="tag ink" style="align-self:flex-start">staging</span></div>
+  </div>
+  <div class="row gap-l mt48" style="align-items:stretch">
+    <div class="usecase rise grow" style="--d:2"><span class="lab">SUGGESTED RULE</span><span class="body">"When a signed contract and a policy disagree, quote the contract clause number."</span></div>
+    <div class="usecase rise grow" style="--d:3"><span class="lab">FAIL OPEN</span><span class="body">Fetch by <span class="mono" style="font-size:16px">HELIX_PROMPT_LABEL</span>. Langfuse down → the local file.</span></div>
+  </div>
+  <div class="gate rise mt-auto" style="--d:4"><span class="gl">GATE</span><span class="gt">Both versions exist, each trace shows its prompt version, the agent works without Langfuse.</span></div>
+</section>
+
+<!-- 17 · 10 dataset & experiments -->
+<section class="slide" data-title="10 · Ground truth">
+  <div class="phead rise"><span class="pn">10</span><div><div class="ph">Build · increment 5 · offline</div><div class="h3">Ground truth and experiments</div></div></div>
+  <div class="grid3 vc" style="gap:18px">
+    <div class="col rise" style="--d:1; gap:10px">
+      <span class="num">ITEM · CODE (NO LLM)</span>
+      <span class="chip">source_recall</span><span class="chip">has_sources_line</span><span class="chip">abstained</span>
+    </div>
+    <div class="col rise" style="--d:2; gap:10px">
+      <span class="num">ITEM · LLM JUDGE</span>
+      <div class="card hl"><span class="h4"><span data-i="scale"></span>correctness</span><span class="small" style="color:var(--ink-2)">claude-sonnet-5-5 · structured output · 1 / 0.5 / 0 + reason · knows the as-of date</span></div>
+    </div>
+    <div class="col rise" style="--d:3; gap:10px">
+      <span class="num">RUN-LEVEL</span>
+      <span class="chip">mean correctness · per category</span><span class="chip">mean source_recall</span><span class="chip on">cost per correct answer</span>
+    </div>
+  </div>
+  <div class="row gap-l mt32 rise" style="--d:4; align-items:center">
+    <span class="num">SUGGESTED SUBSET</span>
+    <div class="row" style="gap:8px"><span class="tag ink">Q01</span><span class="tag">Q02</span><span class="tag">Q07</span><span class="tag">Q08</span><span class="tag">Q13</span><span class="tag">Q14</span></div>
+    <span class="code" style="padding:10px 16px; font-size:15px">run.py --prompt-label production · staging --max-concurrency 2</span>
+  </div>
+  <div class="gate rise mt-auto" style="--d:5"><span class="gl">GATE</span><span class="gt">Two experiment runs on "orbisa-truth", item and run scores, compared in the UI.</span></div>
+</section>
+
+<!-- 18 · 11 online -->
+<section class="slide" data-title="11 · Online evaluation">
+  <div class="phead rise"><span class="pn">11</span><div><div class="ph">Build · increment 6 · online</div><div class="h3">Score live answers, review the worst</div></div></div>
+  <div class="row gap-l vc" style="align-items:center">
+    <div class="check rise" style="--d:1; flex:1">
+      <div><span class="bx on"><span data-i="check"></span></span><span>Facts + sources in the agent's metadata</span><span class="tag">judge input</span></div>
+      <div><span class="bx on"><span data-i="check"></span></span><span>LLM connection · Anthropic</span><span class="tag">worker</span></div>
+      <div><span class="bx on"><span data-i="check"></span></span><span>Score configs: correctness · faithfulness 0–1</span><span class="tag">configs</span></div>
+      <div><span class="bx on"><span data-i="check"></span></span><span>Judge "faithfulness" · 100% sampling today</span><span class="tag hl">online</span></div>
+      <div><span class="bx on"><span data-i="check"></span></span><span>Code evaluator "has-sources-line"</span><span class="tag">TS / JS</span></div>
+      <div><span class="bx on"><span data-i="check"></span></span><span>Annotation queue "orbisa-review"</span><span class="tag">people</span></div>
+    </div>
+    <div class="col rise" style="--d:2; flex:.85">
+      <span class="num">THE TEAM TYPES 5 QUESTIONS · INCLUDE TRAPS</span>
+      <div class="term" style="font-size:15px"><div class="bd"><span class="p">?</span> How much is the Platinum plan?
+<span class="p">?</span> Who approved Orion's refund?
+<span class="p">?</span> …</div></div>
+      <div class="usecase"><span class="lab">THEN</span><span class="body">Lowest scores → "orbisa-review" → one becomes a dataset item.</span></div>
+    </div>
+  </div>
+  <div class="gate rise mt16" style="--d:3"><span class="gl">GATE</span><span class="gt">Live answers get scores automatically, the queue has reviewed items, one became a dataset item.</span></div>
+</section>
+
+<!-- 19 · 12 dashboards -->
+<section class="slide gridbg" data-title="12 · Monitor">
+  <div class="phead rise"><span class="pn">12</span><div><div class="ph">Build · increment 7</div><div class="h3">Is Ask Orbisa healthy? At a glance.</div></div></div>
+  <div class="row gap-l mt24" style="flex:1">
+    <div class="dash rise" style="--d:1; flex:1.4">
+      <div><span class="wt"><span data-i="activity" style="width:16px;height:16px"></span>questions per day</span><svg viewBox="0 0 200 60" preserveAspectRatio="none"><g fill="#222220"><rect x="5" y="30" width="20" height="30"/><rect x="35" y="20" width="20" height="40"/><rect x="65" y="34" width="20" height="26"/><rect x="95" y="12" width="20" height="48"/><rect x="125" y="24" width="20" height="36"/><rect x="155" y="8" width="20" height="52" fill="#fbff7a" stroke="#222220"/></g></svg></div>
+      <div><span class="wt"><span data-i="timer" style="width:16px;height:16px"></span>p95 latency · agent · retrieval</span><svg viewBox="0 0 200 60" preserveAspectRatio="none"><polyline points="0,40 40,36 80,42 120,30 160,34 200,28" fill="none" stroke="#222220" stroke-width="2"/><polyline points="0,52 40,50 80,53 120,48 160,50 200,49" fill="none" stroke="#4e9cff" stroke-width="2"/></svg></div>
+      <div><span class="wt"><span data-i="coins" style="width:16px;height:16px"></span>cost per question · model</span><svg viewBox="0 0 200 60" preserveAspectRatio="none"><polyline points="0,44 40,40 80,42 120,30 160,32 200,26" fill="none" stroke="#e5a000" stroke-width="2"/></svg></div>
+      <div><span class="wt"><span data-i="plug" style="width:16px;height:16px"></span>tool calls per question</span><svg viewBox="0 0 200 60" preserveAspectRatio="none"><g fill="#9a9a93"><rect x="10" y="30" width="30" height="30"/><rect x="60" y="14" width="30" height="46"/><rect x="110" y="22" width="30" height="38"/><rect x="160" y="40" width="30" height="20"/></g></svg></div>
+      <div style="grid-column: span 2"><span class="wt"><span data-i="circle-check" style="width:16px;height:16px"></span>faithfulness · correctness over time, by tag</span><svg viewBox="0 0 400 60" preserveAspectRatio="none"><line x1="0" y1="24" x2="400" y2="24" stroke="#ff5d5f" stroke-dasharray="6 5"/><polyline points="0,10 60,12 120,9 180,14 240,16 300,30 360,34 400,36" fill="none" stroke="#222220" stroke-width="2"/><circle cx="300" cy="30" r="4" fill="#ff5d5f"/></svg></div>
+    </div>
+    <div class="col rise" style="--d:2; flex:.75">
+      <div class="usecase" style="border-left-color:var(--coral)"><span class="lab">ALERT</span><span class="body">Mean faithfulness, last hour, <b>&lt; 0.8</b> → webhook.</span></div>
+      <div class="usecase"><span class="lab">METRICS API v2</span><span class="body">Cost per question over the last day, from code.</span></div>
+      <div class="card ink"><span class="h4" style="color:var(--hl)"><span data-i="bot"></span>Agentic close</span><span class="small">Claude reads Langfuse, proposes a fix. The team accepts it only if <b style="color:var(--paper)">an experiment</b> says so.</span></div>
+    </div>
+  </div>
+  <p class="small mono rise" style="--d:3; font-size:13px">charts are placeholders · widget list from prompt 12</p>
+</section>
+
+<!-- 20 · 13 readout -->
+<section class="slide" data-title="13 · Readout">
+  <div class="row gap-l" style="flex:1">
+    <div class="col" style="flex:.75">
+      <div class="phead rise"><span class="pn">13</span><div><div class="ph">Close</div><div class="h3">Readout for the CTO</div></div></div>
+      <p class="lead rise" style="--d:1; font-size:24px">One page. Every number pulled from Langfuse, <b style="color:var(--ink)">not estimated</b>.</p>
+      <div class="gate rise mt-auto" style="--d:4"><span class="gl">GATE</span><span class="gt">The team agrees the readout is true and could present it.</span></div>
+    </div>
+    <div class="docx rise" style="--d:2; flex:1.25">
+      <div class="dh"><span data-i="file-text" style="width:18px;height:18px"></span>decisions/03-readout.md</div>
+      <div class="sec"><span class="k"><span class="ring">1</span>Problem</span><span class="small">The statement from decisions/01.</span></div>
+      <div class="sec"><span class="k"><span class="ring">2</span>Criteria</span>
+        <div style="display:grid; grid-template-columns:1fr 70px 80px 70px; gap:6px 10px; font-size:15px; align-items:center">
+          <span class="mono muted" style="font-size:12px">criterion</span><span class="mono muted" style="font-size:12px">target</span><span class="mono muted" style="font-size:12px">measured</span><span></span>
+          <span>temporal correctness</span><span class="mono">0.8</span><span class="mono">?</span><span class="pill plain">?</span>
+          <span>source recall</span><span class="mono">0.7</span><span class="mono">?</span><span class="pill plain">?</span>
+        </div></div>
+      <div class="sec"><span class="k"><span class="ring">3</span>Built</span><span class="small">Increments with file paths.</span></div>
+      <div class="sec" style="background:var(--hl)"><span class="k"><span class="ring">4</span>Helix</span><span class="small" style="color:var(--ink-2)">Where it fails and why — with trace links.</span></div>
+      <div class="sec"><span class="k"><span class="ring">5</span>Next</span><span class="small">At most five risks, each with an owner role.</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- 21 · definition of done -->
+<section class="slide" data-title="All gates">
+  <div class="eyebrow rise">Definition of done</div>
+  <h2 class="h2 rise mt16" style="--d:1">Fourteen gates. <mark>Tick them on the board.</mark></h2>
+  <div class="grid2 mt24" style="gap:0 44px">
+    <div class="check rise" style="--d:2">
+      <div><span class="bx"></span><span><b>00</b> Rules seen, Claude's question answered</span><span class="tag">setup</span></div>
+      <div><span class="bx"></span><span><b>01</b> Orion in one sentence, three questions</span><span class="tag">discover</span></div>
+      <div><span class="bx"></span><span><b>02</b> System answered, gap list on the board</span><span class="tag">discover</span></div>
+      <div><span class="bx"></span><span><b>03</b> One statement selected by vote</span><span class="tag">define</span></div>
+      <div><span class="bx"></span><span><b>04</b> decisions/01 agreed line by line</span><span class="tag">define</span></div>
+      <div><span class="bx"></span><span><b>05</b> decisions/02 with diagram, names, scores</span><span class="tag">design</span></div>
+      <div><span class="bx"></span><span><b>06</b> Retriever observations · fail open</span><span class="tag hl">build</span></div>
+    </div>
+    <div class="check rise" style="--d:3">
+      <div><span class="bx"></span><span><b>07</b> One trace per question with usage</span><span class="tag hl">build</span></div>
+      <div><span class="bx"></span><span><b>08</b> Q01 is one trace · filters · masking</span><span class="tag hl">build</span></div>
+      <div><span class="bx"></span><span><b>09</b> Two prompt versions on traces</span><span class="tag hl">build</span></div>
+      <div><span class="bx"></span><span><b>10</b> Two runs on orbisa-truth compared</span><span class="tag hl">build</span></div>
+      <div><span class="bx"></span><span><b>11</b> Live scores · queue · new dataset item</span><span class="tag hl">build</span></div>
+      <div><span class="bx"></span><span><b>12</b> Dashboard · fix decided by experiment</span><span class="tag hl">build</span></div>
+      <div><span class="bx"></span><span><b>13</b> Readout true and presentable</span><span class="tag ink">close</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- 22 · pairing practices -->
+<section class="slide gridbg" data-title="Pairing with Claude Code">
+  <div class="eyebrow rise">Pairing with an agent</div>
+  <h2 class="h2 rise mt16" style="--d:1">Habits that keep the <mark>team in charge</mark>.</h2>
+  <div class="grid3 mt32" style="gap:18px">
+    <div class="card raised rise" style="--d:2"><span class="h4"><span class="kbd">1</span>Plan, then "go"</span><span class="small">Five bullets before any change. Say no early, it's cheap.</span></div>
+    <div class="card raised rise" style="--d:2"><span class="h4"><span class="kbd">2</span>Ground in docs</span><span class="small">langfuse.com/docs pages end in <span class="mono">.md</span> for plain text. Never guess a signature.</span></div>
+    <div class="card raised rise" style="--d:3"><span class="h4"><span class="kbd">3</span>Proof, not "done"</span><span class="small">An API call, a test run, a click path in the UI.</span></div>
+    <div class="card raised rise" style="--d:3"><span class="h4"><span class="kbd">4</span>Small increments</span><span class="small">One increment, one gate. Easy to undo, easy to explain.</span></div>
+    <div class="card raised rise" style="--d:4"><span class="h4"><span class="kbd">5</span>Decisions in files</span><span class="small"><span class="mono">decisions/</span> is the team's memory, not the chat.</span></div>
+    <div class="card hl rise" style="--d:4"><span class="h4"><span class="kbd">6</span>Fail open, always</span><span class="small" style="color:var(--ink-2)">Pull the Langfuse keys at every gate. The agent must still answer.</span></div>
+  </div>
+</section>
+
+<!-- 23 · troubleshooting -->
+<section class="slide" data-title="When it breaks">
+  <div class="eyebrow rise">Facilitator cheat sheet</div>
+  <h2 class="h2 rise mt16" style="--d:1">When it breaks, <mark>check this first</mark>.</h2>
+  <table class="t mt32 rise" style="--d:2; font-size:18px">
+    <tr><th style="width:360px">Symptom</th><th>Check</th></tr>
+    <tr><td>Langfuse UI does not load</td><td><span class="mono">make ps</span> · langfuse-web healthy? Docker Desktop running?</td></tr>
+    <tr class="on"><td>No traces arrive</td><td>Host uses <span class="mono">localhost:3000</span>, containers use <span class="mono">langfuse-web:3000</span>. Keys in <span class="mono">.env</span>?</td></tr>
+    <tr><td>Some spans missing</td><td>Flush on shutdown. Export interval too long for a short job.</td></tr>
+    <tr><td>Two traces instead of one</td><td>traceparent not extracted in Helix (prompt 08, part A).</td></tr>
+    <tr><td>Model calls without cost</td><td>Show the evidence; OpenInference instrumentor is the fallback (prompt 07).</td></tr>
+    <tr><td>Agent auth errors</td><td>An empty <span class="mono">ANTHROPIC_*</span> variable in the shell. Values in <span class="mono">.env</span> win.</td></tr>
+    <tr><td>Judge never runs</td><td>No LLM connection in project settings (prompt 11).</td></tr>
+  </table>
+</section>
+
+<!-- 24 · further reading -->
+<section class="slide" data-title="Further reading">
+  <div class="eyebrow rise">Sources used in these decks</div>
+  <h2 class="h2 rise mt16" style="--d:1">Read <mark>after</mark> the workshop.</h2>
+  <div class="refs mt32 rise" style="--d:2">
+    <div><span class="ibox" style="width:40px;height:40px"><span data-i="claude" style="width:20px;height:20px"></span></span><div><div class="t">Effective context engineering for AI agents</div><div class="ru">Anthropic Engineering · Sep 2025</div></div></div>
+    <div><span class="ibox" style="width:40px;height:40px"><span data-i="langfuse" style="width:22px;height:22px"></span></span><div><div class="t">Langfuse v4 · docs and changelog</div><div class="ru">langfuse.com/docs/v4 · Aug 2026</div></div></div>
+    <div><span class="ibox" style="width:40px;height:40px"><span data-i="chart-line" style="width:20px;height:20px"></span></span><div><div class="t">Context Rot</div><div class="ru">Chroma Research · 14 Jul 2025</div></div></div>
+    <div><span class="ibox" style="width:40px;height:40px"><span data-i="opentelemetry" style="width:20px;height:20px"></span></span><div><div class="t">GenAI agent span conventions</div><div class="ru">opentelemetry.io · Development status</div></div></div>
+    <div><span class="ibox" style="width:40px;height:40px"><span data-i="waypoints" style="width:20px;height:20px"></span></span><div><div class="t">Zep: a temporal knowledge graph for agent memory</div><div class="ru">arXiv 2501.13956 · Jan 2025</div></div></div>
+    <div><span class="ibox" style="width:40px;height:40px"><span data-i="microscope" style="width:20px;height:20px"></span></span><div><div class="t">Evals FAQ · error analysis</div><div class="ru">hamel.dev · Hamel Husain</div></div></div>
+    <div><span class="ibox" style="width:40px;height:40px"><span data-i="network" style="width:20px;height:20px"></span></span><div><div class="t">GraphRAG: from local to global</div><div class="ru">Microsoft Research · arXiv 2404.16130</div></div></div>
+    <div><span class="ibox" style="width:40px;height:40px"><span data-i="modelcontextprotocol" data-ink style="width:20px;height:20px"></span></span><div><div class="t">MCP joins the Agentic AI Foundation</div><div class="ru">Anthropic · 9 Dec 2025</div></div></div>
+    <div><span class="ibox" style="width:40px;height:40px"><span data-i="terminal" style="width:20px;height:20px"></span></span><div><div class="t">Claude Code monitoring (OpenTelemetry)</div><div class="ru">code.claude.com/docs · traces in beta</div></div></div>
+    <div><span class="ibox" style="width:40px;height:40px"><span data-i="neo4j" style="width:20px;height:20px"></span></span><div><div class="t">GQL · ISO/IEC 39075:2024</div><div class="ru">Neo4j blog · Apr 2024</div></div></div>
+  </div>
+</section>
+
+<!-- 25 · close -->
+<section class="slide dark hatch" data-title="Close">
+  <div class="col center" style="flex:1; justify-content:center">
+    <span class="rise" data-i="langfuse" style="width:120px; height:110px"></span>
+    <h2 class="display rise mt32" style="--d:1; font-size:110px; text-align:center">Ship what you<br><span style="color:var(--hl)">can prove.</span></h2>
+    <p class="lead rise mt32" style="--d:2; text-align:center">Readout at 12:45. Every claim with a trace, a score, or a run behind it.</p>
+    <div class="row rise mt48" style="--d:3; gap:12px"><span class="btn dark" style="background:var(--hl); color:var(--ink); border-color:var(--hl)">Paste prompt 00 <span class="kbd" style="background:var(--ink); color:var(--hl); border-color:var(--ink)">↵</span></span></div>
+  </div>
+</section>
+
+</main>
+<script src="assets/icons.js"></script>
+<script src="assets/deck.js"></script>
+</body>
+</html>

@@ -33,7 +33,7 @@
   .gap-q .ibox { background: #2a2826; border-color: #45433e; color: var(--hl); box-shadow: none; }
 </style>
 </head>
-<body data-deck="01 · The use case" data-part="Part 1 · Use case">
+<body data-deck="01 · The use case" data-part="Part 1 · Use case" data-next="02-context-layer.html">
 <main class="deck">
 
 <!-- 1 · cover -->
@@ -70,6 +70,12 @@
     <div class="agenda-row rise" style="--d:4"><span class="t">09:40</span><span class="h3">Observability fundamentals</span><div class="chips"><span class="pill plain">AI-native</span><span class="pill plain">OpenTelemetry</span><span class="pill plain">Langfuse</span></div></div>
     <div class="agenda-row rise" style="--d:5"><span class="t">10:15</span><span class="h3 muted">Break</span><div></div></div>
     <div class="agenda-row rise" style="--d:6; border-bottom:1px solid var(--ink)"><span class="t">10:25</span><span class="h3"><mark>Prompts</mark> — we build it, as a team</span><div class="chips"><span class="pill info">discover</span><span class="pill info">define</span><span class="pill info">design</span><span class="pill ok">build</span><span class="pill warn">readout</span></div></div>
+  </div>
+  <div class="grid4 mt-auto rise" style="--d:7; gap:14px">
+    <div class="card" style="padding:16px 20px"><span class="num">DECK 01 · 14 SLIDES</span><span class="h4">The use case</span></div>
+    <div class="card" style="padding:16px 20px"><span class="num">DECK 02 · 26 SLIDES</span><span class="h4">The context layer</span></div>
+    <div class="card" style="padding:16px 20px"><span class="num">DECK 03 · 27 SLIDES</span><span class="h4">Observability &amp; Langfuse</span></div>
+    <div class="card hl" style="padding:16px 20px"><span class="num" style="color:var(--ink-2)">DECK 04 · 25 SLIDES</span><span class="h4">The team session</span></div>
   </div>
 </section>
 
@@ -118,6 +124,26 @@
       <span class="what" style="color:#d8d8d0">source files · 67 episodes · about 18 of them pure noise</span>
       <span class="fmt" style="color:#a8a8a0">data/orbisa/</span>
     </div>
+  </div>
+</section>
+
+<!-- 4b · people -->
+<section class="slide" data-title="The people">
+  <div class="eyebrow rise">Cast</div>
+  <h2 class="h2 rise mt16" style="--d:1">Same people. <mark>Different names</mark> in every system.</h2>
+  <div class="people mt32" style="grid-auto-rows:150px">
+    <div class="person key rise" style="--d:2"><span class="av">SP</span><div><div class="nm">Sam Patel</div><div class="rl">Support Agent · asks the question</div></div><div class="al"><span>zendesk: Sam Patel</span></div></div>
+    <div class="person key rise" style="--d:2"><span class="av">TH</span><div><div class="nm">Tomás Herrera</div><div class="rl">Head of RevOps · approves refunds</div></div><div class="al"><span>slack: tomas.h</span></div></div>
+    <div class="person rise" style="--d:3"><span class="av">JL</span><div><div class="nm">Johanna Lindqvist</div><div class="rl">Senior AE · owns Orion</div></div><div class="al"><span class="hl">slack: Jo L.</span><span>hubspot</span><span>zendesk: Jo Lindqvist</span></div></div>
+    <div class="person rise" style="--d:3"><span class="av">PR</span><div><div class="nm">Priya Raman</div><div class="rl">CFO · approved refunds until March</div></div><div class="al"><span>slack: priya</span></div></div>
+    <div class="person rise" style="--d:4"><span class="av">MC</span><div><div class="nm">Marina Costa</div><div class="rl">CEO · co-founder</div></div><div class="al"><span>slack: marina</span></div></div>
+    <div class="person rise" style="--d:4"><span class="av">RM</span><div><div class="nm">Rafael Mendes</div><div class="rl">Sales Director</div></div><div class="al"><span>slack: rafa</span><span>gong</span></div></div>
+    <div class="person rise" style="--d:5"><span class="av">KW</span><div><div class="nm">Ken Watanabe</div><div class="rl">Support Lead</div></div><div class="al"><span>slack: ken.w</span><span>zendesk</span></div></div>
+    <div class="person rise" style="--d:5"><span class="av">DW</span><div><div class="nm">Dana Whitfield</div><div class="rl">Orion · VP Operations</div></div><div class="al"><span>gong</span><span>hubspot</span></div></div>
+  </div>
+  <div class="frame mt-auto rise" style="--d:6; padding:18px 26px; display:flex; gap:18px; align-items:center">
+    <span class="ibox hl"><span data-i="users"></span></span>
+    <span class="body">"Jo L." in Slack, "Johanna Lindqvist" in HubSpot, "Jo Lindqvist" in Zendesk. A context layer must know it is <b>one person</b>.</span>
   </div>
 </section>
 
@@ -231,6 +257,26 @@
         <li>cite where each fact came from</li>
       </ol>
     </div>
+  </div>
+</section>
+
+<!-- 8b · other cases -->
+<section class="slide gridbg" data-title="Other cases">
+  <div class="eyebrow rise">Orion is not alone</div>
+  <h2 class="h2 rise mt16" style="--d:1">Every case has <mark>a trap</mark>.</h2>
+  <div class="grid2 mt32" style="gap:18px; flex:1">
+    <div class="card raised rise" style="--d:2"><div class="row" style="justify-content:space-between; align-items:center"><span class="h3">Kodiak Cold Chain</span><span class="pill warn">conflict</span></div>
+      <span class="body">Asks for <b>25% off</b> to renew on 2026-11-30. Since 2026-06-15, above 20% needs the <b>CEO and the CFO</b>.</span>
+      <span class="small mono mt-auto">trap · a later Slack reply says "the CFO can approve it"</span></div>
+    <div class="card raised rise" style="--d:3"><div class="row" style="justify-content:space-between; align-items:center"><span class="h3">Cedar &amp; Pine</span><span class="pill info">legacy terms</span></div>
+      <span class="body">A <b>Brisklane</b> contract: 60-day refund terms until 2027-01-31. Refunded on 2026-03-06.</span>
+      <span class="small mono mt-auto">trap · Notion still lists them as "Active"</span></div>
+    <div class="card raised rise" style="--d:4"><div class="row" style="justify-content:space-between; align-items:center"><span class="h3">Bluefin Distribution</span><span class="pill ok">simple rule</span></div>
+      <span class="body">Refund request on <b>day 10</b> after renewal. Standard policy: full refund within 14 days, RevOps approves.</span>
+      <span class="small mono mt-auto">trap · the 2023 page says Finance approves</span></div>
+    <div class="card raised rise" style="--d:5"><div class="row" style="justify-content:space-between; align-items:center"><span class="h3">"The Platinum plan"</span><span class="pill bad">false premise</span></div>
+      <span class="body">An employee asks about its price. <b>There is no Platinum plan.</b> The right answer is to say so.</span>
+      <span class="small mono mt-auto">trap · a confident made-up price</span></div>
   </div>
 </section>
 

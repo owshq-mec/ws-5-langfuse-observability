@@ -32,7 +32,14 @@
     el.innerHTML = `<svg viewBox="${ic.vb}" aria-hidden="true">${ic.body}</svg>`;
   });
 
-  let cur = Math.min(Math.max(parseInt(location.hash.slice(1), 10) - 1 || 0, 0), total - 1);
+  const fromHash = () => location.hash === '#last' ? total - 1 : (parseInt(location.hash.slice(1), 10) - 1 || 0);
+  let cur = Math.min(Math.max(fromHash(), 0), total - 1);
+  const next = document.body.dataset.next, prev = document.body.dataset.prev;
+  function go(i) {
+    if (i >= total && next) { location.href = next + '#1'; return; }
+    if (i < 0 && prev) { location.href = prev + '#last'; return; }
+    show(i);
+  }
 
   function fit() {
     const s = Math.min(innerWidth / 1600, innerHeight / 900);
@@ -54,8 +61,8 @@
   addEventListener('keydown', e => {
     if (e.metaKey || e.ctrlKey || e.altKey) return;
     const k = e.key;
-    if (['ArrowRight', 'PageDown', ' ', 'ArrowDown', 'Enter'].includes(k)) { e.preventDefault(); overview(false); show(cur + 1); }
-    else if (['ArrowLeft', 'PageUp', 'ArrowUp', 'Backspace'].includes(k)) { e.preventDefault(); overview(false); show(cur - 1); }
+    if (['ArrowRight', 'PageDown', ' ', 'ArrowDown', 'Enter'].includes(k)) { e.preventDefault(); overview(false); go(cur + 1); }
+    else if (['ArrowLeft', 'PageUp', 'ArrowUp', 'Backspace'].includes(k)) { e.preventDefault(); overview(false); go(cur - 1); }
     else if (k === 'Home') show(0);
     else if (k === 'End') show(total - 1);
     else if (k === 'o' || k === 'O' || k === 'Escape') overview(k !== 'Escape' && !document.body.classList.contains('overview'));
@@ -68,9 +75,9 @@
       show([...document.querySelectorAll('.slot')].indexOf(slot)); overview(false); return;
     }
     if (e.target.closest('a, button')) return;
-    show(e.clientX > innerWidth / 3 ? cur + 1 : cur - 1);
+    go(e.clientX > innerWidth / 3 ? cur + 1 : cur - 1);
   });
-  addEventListener('hashchange', () => show(parseInt(location.hash.slice(1), 10) - 1 || 0));
+  addEventListener('hashchange', () => show(Math.min(Math.max(fromHash(), 0), total - 1)));
 
   fit();
   show(cur);

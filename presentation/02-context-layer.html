@@ -58,10 +58,6 @@
   .ret .a { display: grid; place-items: center; } .ret .a [data-i] { width: 26px; height: 26px; }
   .stackcol { display: flex; flex-direction: column; gap: 10px; }
   .gvt { display: grid; grid-template-columns: 1fr 120px 1fr; gap: 0; align-items: stretch; }
-  .tbl { border: 1px solid var(--ink); background: var(--paper); font-family: var(--mono); font-size: 15px; }
-  .tbl .th { background: var(--ink); color: var(--paper); padding: 8px 12px; }
-  .tbl .tr { display: grid; grid-template-columns: repeat(3, 1fr); border-top: 1px solid var(--line); }
-  .tbl .tr span { padding: 8px 12px; } .tbl .tr span + span { border-left: 1px solid var(--line); }
   .stackmap td [data-i] { width: 26px; height: 26px; }
   .stackmap td .tools { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
   .arch { display: grid; grid-template-columns: 1fr 1fr 1fr 1fr; gap: 0; border: 1.5px dashed var(--muted); padding: 40px 30px 30px; position: relative; }
@@ -72,7 +68,7 @@
   .svc.ghost { border: 1.5px dashed var(--coral); background: transparent; }
 </style>
 </head>
-<body data-deck="02 · The context layer" data-part="Part 2 · Context">
+<body data-deck="02 · The context layer" data-part="Part 2 · Context" data-prev="01-orbisa.html" data-next="03-langfuse.html">
 <main class="deck">
 
 <!-- 1 · cover -->
@@ -110,6 +106,62 @@
   </div>
 </section>
 
+<!-- 2a · context engineering -->
+<section class="slide hatch" data-title="Context engineering">
+  <div class="row gap-l" style="flex:1; align-items:center">
+    <div class="col" style="flex:1.35; padding-left:40px">
+      <div class="eyebrow rise">2025 · a new name for the job</div>
+      <p class="quote rise mt24" style="--d:1">Context engineering is the delicate art and science of filling the context window with <span class="sweep" style="--d:3">just the right information</span> for the next step.</p>
+      <div class="quote-by rise mt32" style="--d:4"><span class="av">AK</span><div><b>Andrej Karpathy</b> · post on X, June 2025<br><span class="cite">widely quoted; Tobi Lütke (Shopify) used the term a week earlier</span></div></div>
+    </div>
+    <div class="col" style="flex:.65; gap:16px">
+      <div class="card raised rise" style="--d:3"><span class="num">2023</span><span class="h4">Prompt engineering</span><span class="small">Find the right words for one request.</span></div>
+      <div class="rise" style="display:grid; place-items:center; --d:4"><span data-i="arrow-down" style="width:30px;height:30px"></span></div>
+      <div class="card hl rise" style="--d:5"><span class="num" style="color:var(--ink-2)">2025</span><span class="h4">Context engineering</span><span class="small" style="color:var(--ink-2)">Choose what the model sees at every step: instructions, tools, facts, history.</span></div>
+      <p class="cite rise" style="--d:6">Anthropic, "Effective context engineering for AI agents", Sep 2025</p>
+    </div>
+  </div>
+</section>
+
+<!-- 2b · context rot -->
+<section class="slide" data-title="Context rot">
+  <div class="row gap-l" style="flex:1">
+    <div class="col" style="flex:.9">
+      <div class="eyebrow rise">Why not paste everything?</div>
+      <h2 class="h2 rise" style="--d:1">More context is <mark>not</mark> better context.</h2>
+      <p class="lead rise" style="--d:2; font-size:24px">Chroma tested <b style="color:var(--ink)">18 models</b>: as the input grows, answers get less reliable, even on simple tasks. They call it <b style="color:var(--ink)">context rot</b>.</p>
+      <div class="usecase rise" style="--d:3; border-left:4px solid var(--ink); background:var(--paper); padding:20px 24px; display:flex; flex-direction:column; gap:8px">
+        <span class="mono small" style="font-size:13px; letter-spacing:.1em">ANTHROPIC'S MODEL</span>
+        <span class="body">An LLM has an <b>attention budget</b>. Every token spends some of it. Treat context as a finite resource.</span>
+      </div>
+      <div class="card hl rise mt-auto" style="--d:4"><span class="h4"><span data-i="target"></span>So Helix returns facts, not files.</span><span class="small" style="color:var(--ink-2)">Ten dated facts with sources beat a 40-page policy dump.</span></div>
+    </div>
+    <div class="col" style="flex:1.1; justify-content:center">
+      <div class="ui frame rise" style="--d:2; padding:26px 26px 18px">
+        <svg viewBox="0 0 640 380" style="width:100%; height:380px">
+          <g font-family="Geist Mono, monospace" font-size="13" fill="#6b6b66">
+            <line x1="60" y1="20" x2="60" y2="320" stroke="#222220" stroke-width="1.5"/>
+            <line x1="60" y1="320" x2="620" y2="320" stroke="#222220" stroke-width="1.5"/>
+            <text x="18" y="30">high</text><text x="22" y="316">low</text>
+            <text x="60" y="350">short input</text><text x="520" y="350">long input</text>
+            <text x="250" y="374">input tokens →</text>
+            <text transform="translate(16 220) rotate(-90)">reliability</text>
+          </g>
+          <g fill="none" stroke-width="2.4">
+            <polyline class="draw" stroke-dasharray="1200" points="60,40 200,44 320,60 440,96 560,140 620,160" stroke="#222220"/>
+            <polyline class="draw" stroke-dasharray="1200" points="60,44 200,56 320,92 440,150 560,210 620,238" stroke="#4e9cff"/>
+            <polyline class="draw" stroke-dasharray="1200" points="60,46 200,70 320,130 440,200 560,262 620,286" stroke="#ff5d5f"/>
+            <polyline class="draw" stroke-dasharray="1200" points="60,42 200,50 320,76 440,120 560,176 620,196" stroke="#e5a000"/>
+          </g>
+          <rect x="72" y="28" width="150" height="300" fill="#fbff7a" opacity=".35"/>
+          <text x="80" y="300" font-family="Geist Mono, monospace" font-size="13" fill="#222220">Helix lives here</text>
+        </svg>
+        <div class="row" style="justify-content:space-between"><span class="cite">Chroma, "Context Rot", 14 Jul 2025</span><span class="mono small" style="font-size:12px">shape illustrative, not report data</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
 <!-- 3 · definition -->
 <section class="slide" data-title="Definition">
   <div class="col" style="flex:1; justify-content:center">
@@ -143,12 +195,69 @@
 <section class="slide" data-title="Why companies build one">
   <div class="eyebrow rise">Why now</div>
   <h2 class="h2 rise mt16" style="--d:1">Every agent needs the same context.<br><mark>Build it once.</mark></h2>
-  <div class="grid4 mt48" style="flex:1; align-content:start">
+  <div class="grid4 mt48" style="grid-auto-rows:minmax(330px,auto)">
     <div class="card raised rise" style="--d:2"><span class="num">01</span><span class="h3">One answer</span><span class="body">Slack, the wiki and the contract stop competing. The layer reconciles them.</span></div>
     <div class="card raised rise" style="--d:3"><span class="num">02</span><span class="h3">The right date</span><span class="body">"Who approved refunds in December?" has a different answer than today.</span></div>
     <div class="card raised rise" style="--d:4"><span class="num">03</span><span class="h3">Proof</span><span class="body">An answer with a source can be checked. An answer without one cannot.</span></div>
     <div class="card raised rise" style="--d:5"><span class="num">04</span><span class="h3">Reuse</span><span class="body">Support bot, sales assistant, coding agent: same layer, same MCP server.</span></div>
   </div>
+</section>
+
+<!-- 5a · gartner components -->
+<section class="slide" data-title="Three core components">
+  <div class="eyebrow rise">What analysts say · 2026</div>
+  <h2 class="h2 rise mt16" style="--d:1">A context layer needs <mark>three things</mark>.</h2>
+  <div class="grid3 mt48" style="gap:22px; flex:1; align-content:start">
+    <div class="col rise" style="--d:2; gap:14px">
+      <div class="card ink" style="min-height:250px"><span class="mono" style="color:var(--hl); font-size:14px">I</span><span class="h3">Semantics</span><span class="small">What things mean. A shared vocabulary: customer, contract, policy, approver.</span></div>
+      <div class="row" style="gap:10px; align-items:center"><span data-i="arrow-down"></span><span class="chip"><span data-i="tag"></span>Helix · ontology, 8 types</span></div>
+    </div>
+    <div class="col rise" style="--d:3; gap:14px">
+      <div class="card ink" style="min-height:230px"><span class="mono" style="color:var(--hl); font-size:14px">II</span><span class="h3">Operational state</span><span class="small">What is true right now, and what changed.</span></div>
+      <div class="row" style="gap:10px; align-items:center"><span data-i="arrow-down"></span><span class="chip on"><span data-i="history"></span>Helix · dated facts, status per date</span></div>
+    </div>
+    <div class="col rise" style="--d:4; gap:14px">
+      <div class="card ink" style="min-height:230px"><span class="mono" style="color:var(--hl); font-size:14px">III</span><span class="h3">Provenance</span><span class="small">Where each fact came from, so an answer can be checked.</span></div>
+      <div class="row" style="gap:10px; align-items:center"><span data-i="arrow-down"></span><span class="chip"><span data-i="link"></span>Helix · sources on every fact</span></div>
+    </div>
+  </div>
+  <div class="frame rise mt-auto" style="--d:5; padding:18px 26px; display:flex; gap:18px; align-items:center"><span class="ibox hl"><span data-i="flag"></span></span>
+    <span class="body">The advice that matters for us: <b>don't build the whole layer at once.</b> Start with a few high-value questions — Orbisa's 22.</span></div>
+  <p class="cite rise mt16" style="--d:6">Gartner, "The 3 Core Components of the Context Layer for AI Agents" (2026) — paywalled, read through vendor summaries (Quantexa, Denodo). Gartner also names "AI context platforms" as an emerging category (Aug 2026).</p>
+</section>
+
+<!-- 5b · rag evolution -->
+<section class="slide gridbg" data-title="RAG to temporal graphs">
+  <div class="eyebrow rise">How retrieval grew up</div>
+  <h2 class="h2 rise mt16" style="--d:1">Chunks → graphs → <mark>graphs with time</mark>.</h2>
+  <div class="grid3 mt32" style="gap:20px; flex:1">
+    <div class="card raised rise" style="--d:2">
+      <svg viewBox="0 0 300 150" style="width:100%; height:150px"><g fill="#f6f6f3" stroke="#9a9a93">
+        <rect x="20" y="20" width="40" height="22"/><rect x="90" y="60" width="40" height="22"/><rect x="40" y="100" width="40" height="22"/><rect x="230" y="30" width="40" height="22"/><rect x="200" y="100" width="40" height="22"/></g>
+        <g fill="#fbff7a" stroke="#222220"><rect x="140" y="30" width="40" height="22"/><rect x="150" y="90" width="40" height="22"/><rect x="110" y="110" width="40" height="22"/></g>
+        <circle cx="160" cy="75" r="7" fill="#ff5d5f"/><text x="172" y="80" font-family="Geist Mono" font-size="12" fill="#222220">query</text></svg>
+      <span class="num">2020 →</span><span class="h3">Vector RAG</span><span class="small">Split documents into chunks. Return the top-k most similar.</span>
+      <div class="col mt-auto" style="gap:6px"><span class="pill ok" style="align-self:flex-start">fast lookups</span><span class="pill bad" style="align-self:flex-start">no relations, no time</span></div>
+    </div>
+    <div class="card raised rise" style="--d:3">
+      <svg viewBox="0 0 300 150" style="width:100%; height:150px"><g stroke="#9a9a93" stroke-dasharray="5 4" fill="none"><circle cx="85" cy="75" r="58"/><circle cx="215" cy="75" r="58"/></g>
+        <g stroke="#222220" stroke-width="1.4"><line x1="60" y1="55" x2="100" y2="95"/><line x1="100" y1="95" x2="110" y2="50"/><line x1="60" y1="55" x2="110" y2="50"/><line x1="110" y1="50" x2="195" y2="60"/><line x1="195" y1="60" x2="240" y2="95"/><line x1="240" y1="95" x2="200" y2="105"/></g>
+        <g fill="#f6f6f3" stroke="#222220" stroke-width="1.4"><circle cx="60" cy="55" r="9"/><circle cx="100" cy="95" r="9"/><circle cx="110" cy="50" r="9"/><circle cx="195" cy="60" r="9"/><circle cx="240" cy="95" r="9"/><circle cx="200" cy="105" r="9"/></g>
+        <rect x="30" y="122" width="70" height="20" fill="#fbff7a" stroke="#222220"/><text x="36" y="136" font-family="Geist Mono" font-size="11">summary</text></svg>
+      <span class="num">2024 →</span><span class="h3">GraphRAG</span><span class="small">Extract entities and relations, group them into communities, summarize each.</span>
+      <div class="col mt-auto" style="gap:6px"><span class="pill ok" style="align-self:flex-start">whole-corpus questions</span><span class="pill bad" style="align-self:flex-start">no notion of time</span></div>
+    </div>
+    <div class="card hl rise" style="--d:4">
+      <svg viewBox="0 0 300 150" style="width:100%; height:150px"><g stroke="#222220" stroke-width="1.6">
+        <line x1="60" y1="40" x2="240" y2="40"/><line x1="60" y1="110" x2="240" y2="110" stroke-dasharray="6 5"/></g>
+        <g fill="#f6f6f3" stroke="#222220" stroke-width="1.6"><rect x="16" y="26" width="60" height="28"/><rect x="224" y="26" width="60" height="28"/><rect x="16" y="96" width="60" height="28"/></g>
+        <rect x="100" y="58" width="120" height="12" fill="#222220"/><rect x="100" y="128" width="60" height="12" fill="#9a9a93"/>
+        <text x="100" y="86" font-family="Geist Mono" font-size="11" fill="#222220">valid 2026-03-03 →</text><text x="168" y="138" font-family="Geist Mono" font-size="11" fill="#6b6b66">closed</text></svg>
+      <span class="num" style="color:var(--ink-2)">2025 →</span><span class="h3">Temporal knowledge graph</span><span class="small" style="color:var(--ink-2)">Facts are edges with validity dates and sources. Old facts are closed, not deleted.</span>
+      <div class="col mt-auto" style="gap:6px"><span class="pill ok" style="align-self:flex-start">"what was true when?"</span><span class="tag ink" style="align-self:flex-start">← Helix (Graphiti)</span></div>
+    </div>
+  </div>
+  <p class="cite rise mt16" style="--d:5">Microsoft Research, GraphRAG (arXiv 2404.16130, 2024) · Zep, "A Temporal Knowledge Graph Architecture for Agent Memory" (arXiv 2501.13956, 2025)</p>
 </section>
 
 <!-- 6 · six components -->
@@ -311,6 +420,24 @@
   </div>
 </section>
 
+<!-- 11a · does it work -->
+<section class="slide" data-title="Does it work?">
+  <div class="eyebrow rise">Published results for the engine under Helix</div>
+  <h2 class="h2 rise mt16" style="--d:1">The paper says it works. <mark>Does it work for us?</mark></h2>
+  <div class="row gap-l mt48" style="align-items:stretch">
+    <div class="col rise" style="--d:2; flex:1; gap:10px"><span class="big">94.8<span style="font-size:.45em">%</span></span><span class="body">Deep Memory Retrieval benchmark. MemGPT: 93.4%.</span></div>
+    <div class="vline"></div>
+    <div class="col rise" style="--d:3; flex:1; gap:10px"><span class="big">+18.5<span style="font-size:.45em">%</span></span><span class="body">accuracy, up to, on LongMemEval vs baseline.</span></div>
+    <div class="vline"></div>
+    <div class="col rise" style="--d:4; flex:1; gap:10px"><span class="big">−90<span style="font-size:.45em">%</span></span><span class="body">response latency, up to, on the same benchmark.</span></div>
+  </div>
+  <div class="row gap-l mt-auto rise" style="--d:5; align-items:center">
+    <div class="frame grow" style="padding:20px 26px; display:flex; gap:18px; align-items:center"><span class="ibox hl"><span data-i="microscope"></span></span>
+      <span class="body">Self-reported numbers on public benchmarks. Orbisa's questions are not in them. <b>Our 22 ground-truth questions are the real test</b> — that is what Langfuse is for.</span></div>
+  </div>
+  <p class="cite rise mt16" style="--d:6">Rasmussen et al., Zep / Graphiti, arXiv 2501.13956 (Jan 2025). The authors note DMR's limits for real-world use.</p>
+</section>
+
 <!-- 12 · retrieval -->
 <section class="slide" data-title="05 · Retrieval">
   <div class="comp-head rise"><span class="idx">05 / 06</span><div class="mini-pipe"><span>sources</span><span>ingestion</span><span>ontology</span><span>graph</span><span class="on">retrieval</span><span>mcp</span></div></div>
@@ -375,6 +502,24 @@
   </div>
 </section>
 
+<!-- 13a · MCP timeline -->
+<section class="slide" data-title="MCP becomes the standard">
+  <div class="eyebrow rise">Model Context Protocol</div>
+  <h2 class="h2 rise mt16" style="--d:1">From one vendor's idea to <mark>shared infrastructure</mark>.</h2>
+  <div class="tl mt48 rise" style="--d:2">
+    <div><span class="d">Nov 2024</span><div class="h4">Launched</div><p class="small mt8">Anthropic open-sources MCP: tools, resources, prompts.</p></div>
+    <div><span class="d">2025</span><div class="h4">Remote servers</div><p class="small mt8">Streamable HTTP transport, OAuth-based authorization.</p></div>
+    <div class="on"><span class="d">2025-11-25</span><div class="h4">Spec revision</div><p class="small mt8">Experimental tasks, better auth discovery.</p></div>
+    <div class="on"><span class="d">9 Dec 2025</span><div class="h4">Linux Foundation</div><p class="small mt8">Donated to the Agentic AI Foundation (Anthropic, Block, OpenAI).</p></div>
+  </div>
+  <div class="grid3 mt48 rise" style="--d:3">
+    <div class="stat"><div class="n">10k+</div><div class="l">active public MCP servers (Dec 2025)</div></div>
+    <div class="stat"><div class="n" style="font-size:34px; line-height:1.3; padding-top:22px">ChatGPT · Cursor · Gemini<br>Copilot · VS Code</div><div class="l">clients that adopted it</div></div>
+    <div class="card hl" style="justify-content:center"><span class="h4"><span data-i="plug"></span>Helix speaks MCP</span><span class="small" style="color:var(--ink-2)">Any of those clients could use Orbisa's context tomorrow.</span></div>
+  </div>
+  <p class="cite rise mt16" style="--d:4">Anthropic, "Donating the Model Context Protocol and establishing the Agentic AI Foundation", 9 Dec 2025 · modelcontextprotocol.io changelog</p>
+</section>
+
 <!-- 14 · graph databases -->
 <section class="slide" data-title="Graph databases">
   <div class="eyebrow rise">Why a graph</div>
@@ -435,6 +580,34 @@
   </div>
 </section>
 
+<!-- 15a · GQL -->
+<section class="slide gridbg" data-title="GQL standard">
+  <div class="row gap-l" style="flex:1; align-items:center">
+    <div class="col" style="flex:1">
+      <div class="eyebrow rise">Graph query languages</div>
+      <h2 class="h2 rise" style="--d:1">Graphs got their own <mark>ISO standard</mark>.</h2>
+      <p class="lead rise" style="--d:2; font-size:24px">GQL (ISO/IEC 39075, April 2024) is the first new ISO database language since SQL. It borrows heavily from Cypher.</p>
+      <div class="tl mt32 rise" style="--d:3">
+        <div><span class="d">1987</span><div class="h4">SQL</div><p class="small mt8">ISO standard for tables</p></div>
+        <div><span class="d">2011</span><div class="h4">Cypher</div><p class="small mt8">created at Neo4j</p></div>
+        <div><span class="d">2015</span><div class="h4">openCypher</div><p class="small mt8">open to other vendors</p></div>
+        <div class="on"><span class="d">2024</span><div class="h4">GQL</div><p class="small mt8">ISO/IEC 39075</p></div>
+      </div>
+    </div>
+    <div class="col" style="flex:.9">
+      <div class="code-head rise" style="--d:3"><span>same pattern, two languages</span><span>MATCH … RETURN</span></div>
+      <div class="code rise" style="--d:3; margin-top:-24px; font-size:17px"><span class="c">// Cypher (Neo4j today)</span>
+<span class="k">MATCH</span> (p:Person)-[r:APPROVES]->(x)
+<span class="k">WHERE</span> r.invalid_at <span class="k">IS NULL</span>
+<span class="k">RETURN</span> p.name, x.name
+
+<span class="c">// GQL keeps MATCH / WHERE / RETURN,</span>
+<span class="c">// the ASCII-art patterns and labels.</span></div>
+      <p class="cite rise" style="--d:4">Neo4j, "Creating the GQL database language standard" · ISO/IEC 39075:2024</p>
+    </div>
+  </div>
+</section>
+
 <!-- 16 · helix stack -->
 <section class="slide" data-title="Helix engine">
   <div class="eyebrow rise">Helix · open source, piece by piece</div>
@@ -450,6 +623,35 @@
     <tr><td>Agent</td><td><div class="tools"><span data-i="claude"></span>Claude Agent SDK · Opus 5.5</div></td><td>Ask Orbisa</td></tr>
     <tr><td>Runtime</td><td><div class="tools"><span data-i="docker"></span>Docker Compose <span class="muted">+</span> <span data-i="uv"></span>uv</div></td><td><span class="mono">make up</span></td></tr>
   </table>
+</section>
+
+<!-- 17a · best practices -->
+<section class="slide" data-title="Best practices">
+  <div class="eyebrow rise">Building a context layer</div>
+  <h2 class="h2 rise mt16" style="--d:1">Six habits, <mark>four mistakes</mark>.</h2>
+  <div class="row gap-l mt32" style="flex:1">
+    <div class="col rise" style="--d:2; flex:1.2">
+      <span class="num">DO</span>
+      <div class="check">
+        <div><span class="bx on"><span data-i="check"></span></span><span><b>Keep provenance.</b> Every fact links to its source.</span><span class="tag">trust</span></div>
+        <div><span class="bx on"><span data-i="check"></span></span><span><b>Model time.</b> Close old facts with a date.</span><span class="tag">temporal</span></div>
+        <div><span class="bx on"><span data-i="check"></span></span><span><b>Resolve entities.</b> One person, many names.</span><span class="tag">ontology</span></div>
+        <div><span class="bx on"><span data-i="check"></span></span><span><b>Return little.</b> Few, high-signal facts.</span><span class="tag">context rot</span></div>
+        <div><span class="bx on"><span data-i="check"></span></span><span><b>Respect permissions.</b> Filter by who asks.</span><span class="tag">security</span></div>
+        <div><span class="bx on"><span data-i="check"></span></span><span><b>Measure retrieval.</b> Separately from the answer.</span><span class="tag hl">today</span></div>
+      </div>
+    </div>
+    <div class="col rise" style="--d:3; flex:.8">
+      <span class="num">DON'T</span>
+      <div class="check">
+        <div><span class="bx" style="border-color:var(--coral)"><span data-i="x" style="color:var(--coral)"></span></span><span>Paste whole documents into the prompt.</span><span></span></div>
+        <div><span class="bx" style="border-color:var(--coral)"><span data-i="x" style="color:var(--coral)"></span></span><span>Overwrite or delete old facts.</span><span></span></div>
+        <div><span class="bx" style="border-color:var(--coral)"><span data-i="x" style="color:var(--coral)"></span></span><span>Let each team invent its own vocabulary.</span><span></span></div>
+        <div><span class="bx" style="border-color:var(--coral)"><span data-i="x" style="color:var(--coral)"></span></span><span>Trust a fluent answer with no source.</span><span></span></div>
+      </div>
+      <div class="card ink mt-auto"><span class="h4" style="color:var(--hl)">Start small</span><span class="small">Pick a few high-value questions first. Grow the layer from there.</span></div>
+    </div>
+  </div>
 </section>
 
 <!-- 17 · how it glues together -->

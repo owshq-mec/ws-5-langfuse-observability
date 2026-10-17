@@ -67,7 +67,7 @@
   .chart svg { position: absolute; inset: 0; width: 100%; height: 100%; }
   .yes { color: var(--green); font-family: var(--mono); } .ee { color: var(--amber); font-family: var(--mono); } .cl { color: var(--blue-ink); font-family: var(--mono); }
   .svcgrid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
-  .svc { border: 1.5px solid var(--ink); background: var(--paper); padding: 18px 20px; display: flex; flex-direction: column; gap: 6px; }
+  .svc { border: 1.5px solid var(--ink); background: var(--paper); padding: 26px 26px; display: flex; flex-direction: column; gap: 10px; min-height: 160px; }
   .svc .h4 { display: flex; gap: 10px; align-items: center; }
   .svc .port { font-family: var(--mono); font-size: 13px; color: var(--muted); }
   .svc.main { background: var(--hl); }
@@ -76,9 +76,10 @@
   .map .f { display: flex; gap: 8px; flex-wrap: wrap; }
   .dark .map { border-color: #3a3835; } .dark .map .p { color: #8f8f88; }
   .dark .chip { background: #2a2826; border-color: #45433e; color: #e6e6e0; }
+  .big-check .check > div { padding: 22px 4px; font-size: 21px; }
 </style>
 </head>
-<body data-deck="03 · Observability &amp; Langfuse" data-part="Part 3 · Observability">
+<body data-deck="03 · Observability &amp; Langfuse" data-part="Part 3 · Observability" data-prev="02-context-layer.html" data-next="04-prompts.html">
 <main class="deck">
 
 <!-- 1 · cover -->
@@ -152,6 +153,8 @@
     <div class="card raised rise" style="--d:4"><span class="ibox lg"><span data-i="coins"></span></span><span class="h3">What did it cost?</span><span class="body">Tokens, money and seconds per question.</span><span class="pill plain mt8" style="align-self:flex-start">cost · latency</span></div>
     <div class="card raised rise" style="--d:5"><span class="ibox lg"><span data-i="git-compare"></span></span><span class="h3">What changed?</span><span class="body">Which prompt, model or code version produced it.</span><span class="pill plain mt8" style="align-self:flex-start">versions</span></div>
   </div>
+  <div class="frame rise mt-auto" style="--d:6; padding:20px 26px; display:flex; gap:18px; align-items:center; background:var(--ink); color:var(--paper)"><span class="ibox hl"><span data-i="activity"></span></span>
+    <span class="body" style="color:#e6e6e0">A status code answers none of these. <b style="color:var(--hl)">Observability for agents starts with the trace.</b></span></div>
 </section>
 
 <!-- 5 · OpenTelemetry -->
@@ -206,6 +209,63 @@
   </div>
 </section>
 
+<!-- 6a · agent spans -->
+<section class="slide gridbg" data-title="Agent spans">
+  <div class="eyebrow rise">OpenTelemetry · agent spans</div>
+  <h2 class="h2 rise mt16" style="--d:1">An agent run, <mark>in the standard's words</mark>.</h2>
+  <div class="row gap-l mt32" style="flex:1">
+    <div class="col rise" style="--d:2; flex:1.3">
+      <div class="nest" style="background:var(--card)">
+        <span class="lab"><span class="tag ink">invoke_agent</span> ask-orbisa</span>
+        <div class="nest" style="padding:12px 16px"><span class="lab"><span class="tag">chat</span> claude-opus-5-5 · tokens in/out</span></div>
+        <div class="nest" style="padding:12px 16px; background:var(--hl)"><span class="lab" style="color:var(--ink)"><span class="tag ink">execute_tool</span> search_context</span>
+          <div class="nest" style="padding:10px 14px; margin-left:20px"><span class="lab">retrieval · helix (another service)</span></div></div>
+        <div class="nest" style="padding:12px 16px"><span class="lab"><span class="tag">execute_tool</span> read_source</span></div>
+        <div class="nest" style="padding:12px 16px"><span class="lab"><span class="tag">chat</span> claude-opus-5-5 · final answer</span></div>
+      </div>
+    </div>
+    <div class="col" style="flex:.7">
+      <div class="card raised rise" style="--d:3"><span class="h4"><span data-i="tag"></span>Operation names</span><span class="small"><span class="mono">invoke_agent</span>, <span class="mono">execute_tool</span>, <span class="mono">chat</span> go in <span class="mono">gen_ai.operation.name</span>.</span></div>
+      <div class="card raised rise" style="--d:4"><span class="h4"><span data-i="eye-off"></span>Content is off by default</span><span class="small">Prompts, answers and tool arguments often hold customer data. You opt in.</span></div>
+      <div class="card rise" style="--d:5; border-color:var(--amber)"><span class="h4"><span data-i="triangle-alert"></span>Still "Development"</span><span class="small">The GenAI conventions can still change in 2026. Pin versions.</span></div>
+    </div>
+  </div>
+  <p class="cite rise mt16" style="--d:6">opentelemetry.io/docs/specs/semconv/gen-ai/gen-ai-agent-spans</p>
+</section>
+
+<!-- 6b · what the agent sdk sends -->
+<section class="slide" data-title="What the Agent SDK sends">
+  <div class="eyebrow rise">Claude Agent SDK · beta telemetry</div>
+  <h2 class="h2 rise mt16" style="--d:1">Five variables turn on <mark>agent traces</mark>.</h2>
+  <div class="row gap-l mt32" style="flex:1">
+    <div class="col" style="flex:1.15">
+      <div class="code-head rise" style="--d:2"><span>agent env · prompt 07</span><span>OTLP → Langfuse</span></div>
+      <div class="code rise" style="--d:2; margin-top:-24px; font-size:16px">CLAUDE_CODE_ENABLE_TELEMETRY=<span class="n">1</span>
+CLAUDE_CODE_ENHANCED_TELEMETRY_BETA=<span class="n">1</span>   <span class="c"># spans</span>
+OTEL_TRACES_EXPORTER=<span class="s">otlp</span>
+OTEL_EXPORTER_OTLP_TRACES_ENDPOINT=
+  <span class="hl">$LANGFUSE_BASE_URL/api/public/otel/v1/traces</span>
+OTEL_EXPORTER_OTLP_TRACES_HEADERS=
+  Authorization=Basic &lt;pk:sk&gt;,
+  x-langfuse-ingestion-version=<span class="n">4</span></div>
+    </div>
+    <div class="col" style="flex:.85">
+      <div class="span-tree rise" style="--d:3; font-size:16px">
+        <div class="r"><b>claude_code.interaction</b><span class="pill plain">root · one per prompt</span></div>
+        <div class="r"><span class="g">├─</span>claude_code.llm_request<span class="pill ok">model · tokens</span></div>
+        <div class="r"><span class="g">├─</span>tool span<span class="pill plain">mcp__helix__…</span></div>
+        <div class="r"><span class="g">└─</span>claude_code.llm_request</div>
+      </div>
+      <div class="usecase rise" style="--d:4; border-left:4px solid var(--ink); background:var(--paper); padding:18px 22px; display:flex; flex-direction:column; gap:8px">
+        <span class="mono small" style="font-size:13px; letter-spacing:.1em">PRIVACY DEFAULT</span>
+        <span class="body">No prompt text or tool content unless you set <span class="mono" style="font-size:16px">OTEL_LOG_USER_PROMPTS</span> or <span class="mono" style="font-size:16px">OTEL_LOG_TOOL_*</span>.</span>
+      </div>
+      <p class="small rise" style="--d:5">Open question for prompt 07: do these spans arrive in Langfuse as generations with cost?</p>
+    </div>
+  </div>
+  <p class="cite rise mt16" style="--d:6">code.claude.com/docs — monitoring usage (traces in beta) · langfuse.com/docs/opentelemetry</p>
+</section>
+
 <!-- 7 · Langfuse -->
 <section class="slide hatch" data-title="Langfuse">
   <div class="col center" style="flex:1; justify-content:center">
@@ -215,6 +275,25 @@
     <div class="statsbar rise mt48" style="--d:3; width:1100px"><div><b>MIT</b> core, no limits</div><div><b>35.9k</b> GitHub stars</div><div><b>v4</b> · real-time</div><div>by <b>ClickHouse</b></div></div>
     <p class="small mono rise mt16" style="--d:4; font-size:13px">numbers from langfuse.com on 2026-10-16</p>
   </div>
+</section>
+
+<!-- 7a · langfuse timeline -->
+<section class="slide" data-title="Langfuse in 2026">
+  <div class="eyebrow rise">Where Langfuse is today</div>
+  <h2 class="h2 rise mt16" style="--d:1">A fast-moving year: <mark>v4</mark>, ClickHouse, Academy.</h2>
+  <div class="tl mt48 rise" style="--d:2">
+    <div><span class="d">2023</span><div class="h4">Open source</div><p class="small mt8">MIT core, self-host from day one.</p></div>
+    <div><span class="d">16 Jan 2026</span><div class="h4">ClickHouse</div><p class="small mt8">Acquired. Team, open source and self-hosting stay.</p></div>
+    <div><span class="d">May 2026</span><div class="h4">Academy</div><p class="small mt8">Trace, monitor, datasets, experiment, evaluate.</p></div>
+    <div class="on"><span class="d">Aug 2026</span><div class="h4">v4 live</div><p class="small mt8">Observations-first. Tables load in ms.</p></div>
+    <div class="bad"><span class="d">16 Nov 2026</span><div class="h4">Cloud v4-only</div><p class="small mt8">Legacy v3 APIs removed on Cloud.</p></div>
+  </div>
+  <div class="grid3 mt48 rise" style="--d:3">
+    <div class="card"><span class="h4"><span data-i="zap"></span>Faster</span><span class="small">Dashboards in large projects at least 10× faster.</span></div>
+    <div class="card"><span class="h4"><span data-i="refresh-cw"></span>New SDKs</span><span class="small">Python SDK v4 · JS SDK v5. We pin <span class="mono">langfuse&gt;=4.18,&lt;5</span>.</span></div>
+    <div class="card hl"><span class="h4"><span data-i="server"></span>Self-hosted v4</span><span class="small" style="color:var(--ink-2)">What runs on our laptops today.</span></div>
+  </div>
+  <p class="cite rise mt16" style="--d:4">clickhouse.com/blog (16 Jan 2026) · langfuse.com/changelog/2026-08-17-langfuse-v4 · langfuse.com/academy</p>
 </section>
 
 <!-- 8 · data model -->
@@ -243,6 +322,37 @@
     <div class="card"><span class="h4"><span class="ibox"><span data-i="target"></span></span>Score</span><span class="small">A number, a category, a yes/no or text, on a trace or a step.</span></div>
     <div class="card"><span class="h4"><span class="ibox"><span data-i="users"></span></span>Session · user</span><span class="small">Group traces by conversation and by person.</span></div>
   </div>
+</section>
+
+<!-- 8a · v4 observations first -->
+<section class="slide gridbg" data-title="v4 data model">
+  <div class="eyebrow rise">Langfuse v4</div>
+  <h2 class="h2 rise mt16" style="--d:1">One wide table. <mark>Context on every observation.</mark></h2>
+  <div class="row gap-l mt32" style="flex:1; align-items:stretch">
+    <div class="col rise" style="--d:2; flex:1">
+      <span class="num">v3 · JOIN AT READ TIME</span>
+      <div class="row" style="gap:14px; align-items:center">
+        <div class="tbl" style="flex:1"><div class="th">traces</div><div class="tr"><span>id</span><span>user</span><span>session</span></div></div>
+        <span class="mono" style="font-size:22px">⋈</span>
+        <div class="tbl" style="flex:1"><div class="th">observations</div><div class="tr"><span>trace_id</span><span>type</span><span>input</span></div></div>
+      </div>
+      <p class="small">Updates to both tables, then join and deduplicate before showing a result. Slow at scale.</p>
+    </div>
+    <div class="vline"></div>
+    <div class="col rise" style="--d:3; flex:1.1">
+      <span class="num">v4 · OBSERVATIONS FIRST</span>
+      <div class="tbl" style="border-width:2px"><div class="th" style="background:var(--hl); color:var(--ink)">observations</div>
+        <div class="tr" style="grid-template-columns:repeat(5,1fr)"><span>trace_id</span><span>type</span><span>input</span><span><b>user</b></span><span><b>session</b></span></div></div>
+      <p class="small">Each finished observation is written once, with trace context on it.</p>
+      <div class="code" style="font-size:16px"><span class="c"># Python SDK v4</span>
+<span class="k">with</span> propagate_attributes(user_id=…, session_id=…):
+    <span class="k">with</span> lf.start_as_current_observation(
+            as_type=<span class="s">"agent"</span>, name=<span class="s">"…"</span>): …</div>
+    </div>
+  </div>
+  <div class="frame rise mt24" style="--d:4; padding:16px 22px; display:flex; gap:16px; align-items:center"><span class="ibox hl"><span data-i="triangle-alert"></span></span>
+    <span class="body">Rule for prompt 08: set user, session and tags on <b>all</b> observations, or filters and dashboards miss data.</span></div>
+  <p class="cite rise mt16" style="--d:5">langfuse.com/docs/v4 · Python SDK v3 → v4 upgrade path (start_span/start_generation → start_observation)</p>
 </section>
 
 <!-- 9 · the loop -->
@@ -288,8 +398,8 @@
 <!-- 11 · tracing -->
 <section class="slide" data-title="Tracing">
   <div class="fhead rise"><span class="ibox hl"><span data-i="list-tree"></span></span><div><div class="eyebrow">Feature · prompts 06 – 08</div><div class="h2" style="font-size:52px">Tracing</div></div></div>
-  <div class="row gap-l mt32" style="flex:1">
-    <div class="ui rise" style="--d:2; flex:1.45; align-self:flex-start">
+  <div class="row gap-l mt32" style="flex:1; align-items:center">
+    <div class="ui rise" style="--d:2; flex:1.45">
       <div class="bar"><span data-i="langfuse"></span>Traces › Q01 · Orion refund<span class="sp"><span class="pill plain">≈ $0.12</span><span class="pill ok">correct</span></span></div>
       <div class="wf">
         <div class="name"><span class="ty agent">agent</span>ask-orbisa</div><div class="lane"><i class="agent" style="left:0; width:100%"></i></div>
@@ -312,8 +422,8 @@
 <!-- 12 · sessions -->
 <section class="slide" data-title="Sessions & users">
   <div class="fhead rise"><span class="ibox hl"><span data-i="messages-square"></span></span><div><div class="eyebrow">Feature · prompt 08</div><div class="h2" style="font-size:52px">Sessions &amp; users</div></div></div>
-  <div class="row gap-l mt32" style="flex:1">
-    <div class="ui rise" style="--d:2; flex:1.3; align-self:flex-start">
+  <div class="row gap-l mt32" style="flex:1; align-items:center">
+    <div class="ui rise" style="--d:2; flex:1.3">
       <div class="bar"><span data-i="langfuse"></span>Sessions › sam.patel · zendesk-48233<span class="sp"><span class="pill plain">2 traces</span></span></div>
       <div style="padding:22px 26px; display:flex; flex-direction:column; gap:16px">
         <div class="row" style="gap:14px; align-items:flex-start"><span class="ibox" style="width:40px;height:40px"><span data-i="user" style="width:20px;height:20px"></span></span><div class="body"><b>Sam</b> · Is Orion eligible for a refund 45 days after renewal?</div></div>
@@ -325,9 +435,11 @@
     </div>
     <div class="col" style="flex:.8">
       <div class="usecase rise" style="--d:3"><span class="lab">ORBISA USE CASE</span><span class="body">Follow one ticket from first question to final reply. See every question <b>one employee</b> asked this week.</span></div>
-      <div class="code rise" style="--d:4; font-size:16px">session_id = <span class="s">"zendesk-48233"</span>
-user_id    = <span class="s">"sam.patel"</span>
-tags       = [<span class="s">"support"</span>, <span class="s">"refund"</span>]</div>
+      <div class="code rise" style="--d:4; font-size:16px"><span class="k">with</span> propagate_attributes(
+    session_id=<span class="s">"zendesk-48233"</span>,
+    user_id=<span class="s">"sam.patel"</span>,
+    tags=[<span class="s">"anchor"</span>, <span class="s">"as-of:2026-09-29"</span>],
+): ask(question, as_of)</div>
     </div>
   </div>
 </section>
@@ -335,17 +447,17 @@ tags       = [<span class="s">"support"</span>, <span class="s">"refund"</span>]
 <!-- 13 · prompt management -->
 <section class="slide" data-title="Prompt management">
   <div class="fhead rise"><span class="ibox hl"><span data-i="file-text"></span></span><div><div class="eyebrow">Feature · prompt 09</div><div class="h2" style="font-size:52px">Prompt management</div></div></div>
-  <div class="row gap-l mt32" style="flex:1">
+  <div class="row gap-l mt32" style="flex:1; align-items:center">
     <div class="col" style="flex:1.3">
       <div class="row rise" style="--d:2; justify-content:space-between; align-items:center">
-        <span class="mono small">ask-orbisa/system · v1 = src/clients/agent/system_prompt.md</span>
+        <span class="mono small">ask-orbisa-system · v1 = src/clients/agent/system_prompt.md</span>
         <div class="lbls"><span>v1</span><span class="prod">production</span><span>v2</span><span class="stg">staging</span></div>
       </div>
       <div class="diff rise" style="--d:2">You are Ask Orbisa, the internal assistant for Orbisa employees…
 - Pass the as-of date as `as_of` to `search_context`.
 - Search more than once, from different angles.
 - Prefer a signed contract over a general policy.
-<span class="add">For refund or credit questions, find the customer's contract with list_sources and read it.</span>
+<span class="add">When a signed contract and a policy disagree, quote the contract clause number.</span>
 Answer format: … a final line starting with "Sources:".</div>
       <p class="small rise" style="--d:3">The code fetches the prompt by label, with a cache. Each trace records which version it used.</p>
     </div>
@@ -360,9 +472,9 @@ Answer format: … a final line starting with "Sources:".</div>
 <!-- 14 · datasets & experiments -->
 <section class="slide" data-title="Datasets & experiments">
   <div class="fhead rise"><span class="ibox hl"><span data-i="flask-conical"></span></span><div><div class="eyebrow">Feature · prompt 10</div><div class="h2" style="font-size:52px">Datasets &amp; experiments</div></div></div>
-  <div class="row gap-l mt32" style="flex:1">
-    <div class="ui rise" style="--d:2; flex:1.3; align-self:flex-start">
-      <div class="bar"><span data-i="database"></span>Datasets › orbisa-ground-truth · 22 items<span class="sp"><span class="pill plain">2 runs</span></span></div>
+  <div class="row gap-l mt32" style="flex:1; align-items:center">
+    <div class="ui rise" style="--d:2; flex:1.3">
+      <div class="bar"><span data-i="database"></span>Datasets › orbisa-truth · 22 items<span class="sp"><span class="pill plain">2 runs</span></span></div>
       <table class="t dense">
         <tr><th>category</th><th>items</th><th>prompt v1</th><th>prompt v2</th></tr>
         <tr><td>anchor (Q01)</td><td class="mono">1</td><td class="q">?</td><td class="q">?</td></tr>
@@ -406,6 +518,62 @@ Answer format: … a final line starting with "Sources:".</div>
   <div class="statsbar mt-auto rise" style="--d:5; font-size:17px"><div><b>online</b> · on live traces</div><div><b>offline</b> · in experiments</div><div>score types · <b>numeric · categorical · boolean · text</b></div></div>
 </section>
 
+<!-- 15a · error analysis -->
+<section class="slide" data-title="Error analysis first">
+  <div class="eyebrow rise">Evaluation practice</div>
+  <h2 class="h2 rise mt16" style="--d:1">Read traces before you <mark>write evaluators</mark>.</h2>
+  <div class="steps mt48 rise" style="--d:2">
+    <div><span class="ibox"><span data-i="eye"></span></span><span class="num mt8">01</span><span class="h4">Read ~100 traces</span><span class="small">A domain expert looks at real runs.</span></div>
+    <div><span class="ibox"><span data-i="notebook-pen"></span></span><span class="num mt8">02</span><span class="h4">Open coding</span><span class="small">Free-text note on what went wrong.</span></div>
+    <div><span class="ibox"><span data-i="layers"></span></span><span class="num mt8">03</span><span class="h4">Axial coding</span><span class="small">Group notes into failure modes. Count.</span></div>
+    <div class="on"><span class="ibox"><span data-i="terminal"></span></span><span class="num mt8">04</span><span class="h4">Code check first</span><span class="small">Regex, schema, "has a Sources line".</span></div>
+    <div><span class="ibox"><span data-i="scale"></span></span><span class="num mt8">05</span><span class="h4">Then a judge</span><span class="small">Pass / fail, one failure mode each.</span></div>
+  </div>
+  <div class="row gap-l mt-auto rise" style="--d:3; align-items:stretch">
+    <div class="col" style="flex:.9; gap:10px">
+      <span class="num">VALIDATE THE JUDGE AGAINST PEOPLE</span>
+      <div style="display:grid; grid-template-columns:120px 1fr 1fr; border:1px solid var(--ink); font-family:var(--mono); font-size:15px">
+        <span style="padding:10px"></span><span style="padding:10px; border-left:1px solid var(--line)">human: pass</span><span style="padding:10px; border-left:1px solid var(--line)">human: fail</span>
+        <span style="padding:10px; border-top:1px solid var(--line)">judge: pass</span><span style="padding:10px; border:1px solid var(--line); background:#dcf3e5">agree</span><span style="padding:10px; border:1px solid var(--line); background:#ffe0e0">missed failure</span>
+        <span style="padding:10px; border-top:1px solid var(--line)">judge: fail</span><span style="padding:10px; border:1px solid var(--line); background:#fff1d6">false alarm</span><span style="padding:10px; border:1px solid var(--line); background:#dcf3e5">agree</span>
+      </div>
+    </div>
+    <div class="usecase" style="flex:1.1; border-left:4px solid var(--ink); background:var(--paper); padding:20px 24px; display:flex; flex-direction:column; gap:8px">
+      <span class="mono small" style="font-size:13px; letter-spacing:.1em">TEAM DEBATE · PROMPT 10</span>
+      <span class="body">Our correctness judge has three levels (1 / 0.5 / 0). Practitioners prefer <b>binary</b>. Keep it, or split it?</span>
+    </div>
+  </div>
+  <p class="cite rise mt16" style="--d:4">Hamel Husain, Evals FAQ — error analysis; Langfuse blog, "Error analysis to evaluate LLM applications" (Aug 2025)</p>
+</section>
+
+<!-- 15b · online vs offline -->
+<section class="slide gridbg" data-title="Online and offline">
+  <div class="eyebrow rise">Two loops, one dataset</div>
+  <h2 class="h2 rise mt16" style="--d:1"><mark>Offline</mark> before you ship. <mark>Online</mark> after.</h2>
+  <div class="row mt32 rise" style="--d:2; flex:1; align-items:center; justify-content:center">
+    <svg viewBox="0 0 1200 430" style="width:1260px; height:450px">
+      <g fill="none" stroke="#222220" stroke-width="2">
+        <ellipse cx="330" cy="215" rx="270" ry="170" stroke-dasharray="8 7"/>
+        <ellipse cx="870" cy="215" rx="270" ry="170" stroke-dasharray="8 7"/>
+      </g>
+      <g font-family="Geist Mono, monospace" font-size="15" fill="#6b6b66"><text x="230" y="30">OFFLINE · before release</text><text x="780" y="30">ONLINE · in production</text></g>
+      <g font-family="Inter, sans-serif" font-size="19" fill="#222220">
+        <rect x="140" y="60" width="200" height="50" fill="#f6f6f3" stroke="#222220"/><text x="160" y="92">dataset · 22 Qs</text>
+        <rect x="60" y="190" width="180" height="50" fill="#f6f6f3" stroke="#222220"/><text x="80" y="222">experiment</text>
+        <rect x="140" y="320" width="220" height="50" fill="#f6f6f3" stroke="#222220"/><text x="160" y="352">compare v1 · v2</text>
+        <rect x="490" y="190" width="220" height="50" fill="#fbff7a" stroke="#222220" stroke-width="2"/><text x="530" y="222">ship a label</text>
+        <rect x="860" y="60" width="220" height="50" fill="#f6f6f3" stroke="#222220"/><text x="880" y="92">live traces</text>
+        <rect x="960" y="190" width="200" height="50" fill="#f6f6f3" stroke="#222220"/><text x="980" y="222">judge · queue</text>
+        <rect x="840" y="320" width="260" height="50" fill="#222220" stroke="#222220"/><text x="860" y="352" fill="#fbff7a">bad trace → dataset</text>
+      </g>
+      <g stroke="#222220" stroke-width="2" fill="none"><path d="M840 345 C 700 420, 480 420, 360 345" marker-end="url(#ah3)"/></g>
+      <defs><marker id="ah3" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="9" markerHeight="9" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#222220"/></marker></defs>
+      <text x="520" y="415" font-family="Geist Mono, monospace" font-size="14" fill="#222220">every failure becomes a test case</text>
+    </svg>
+  </div>
+  <div class="row rise" style="--d:3; gap:10px"><span class="pill info">offline · prompt 10</span><span class="pill info">online · prompt 11</span><span class="pill plain">the queue turns one trace into a dataset item</span></div>
+</section>
+
 <!-- 16 · dashboards & alerts -->
 <section class="slide" data-title="Dashboards & alerts">
   <div class="fhead rise"><span class="ibox hl"><span data-i="layout-dashboard"></span></span><div><div class="eyebrow">Feature · prompt 12</div><div class="h2" style="font-size:52px">Dashboards &amp; alerts</div></div></div>
@@ -419,7 +587,7 @@ Answer format: … a final line starting with "Sources:".</div>
   </div>
   <div class="row gap-l mt-auto rise" style="--d:3">
     <div class="usecase grow"><span class="lab">ORBISA USE CASE</span><span class="body">One dashboard for the Helix team: <b>cost</b>, <b>latency</b> and <b>correctness by category</b>.</span></div>
-    <div class="usecase grow" style="border-left-color:var(--coral)"><span class="lab">ALERT</span><span class="body">Faithfulness falls under the line → notify the team.</span></div>
+    <div class="usecase grow" style="border-left-color:var(--coral)"><span class="lab">ALERT</span><span class="body">Mean faithfulness over the last hour <b>&lt; 0.8</b> → webhook to the team.</span></div>
   </div>
   <p class="small mono rise mt8" style="--d:4; font-size:13px">charts are placeholders</p>
 </section>
@@ -435,7 +603,7 @@ Answer format: … a final line starting with "Sources:".</div>
 
 <span class="c">● langfuse · list traces (score filter)</span>
 <span class="c">● langfuse · get trace × 6</span>
-<span class="c">● langfuse · get prompt ask-orbisa/system</span>
+<span class="c">● langfuse · get prompt ask-orbisa-system</span>
   4 of 6 never called read_source on a contract…</div>
     <div class="col" style="flex:.8">
       <div class="usecase rise" style="--d:3; background:#23211f; border-left-color:var(--hl)"><span class="lab" style="color:#a8a8a0">BUILT IN</span><span class="body" style="color:#e6e6e0">MCP server at <span class="mono">/api/public/mcp</span>. Also a CLI and a public API.</span></div>
@@ -443,6 +611,27 @@ Answer format: … a final line starting with "Sources:".</div>
       <p class="small mono rise" style="--d:5">transcript illustrative</p>
     </div>
   </div>
+</section>
+
+<!-- 17a · tracing best practices -->
+<section class="slide" data-title="Tracing best practices">
+  <div class="eyebrow rise">Before we build</div>
+  <h2 class="h2 rise mt16" style="--d:1">Eight rules for <mark>traces you can use</mark>.</h2>
+  <div class="grid2 mt32 big-check" style="gap:0 48px">
+    <div class="check rise" style="--d:2">
+      <div><span class="ring">1</span><span><b>Stable, verb-first names.</b> <span class="mono" style="font-size:16px">search-context</span>, not <span class="mono" style="font-size:16px">fn_2</span>.</span><span class="tag">evaluators</span></div>
+      <div><span class="ring">2</span><span><b>The right type.</b> agent · generation · tool · retriever.</span><span class="tag">filters</span></div>
+      <div><span class="ring">3</span><span><b>Context everywhere.</b> user, session, tags, environment.</span><span class="tag hl">v4</span></div>
+      <div><span class="ring">4</span><span><b>Record versions.</b> Prompt name + version on the trace.</span><span class="tag">compare</span></div>
+    </div>
+    <div class="check rise" style="--d:3">
+      <div><span class="ring">5</span><span><b>Mask in the SDK.</b> Emails → &lt;email&gt; before they leave.</span><span class="tag">privacy</span></div>
+      <div><span class="ring">6</span><span><b>Fail open.</b> No keys or no Langfuse → the agent still answers.</span><span class="tag hl">rule</span></div>
+      <div><span class="ring">7</span><span><b>Flush on shutdown.</b> Short jobs lose spans otherwise.</span><span class="tag">jobs</span></div>
+      <div><span class="ring">8</span><span><b>Summaries, not documents.</b> Counts and paths, not 40 pages.</span><span class="tag">cost</span></div>
+    </div>
+  </div>
+  <div class="statsbar mt-auto rise" style="--d:4; font-size:17px"><div>names decided in <b>prompt 05</b></div><div>masking in <b>prompt 08</b></div><div>fail-open checked at <b>every gate</b></div></div>
 </section>
 
 <!-- 18 · cloud vs self-host -->
