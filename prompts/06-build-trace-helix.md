@@ -13,10 +13,17 @@ Requirements:
   no-op when they are missing.
 - Instrument the four tools in src/context/mcp/server.py with the observation names and types from our
   design (retriever for search and entity lookup, tool for read_source and list_sources).
-- Metadata on the search observation: as_of, number of facts, number hidden as future, source systems.
+- Metadata on the search observation: as_of, number of facts, number hidden as future, status counts, source
+  systems and source paths.
 - Flush on shutdown.
-- `make rebuild`, then `make ask Q=Q01`, then fetch the latest observations from the Langfuse API to prove
-  they arrived. Run `make test`.
+- Before you run it, check which other spans this process emits. mcp 2.x wraps every request in its own server
+  span with gen_ai.* attributes, and Langfuse's default export filter exports gen_ai spans. Decide with us
+  whether to keep or filter them (should_export_span).
+- `make rebuild`, then `make ask Q=Q01`, then read the observations back from the Langfuse API to prove they
+  arrived. This Langfuse runs in v4 events_only mode: use /api/public/v2/observations (the SDK's
+  langfuse.api.observations.get_many with fields="core,basic,metadata"), not the v1 endpoint.
+- Prove the gate with tests: a Helix tool call works with the keys missing and with Langfuse unreachable.
+  .env values win over the shell, so run the test in a subprocess with HELIX_ENV_FILE=/dev/null. Run `make test`.
 Then tell us where to click in the Langfuse UI to see a search observation with its facts and sources.
 ```
 

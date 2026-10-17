@@ -12,7 +12,7 @@ STATE_DIR = ROOT / ".helix"
 
 def load_env() -> None:
     # Non-empty .env values win, and empty ones never mask a value exported in the shell.
-    for key, value in dotenv_values(ROOT / ".env").items():
+    for key, value in dotenv_values(os.environ.get("HELIX_ENV_FILE") or ROOT / ".env").items():
         if value:
             os.environ[key] = value
     # An exported-but-empty ANTHROPIC_BASE_URL makes the SDK build URLs with no scheme.
